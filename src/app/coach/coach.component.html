@@ -1,1 +1,18 @@
-<p>bus works!</p>
+<div fxLayout="column nowrap" class="coach">
+	<div style="height: 80%;" [ngStyle]="{'margin-bottom': coachData?.wheels?.length ? '2rem' : '0'}" fxLayout="column nowrap">
+		<div fxFlex="20" fxLayoutAlign="center center" fxLayout="column nowrap" class="titles">
+			<div *ngFor="let o of (coachData?.titles || []) | keyvalue" [class]="o.value">
+				{{o.key}}
+			</div>
+			<div *ngIf="!!coachData?.description" class="description">
+				{{coachData.description | json}}
+			</div>
+		</div>
+	</div>
+	<div fxLayout="row nowrap" fxLayoutAlign="space-around center" fxLayoutGap="1rem" class="wheels">
+		<wheel *ngFor="let wheel of (coachData.wheels || [])"
+		 [wheel]="wheel"
+		 (promote)="emitPromoterWheelClicked($event)"
+		 ></wheel>
+	</div>
+</div>

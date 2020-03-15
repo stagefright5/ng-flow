@@ -2,6 +2,19 @@
 
 ## Components
 
+### `Class` Train
+
+#### Selectors
+
+- `train,[flow]`
+
+#### Properties
+
+| Name                                                            | Description                                        |
+| --------------------------------------------------------------- | -------------------------------------------------- |
+| `@Input()` trainData: [Train.Caoches](#Coaches)                 | Data to build each coach                           |
+| `@Output('promote')` addNewCoachEvtEmitter: EventEmitter\<any\> | Event Emitted when the `promoter` wheel is clicked |
+
 ### `Class` Coach
 
 #### Selectors
@@ -10,56 +23,72 @@
 
 #### Properties
 
-| Name                                        | Description                                                 |
-| ------------------------------------------- | ----------------------------------------------------------- |
-| `@Input()` trainName: string                | Name of the flow being visualized                           |
-| `@Input()` wheels: Array<[Wheel](#Wheel)>   | Wheel and its associated icon and `descriptionPanel`        |
-| `@Output()` promote: EventEmitter\<string\> | Event ('promoted') Emitted when the the `coach` is promoted |
+| Name                                                                  | Description                                        |
+| --------------------------------------------------------------------- | -------------------------------------------------- |
+| `@Input()` coachData: [Coach.Data](#Data)                             | Name of the flow being visualized                  |
+| `@Output('promote')` promoterWheelClickedEmitter: EventEmitter\<any\> | Event Emitted when the `promoter` wheel is clicked |
 
-### `Class` Train
+### `Class` Wheel
 
 #### Selectors
 
-- `train`
+- `wheel`
 
 #### Properties
 
-| Name                                                      | Description              |
-| --------------------------------------------------------- | ------------------------ |
-| `@Input()` coachDataArray: Array<[CoachData](#CoachData)> | Data to build each coach |
+| Name                                                                   | Description                                        |
+| ---------------------------------------------------------------------- | -------------------------------------------------- |
+| `@Input()` wheel: [Coach.Wheel](#Wheel)                                | wheel data                                         |
+| `@Output('promote')` newCoachAdderWheelEvtEmitter: EventEmitter\<any\> | Event Emitted when the `promoter` wheel is clicked |
 
-### TypeDefinition
+### **TypeDefinition**
+
+### Namespace: `Coach`
 
 #### Wheel
 
 ```typescript
 interface Wheel {
-  icon: string;
-  descriptionPanel: ComponentClass;
+  icon?: string;
+  descriptionPanel?: ComponentType<unknown>;
+  promoter?: boolean;
 }
 ```
 
-#### CoachData
+#### Data
 
 - Dependancies
   - [Titles](#Titles)
   - [Description](#Description)
 
 ```typescript
-interface CoachData {
-  titles: Titles;
-  description: Description;
+interface Data {
+  titles?: Titles;
+  description?: Description;
+  wheels?: Array<Wheel>;
+  lastCoach?: boolean;
 }
 ```
 
 #### Titles
 
 ```typescript
-type Titles = Array<Record<string, string>>;
+type Titles = Record<string, string>;
 ```
 
 #### Description
 
 ```typescript
-type Description = Record<string, string>;
+type Description = null | Record<string, string>;
+```
+
+### Namespace `Train`
+
+#### Caoches
+
+- Dependancies
+  - [Coach.Data](#Data)
+
+```typescript
+type Caoches = Array<Coach.Data>;
 ```

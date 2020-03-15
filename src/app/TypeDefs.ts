@@ -1,23 +1,25 @@
-import { Component } from '@angular/core';
+import { ComponentType } from '@angular/cdk/portal';
 
 export namespace Coach {
 
-	type Description = Record<string, string>;
-	type Titles = Array<Record<string, string>>;
+	export type Description = null | Record<string, string>;
+	export type Titles = Record<string, string>;
 
-	export interface CoachData {
-		titles: Titles;
-		description: Description;
+	export interface Data {
+		titles?: Titles;
+		description?: Description;
+		wheels?: Array<Wheel>;
+		lastCoach?: boolean;
 	}
 
 	export interface Wheel {
-		icon: string;
-		descriptionPanel: Component;
+		icon?: string;
+		descriptionPanel?: ComponentType<unknown>;
+		promoter?: boolean;
 	}
 
-	export type promoteEvent = 'promoted';
 }
 
 export namespace Train {
-	export type Caoches = Array<Coach.CoachData>;
+	export type Caoches = Array<Coach.Data>;
 }

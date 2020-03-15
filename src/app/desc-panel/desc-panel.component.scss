@@ -1,0 +1,10 @@
+@import "../scss.vars.scss";
+
+.panel {
+  width: 20rem;
+  background-color: whitesmoke;
+  .panel-content {
+    height: 30rem;
+    background-color: whitesmoke;
+  }
+}
