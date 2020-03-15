@@ -3,14 +3,14 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { DepotComponent } from './depot/depot.component';
-import { BusComponent } from './bus/bus.component';
+import { TrainComponent } from './train/train.component';
+import { CoachComponent } from './coach/coach.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    DepotComponent,
-    BusComponent
+    TrainComponent,
+    CoachComponent
   ],
   imports: [
     BrowserModule,
