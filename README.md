@@ -12,7 +12,7 @@
 
 | Name                                                            | Description                                        |
 | --------------------------------------------------------------- | -------------------------------------------------- |
-| `@Input()` trainData: [Train.Caoches](#Coaches)                 | Data to build each coach                           |
+| `@Input()` trainData: [Train.Caoches](#Caoches)                 | Data to build each coach                           |
 | `@Output('promote')` addNewCoachEvtEmitter: EventEmitter\<any\> | Event Emitted when the `promoter` wheel is clicked |
 
 ### `Class` Coach
