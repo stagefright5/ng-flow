@@ -1,4 +1,4 @@
-# Console App Deployment Status UI
+# Basic Flow-Like UI (Angular)
 
 ## Components
 
