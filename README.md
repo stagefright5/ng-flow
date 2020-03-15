@@ -12,9 +12,9 @@
 
 | Name                                            | Description                                                 |
 | ----------------------------------------------- | ----------------------------------------------------------- |
-| `@Input()`<br/>trainName: string                | Name of the flow being visualized                           |
-| `@Input()`<br/>wheels: Array<[Wheel](#Wheel)>   | Wheel and its associated icon and `descriptionPanel`        |
-| `@Output()`<br/>promote: EventEmitter\<string\> | Event ('promoted') Emitted when the the `coach` is promoted |
+| `@Input()` trainName: string                | Name of the flow being visualized                           |
+| `@Input()` wheels: Array<[Wheel](#Wheel)>   | Wheel and its associated icon and `descriptionPanel`        |
+| `@Output()` promote: EventEmitter\<string\> | Event ('promoted') Emitted when the the `coach` is promoted |
 
 ### `Class` Train
 
@@ -26,7 +26,7 @@
 
 | Name                                                          | Description              |
 | ------------------------------------------------------------- | ------------------------ |
-| `@Input()`<br/>coachDataArray: Array<[CoachData](#CoachData)> | Data to build each coach |
+| `@Input()` coachDataArray: Array<[CoachData](#CoachData)> | Data to build each coach |
 
 ### TypeDefinition
 
