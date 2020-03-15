@@ -1,4 +1,10 @@
+import { Component } from '@angular/core';
+
 export namespace Coach {
+
+	type Description = Record<string, string>;
+	type Titles = Array<Record<string, string>>;
+
 	export interface CoachData {
 		titles: Titles;
 		description: Description;
@@ -6,7 +12,7 @@ export namespace Coach {
 
 	export interface Wheel {
 		icon: string;
-		descriptionPanel: ComponentClass;
+		descriptionPanel: Component;
 	}
 
 	export type promoteEvent = 'promoted';
