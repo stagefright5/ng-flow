@@ -24,6 +24,9 @@ import { DescPanelComponent } from './desc-panel/desc-panel.component';
 		FlexLayoutModule,
 		OverlayModule
 	],
+	entryComponents: [
+		DescPanelComponent
+	],
 	providers: [],
 	bootstrap: [AppComponent]
 })
