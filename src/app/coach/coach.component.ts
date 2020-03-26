@@ -1,22 +1,27 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, AfterViewInit } from '@angular/core';
 import { Coach } from '../TypeDefs'
 @Component({
 	selector: 'coach',
 	templateUrl: './coach.component.html',
 	styleUrls: ['./coach.component.scss']
 })
-export class CoachComponent implements OnInit {
+export class CoachComponent implements OnInit, AfterViewInit {
 	@Input() coachData: Coach.Data = {};
-	@Output('promote') promoterWheelClickedEmitter: EventEmitter<any> = new EventEmitter();
+	@Output('promote') promoterWheelClickedEvtEmitter: EventEmitter<any> = new EventEmitter();
+	@Output('coachAdded') coachAdded: EventEmitter<any> = new EventEmitter();
 
 	constructor() { }
 
 	ngOnInit(): void {
 	}
 
-	emitPromoterWheelClicked(e) {
+	ngAfterViewInit() {
+		this.coachAdded.emit(this.coachData);
+	}
+
+	emitPromoterWheelClickEvt(e) {
 		if (!this.coachData.lastCoach) {
-			this.promoterWheelClickedEmitter.emit({
+			this.promoterWheelClickedEvtEmitter.emit({
 				...e,
 				coachData: this.coachData
 			});

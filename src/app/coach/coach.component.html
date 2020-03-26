@@ -12,7 +12,7 @@
 	<div fxLayout="row nowrap" fxLayoutAlign="space-around center" fxLayoutGap="1rem" class="wheels">
 		<wheel *ngFor="let wheel of (coachData.wheels || [])"
 		 [wheel]="wheel"
-		 (promote)="emitPromoterWheelClicked($event)"
+		 (promote)="emitPromoterWheelClickEvt($event)"
 		 ></wheel>
 	</div>
 </div>
