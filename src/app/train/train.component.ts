@@ -1,7 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter, NgZone } from '@angular/core';
 import { Train, Coach } from '../TypeDefs';
 import { MediaObserver, MediaChange } from '@angular/flex-layout';
-import { start } from 'repl';
 import { Subscription } from 'rxjs';
 @Component({
 	selector: 'train,[flow]',
