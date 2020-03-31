@@ -9,23 +9,24 @@ import { OverlayService } from '../overlay.service';
 })
 export class WheelComponent implements OnInit {
 
-	@Input() wheel: Coach.Wheel;
+	@Input() wheelData: Coach.Wheel;
 	@Output('promote') newCoachAdderWheelEvtEmitter = new EventEmitter();
 	constructor(private overlayService: OverlayService) { }
 
 	ngOnInit(): void {
 	}
 
-	onWheelClick(wheelData: Coach.Wheel, event: MouseEvent) {
-		if (wheelData.descriptionPanel) {
-			this.overlayService.createAndAttachPanel(<HTMLElement>event.target, wheelData.descriptionPanel);
-		} else {
-			if (wheelData.promoter) {
-				this.newCoachAdderWheelEvtEmitter.emit({
-					wheelData: this.wheel
-				});
-			}
-		}
-	}
+	// TODO: Might have to be removed. No one is invoking this;
+	// onWheelClick(event: MouseEvent) {
+	// 	if (this.wheelData.descriptionPanel) {
+	// 		this.overlayService.open(<HTMLElement>event.target, this.wheelData.descriptionPanel, this.wheelData);
+	// 	} else {
+	// 		if (this.wheelData.promoter) {
+	// 			this.newCoachAdderWheelEvtEmitter.emit({
+	// 				wheelData: this.wheelData
+	// 			});
+	// 		}
+	// 	}
+	// }
 
 }

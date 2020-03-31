@@ -1,16 +1,19 @@
 @import "../generic-styles.scss";
 
 .coach {
-  position: relative;
-  width: 13rem;
-  padding: 1rem 1rem;
-  max-height: 11rem;
-  @extend .rounded-rectangle;
+	width: 15rem;
+	height: 18rem;
+	overflow: auto;
+	@extend .rounded-rectangle;
 }
 
 .wheels {
-  position: absolute;
-  bottom: -1rem;
-  width: 80%;
-  left: 10%;
+	position: absolute;
+	bottom: -1rem;
+	width: 90%;
+	left: 5%;
+}
+
+:host {
+	position: absolute;
 }

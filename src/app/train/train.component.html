@@ -1,10 +1,16 @@
-<div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="5rem">
-  <div *ngFor="let coach of trainData; let i = index" fxLayout="row" class="w">
-    <coach
-      id="{{ 'coach_no_' + i }}"
-      [coachData]="coach"
-      (promote)="emitPromeEvt($event, i)"
-      (coachAdded)="i > 0 && onCoachAdd($event, i)"
-    ></coach>
-  </div>
+<!-- <svg width="1000" fill="white">
+  <ng-template #coaches></ng-template>
+</svg> -->
+<!-- <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="5rem"> -->
+<div class="ng-flow-train ">
+  <ng-template #coaches></ng-template>
 </div>
+
+<!-- <div *ngFor="let coach of trainData; let i = index" fxLayout="row" class="w">
+  <coach
+    id="{{ 'coach_no_' + i }}"
+    [coachData]="getCoachData(i)"
+    [promote]="emitPromeEvt"
+    (coachAdded)="i > 0 && onCoachAdd($event, i)"
+  ></coach>
+</div> -->

@@ -3,14 +3,10 @@
 @import "./src/app/scss.vars.scss";
 
 * {
-  box-sizing: border-box;
-}
-
-body {
-  padding: 1rem;
+	box-sizing: border-box;
 }
 
 .desc-panel-backdrop {
-  background-color: darken($color: #0000002f, $amount: 0);
-  z-index: inherit;
+	background-color: darken($color: #0000002f, $amount: 0);
+	z-index: inherit;
 }

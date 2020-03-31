@@ -1,15 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, Inject, OnChanges } from '@angular/core';
+import { DESC_PANEL_DATA } from '../cutom-tokens';
 
 @Component({
-  selector: 'app-desc-panel',
-  templateUrl: './desc-panel.component.html',
-  styleUrls: ['./desc-panel.component.scss']
+	selector: 'app-desc-panel',
+	templateUrl: './desc-panel.component.html',
+	styleUrls: ['./desc-panel.component.scss']
 })
 export class DescPanelComponent implements OnInit {
 
-  constructor() { }
+	constructor(@Inject(DESC_PANEL_DATA) public data: any) { }
 
-  ngOnInit(): void {
-  }
+	ngOnInit(): void {
+	}
 
 }

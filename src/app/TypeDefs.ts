@@ -1,4 +1,6 @@
-import { ComponentType } from '@angular/cdk/portal';
+import { ViewContainerRef, ComponentRef, ComponentFactory } from '@angular/core';
+import { CoachComponent } from './coach/coach.component';
+import { Directive } from '@angular/core';
 
 export namespace Coach {
 
@@ -8,18 +10,54 @@ export namespace Coach {
 	export interface Data {
 		titles?: Titles;
 		description?: Description;
-		wheels?: Array<Wheel>;
+		wheels?: Wheel[];
 		lastCoach?: boolean;
+		index?: number;
+		component?: any
 	}
 
 	export interface Wheel {
 		icon?: string;
-		descriptionPanel?: ComponentType<unknown>;
+		descriptionPanel?: any;
 		promoter?: boolean;
 	}
+	export interface Dimension {
+		width: number,
+		height: number
+	}
 
+	export interface Position {
+		top: number;
+		left: number;
+	}
+
+	export interface New {
+		train: ViewContainerRef,
+		component: typeof CoachComponent,
+		uniqueId: string,
+		inputBindings: {
+			coachData: Coach.Data,
+			position: Coach.Position,
+			dimension: Coach.Dimension,
+			promoteEvtCbFn: (...args) => void
+		},
+		outputBindings: {
+			coachAdded: (...args) => void
+		}
+	}
+}
+
+
+type BindableProperty = {
+	propName: string;
+	templateName: string;
+};
+export interface LoadedComponentData {
+	compRef: ComponentRef<unknown>;
+	inputs: BindableProperty[];
+	outputs: BindableProperty[];
 }
 
 export namespace Train {
-	export type Caoches = Array<Coach.Data>;
+	export type Caoches = Coach.Data[];
 }

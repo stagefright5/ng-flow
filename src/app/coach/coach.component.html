@@ -1,18 +1,37 @@
 <div fxLayout="column nowrap" class="coach">
-	<div style="height: 80%;" [ngStyle]="{'margin-bottom': coachData?.wheels?.length ? '2rem' : '0'}" fxLayout="column nowrap">
-		<div fxFlex="20" fxLayoutAlign="center center" fxLayout="column nowrap" class="titles">
-			<div *ngFor="let o of (coachData?.titles || []) | keyvalue" [class]="o.value">
-				{{o.key}}
-			</div>
-			<div *ngIf="!!coachData?.description" class="description">
-				{{coachData.description | json}}
-			</div>
-		</div>
-	</div>
-	<div fxLayout="row nowrap" fxLayoutAlign="space-around center" fxLayoutGap="1rem" class="wheels">
-		<wheel *ngFor="let wheel of (coachData.wheels || [])"
-		 [wheel]="wheel"
-		 (promote)="emitPromoterWheelClickEvt($event)"
-		 ></wheel>
-	</div>
+  <!-- <div style="height: 80%;" [ngStyle]="{ 'margin-bottom': coachData?.wheels?.length ? '2rem' : '0' }" fxLayout="column nowrap">
+    <div fxFlex="20" fxLayoutAlign="center center" fxLayout="column nowrap" class="titles">
+      <div *ngFor="let o of coachData?.titles || [] | keyvalue" [class]="o.value">
+        {{ o.key }}
+      </div>
+      <div *ngIf="!!coachData?.description" class="description">
+        {{ coachData.description | json }}
+      </div>
+    </div>
+  </div> -->
+  <div style="height: 80%;" [ngStyle]="{ 'margin-bottom': coachData?.wheels?.length ? '2rem' : '0' }" fxLayout="column nowrap">
+    <ng-template #coach_content></ng-template>
+  </div>
+  <div fxLayout="row nowrap" fxLayoutAlign="space-around center" fxLayoutGap="1rem" class="wheels">
+    <wheel *ngFor="let wheel of coachData.wheels || []" [wheelData]="wheel" (click)="emitPromoterWheelClickEvt($event, wheel)"></wheel>
+  </div>
 </div>
+<!-- <svg>
+  <rect
+    [attr.height]="dimension?.height"
+    [attr.width]="dimension?.width"
+    [attr.x]="position?.x"
+    [attr.y]="position?.y"
+    [attr.id]="id"
+    fill="cadetblue"
+  ></rect>
+  <foreignObject x="0" y="0">
+      <ng-template #coach_content></ng-template>
+  </foreignObject>
+  <g
+    wheel
+    *ngFor="let wheel of coachData.wheels || []"
+    [wheelData]="wheel"
+    (click)="emitPromoterWheelClickEvt($event, wheel)"
+  ></g>
+</svg> -->
