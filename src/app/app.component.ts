@@ -49,28 +49,23 @@ export class AppComponent {
 
 	onPromoteHandler(e) {
 		console.log('onPromoteHandler::', e);
-		const arr = [
-			...this.coaches,
-			{
-				titles: {
-					'Last akhs': 'c1',
-					'Second sdh': 'c2',
-					'Aasdad Kjasdh': 'c3'
+		this.coaches.push({
+			titles: {
+				'Last akhs': 'c1',
+				'Second sdh': 'c2',
+				'Aasdad Kjasdh': 'c3'
+			},
+			wheels: [
+				{
+					icon: 'assets/asterisk.svg',
+					descriptionPanel: DescPanelComponent
 				},
-				wheels: [
-					{
-						icon: 'assets/asterisk.svg',
-						descriptionPanel: DescPanelComponent
-					},
-					{
-						icon: 'assets/arrow-right.svg',
-						promoter: true,
-					},
-				],
-				lastCoach: true
-			}
-		];
-		// TODO: [IMPORTANT] Make Angular aware of this change somehow
-		this.coaches = arr;
+				{
+					icon: 'assets/arrow-right.svg',
+					promoter: true,
+				},
+			],
+			lastCoach: true
+		});
 	}
 }
