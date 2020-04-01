@@ -9,7 +9,7 @@ import { CoachComponent } from './coach/coach.component';
 import { WheelComponent } from './wheel/wheel.component';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { DescPanelComponent } from './desc-panel/desc-panel.component';
-import { DESC_PANEL_DATA } from './cutom-tokens';
+import { DESC_PANEL_DATA } from './utils/cutom-tokens';
 
 @NgModule({
 	declarations: [

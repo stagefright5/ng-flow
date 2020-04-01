@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { DescPanelComponent } from './desc-panel/desc-panel.component';
-import { Train } from './TypeDefs';
+import { Train } from './utils/TypeDefs';
 
 @Component({
 	selector: 'app-root',

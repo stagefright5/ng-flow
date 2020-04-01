@@ -1,6 +1,6 @@
 import { Injectable, ComponentFactoryResolver, ViewContainerRef, Inject, ComponentRef } from '@angular/core';
-import { CoachComponent } from './coach/coach.component';
-import { Coach, LoadedComponentData as NewComponentData } from './TypeDefs';
+import { CoachComponent } from '../coach/coach.component';
+import { Coach, LoadedComponentData as NewComponentData } from '../utils/TypeDefs';
 import { DOCUMENT } from '@angular/common'
 
 @Injectable({
@@ -11,12 +11,17 @@ export class DynamicComponentService {
 	constructor(private componentFactoryResolver: ComponentFactoryResolver,
 		@Inject(DOCUMENT) private d: Document) { }
 
-	addCoach({ component, inputBindings, outputBindings, train, uniqueId }: Coach.New) {
+	appendNodeToFlow({ component, inputBindings, outputBindings, train, uniqueId }: Coach.New) {
 		this.newCompData = this.loadComponent(train, component);
 		this.updateComponentBindings({ inputBindings, outputBindings });
 		this._updateComponentInstaceMembers({ id: uniqueId });
 		(<CoachComponent>this.newCompData.compRef.instance).setPosition();
-		this.newCompData.compRef.changeDetectorRef.detectChanges();
+	}
+
+	loadComponent(parent: ViewContainerRef, component: any): NewComponentData {
+		const compFactory = this.componentFactoryResolver.resolveComponentFactory(component);
+		const compRef = parent.createComponent(compFactory);
+		return { compRef, inputs: compFactory.inputs, outputs: compFactory.outputs };
 	}
 
 	updateComponentBindings({ inputBindings, outputBindings }, newCompData?: NewComponentData) {
@@ -52,9 +57,7 @@ export class DynamicComponentService {
 		Object.assign(componentInstance, kvObject);
 	}
 
-	loadComponent(parent: ViewContainerRef, component: any): NewComponentData {
-		const compFactory = this.componentFactoryResolver.resolveComponentFactory(component);
-		const compRef = parent.createComponent(compFactory);
-		return { compRef, inputs: compFactory.inputs, outputs: compFactory.outputs };
+	removeFlowNodes(containerRef: ViewContainerRef) {
+		containerRef.clear();
 	}
 }

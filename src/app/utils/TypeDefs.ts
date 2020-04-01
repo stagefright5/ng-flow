@@ -1,6 +1,6 @@
 import { ViewContainerRef, ComponentRef, ComponentFactory } from '@angular/core';
-import { CoachComponent } from './coach/coach.component';
-import { Directive } from '@angular/core';
+import { CoachComponent } from '../coach/coach.component';
+import { from_direction_track } from './constants';
 
 export namespace Coach {
 
@@ -24,6 +24,10 @@ export namespace Coach {
 	export interface Dimension {
 		width: number,
 		height: number
+	}
+
+	export interface PositionHistoryEntry extends Position {
+		direction: from_direction_track
 	}
 
 	export interface Position {

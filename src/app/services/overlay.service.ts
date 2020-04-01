@@ -1,8 +1,8 @@
 import { Injectable, ComponentRef, Injector } from '@angular/core';
-import { Overlay, OverlayRef, ConnectedPosition } from '@angular/cdk/overlay';
+import { Overlay, OverlayRef, ConnectedPosition, OverlayConfig } from '@angular/cdk/overlay';
 import { ComponentPortal, ComponentType, PortalInjector } from '@angular/cdk/portal';
 import { Subscription } from 'rxjs';
-import { DESC_PANEL_DATA } from './cutom-tokens';
+import { DESC_PANEL_DATA } from '../utils/cutom-tokens';
 @Injectable({
 	providedIn: 'root'
 })
@@ -20,6 +20,31 @@ export class OverlayService {
 			overlayX: 'start',
 			overlayY: 'bottom',
 		}
+		/* ,
+		{
+			originX: 'start',
+			originY: 'top',
+			overlayX: 'end',
+			overlayY: 'top',
+		},
+		{
+			originX: 'start',
+			originY: 'top',
+			overlayX: 'end',
+			overlayY: 'bottom',
+		},
+		{
+			originX: 'end',
+			originY: 'top',
+			overlayX: 'start',
+			overlayY: 'top',
+		}, {
+			originX: 'end',
+			originY: 'bottom',
+			overlayX: 'start',
+			overlayY: 'bottom',
+		}, 
+		*/
 	];
 	_backDropClickSub: Subscription;
 	_compRef: ComponentRef<unknown>;
@@ -47,14 +72,19 @@ export class OverlayService {
 	_getOverlayConfig(el: HTMLElement) {
 		const positionStrategy = this._overlay.position()
 			.flexibleConnectedTo(el)
+			.withLockedPosition(true)
+			.withViewportMargin(50)
+			.withFlexibleDimensions(true)
 			.withPositions(this.positions);
-		const overlayConfig = {
+		const overlayConfig: OverlayConfig = {
 			positionStrategy,
 			hasBackdrop: true,
 			disposeOnNavigation: true,
-			maxWidth: 'content',
-			maxHeight: 'content',
-			backdropClass: 'cdk-overlay-transparent-backdrop'
+			maxHeight: '5rem',
+			backdropClass: 'desc-panel-backdrop',
+			scrollStrategy: this._overlay.scrollStrategies.reposition({
+				autoClose: false
+			})
 		}
 		return overlayConfig;
 	}

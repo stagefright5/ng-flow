@@ -1,7 +1,7 @@
-import { Component, OnInit, Input, Output, EventEmitter, AfterViewInit, ViewChild, ViewContainerRef, ElementRef, Renderer2, AfterContentInit, HostBinding } from '@angular/core';
-import { Coach } from '../TypeDefs'
-import { OverlayService } from '../overlay.service';
-import { DynamicComponentService } from '../dynamic-component.service';
+import { Component, Input, Output, EventEmitter, AfterViewInit, ViewChild, ViewContainerRef, ElementRef, Renderer2, HostBinding } from '@angular/core';
+import { Coach } from '../utils/TypeDefs'
+import { OverlayService } from '../services/overlay.service';
+import { DynamicComponentService } from '../services/dynamic-component.service';
 @Component({
 	selector: 'coach',
 	templateUrl: './coach.component.html',
@@ -22,11 +22,12 @@ export class CoachComponent implements AfterViewInit {
 		private elementRef: ElementRef) { }
 
 	ngAfterViewInit() {
-		if (this.coachData.component) {
-			const compRef = this._dynamicCompService.loadComponent(this.coachContent, this.coachData.component);
-			compRef.compRef.changeDetectorRef.detectChanges();
-		}
-		this.coachAdded.emit(this.coachData);
+		setTimeout(() => {
+			if (this.coachData.component) {
+				this._dynamicCompService.loadComponent(this.coachContent, this.coachData.component);
+			}
+			this.coachAdded.emit(this.coachData);
+		});
 	}
 
 	emitPromoterWheelClickEvt(e: MouseEvent, wheel) {
@@ -49,7 +50,7 @@ export class CoachComponent implements AfterViewInit {
 	setPosition() {
 		Object.entries(this.position).forEach(([key, value]) => {
 			const el = this.elementRef.nativeElement;
-			this.renderer.setStyle(el, key, value + 'rem');
+			this.renderer.setStyle(el, key, value + 'px');
 		});
 	}
 

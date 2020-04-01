@@ -8,7 +8,7 @@ export class LeaderLineService {
 	connectors = {};
 	leaderLineDrawOptions = {
 		path: 'grid',
-		startSocket: 'right',
+		startSocket: 'auto',
 		endSocket: 'auto'
 	};
 	subs = new Subscription();
@@ -24,6 +24,7 @@ export class LeaderLineService {
 		});
 	}
 
+	//TODO: Not being called from anywhere. change implemetation or remove.
 	subscribeToMediaChange() {
 		const mediaObserverSubs = this.mediaObserver.media$.subscribe((mChange: MediaChange) => {
 			this.zone.runOutsideAngular(() => {
