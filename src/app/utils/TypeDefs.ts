@@ -1,8 +1,8 @@
 import { ViewContainerRef, ComponentRef, ComponentFactory } from '@angular/core';
-import { CoachComponent } from '../components/node/node.component';
+import { NodeComponent } from '../components/node/node.component';
 import { from_direction_track } from './constants';
 
-export namespace Coach {
+export namespace Node {
 
 	export type Description = null | Record<string, string>;
 	export type Titles = Record<string, string>;
@@ -11,7 +11,7 @@ export namespace Coach {
 		titles?: Titles;
 		description?: Description;
 		wheels?: Wheel[];
-		lastCoach?: boolean;
+		lastNode?: boolean;
 		index?: number;
 		component?: any
 	}
@@ -36,17 +36,17 @@ export namespace Coach {
 	}
 
 	export interface New {
-		train: ViewContainerRef,
-		component: typeof CoachComponent,
+		flow: ViewContainerRef,
+		component: typeof NodeComponent,
 		uniqueId: string,
 		inputBindings: {
-			coachData: Coach.Data,
-			position: Coach.Position,
-			dimension: Coach.Dimension,
+			nodeData: Node.Data,
+			position: Node.Position,
+			dimension: Node.Dimension,
 			promoteEvtCbFn: (...args) => void
 		},
 		outputBindings: {
-			coachAdded: (...args) => void
+			nodeAdded: (...args) => void
 		}
 	}
 }
@@ -62,6 +62,6 @@ export interface LoadedComponentData {
 	outputs: BindableProperty[];
 }
 
-export namespace Train {
-	export type Caoches = Coach.Data[];
+export namespace Flow {
+	export type Nodes = Node.Data[];
 }

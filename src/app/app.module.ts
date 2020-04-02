@@ -4,8 +4,8 @@ import { FlexLayoutModule } from "@angular/flex-layout";
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { TrainComponent } from './components/flow/flow.component';
-import { CoachComponent } from './components/node/node.component';
+import { FlowComponent } from './components/flow/flow.component';
+import { NodeComponent } from './components/node/node.component';
 import { WheelComponent } from './components/wheel/wheel.component';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { DescPanelComponent } from './components/desc-panel/desc-panel.component';
@@ -14,8 +14,8 @@ import { DESC_PANEL_DATA } from './utils/cutom-tokens';
 @NgModule({
 	declarations: [
 		AppComponent,
-		TrainComponent,
-		CoachComponent,
+		FlowComponent,
+		NodeComponent,
 		WheelComponent,
 		DescPanelComponent
 	],
@@ -27,7 +27,7 @@ import { DESC_PANEL_DATA } from './utils/cutom-tokens';
 	],
 	entryComponents: [
 		DescPanelComponent,
-		CoachComponent
+		NodeComponent
 	],
 	schemas: [
 		NO_ERRORS_SCHEMA

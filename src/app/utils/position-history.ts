@@ -1,18 +1,18 @@
-import { Coach } from './TypeDefs';
+import { Node } from './TypeDefs';
 
 export class PositonHistory {
-	entries: Array<Coach.PositionHistoryEntry> = [];
+	entries: Array<Node.PositionHistoryEntry> = [];
 	maxLength: number = null;
 
 	constructor(maxLength: number) {
 		this.maxLength = maxLength || this.maxLength;
 	}
 
-	add(entry: Coach.PositionHistoryEntry) {
+	add(entry: Node.PositionHistoryEntry) {
 		return this.addEntries([entry]);
 	}
 
-	addEntries(entries: Array<Coach.PositionHistoryEntry>) {
+	addEntries(entries: Array<Node.PositionHistoryEntry>) {
 		this.entries.push(...entries);
 		if (this.entries.length > this.maxLength) {
 			this.entries = this.entries.slice(-this.maxLength, this.entries.length);

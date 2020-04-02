@@ -1,6 +1,6 @@
 import { Injectable, ComponentFactoryResolver, ViewContainerRef, Inject, ComponentRef } from '@angular/core';
-import { CoachComponent } from '../components/node/node.component';
-import { Coach, LoadedComponentData as NewComponentData } from '../utils/TypeDefs';
+import { NodeComponent } from '../components/node/node.component';
+import { Node, LoadedComponentData as NewComponentData } from '../utils/TypeDefs';
 import { DOCUMENT } from '@angular/common'
 
 @Injectable({
@@ -13,11 +13,11 @@ export class DynamicComponentService {
 	constructor(private componentFactoryResolver: ComponentFactoryResolver,
 		@Inject(DOCUMENT) private d: Document) { }
 
-	appendNodeToFlow({ component, inputBindings, outputBindings, train, uniqueId }: Coach.New): void {
-		this.newCompData = this.loadComponent(train, component);
+	appendNodeToFlow({ component, inputBindings, outputBindings, flow, uniqueId }: Node.New): void {
+		this.newCompData = this.loadComponent(flow, component);
 		this.updateComponentBindings({ inputBindings, outputBindings });
 		this._updateComponentInstaceMembers({ id: uniqueId });
-		(<CoachComponent>this.newCompData.compRef.instance).setPosition();
+		(<NodeComponent>this.newCompData.compRef.instance).setPosition();
 	}
 
 	loadComponent(parent: ViewContainerRef, component: any): NewComponentData {

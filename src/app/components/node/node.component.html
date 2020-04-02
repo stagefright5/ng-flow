@@ -1,19 +1,19 @@
-<div fxLayout="column nowrap" class="coach">
-  <!-- <div style="height: 80%;" [ngStyle]="{ 'margin-bottom': coachData?.wheels?.length ? '2rem' : '0' }" fxLayout="column nowrap">
+<div fxLayout="column nowrap" class="node">
+  <!-- <div style="height: 80%;" [ngStyle]="{ 'margin-bottom': nodeData?.wheels?.length ? '2rem' : '0' }" fxLayout="column nowrap">
     <div fxFlex="20" fxLayoutAlign="center center" fxLayout="column nowrap" class="titles">
-      <div *ngFor="let o of coachData?.titles || [] | keyvalue" [class]="o.value">
+      <div *ngFor="let o of nodeData?.titles || [] | keyvalue" [class]="o.value">
         {{ o.key }}
       </div>
-      <div *ngIf="!!coachData?.description" class="description">
-        {{ coachData.description | json }}
+      <div *ngIf="!!nodeData?.description" class="description">
+        {{ nodeData.description | json }}
       </div>
     </div>
   </div> -->
-  <div style="height: 80%;" [ngStyle]="{ 'margin-bottom': coachData?.wheels?.length ? '2rem' : '0' }" fxLayout="column nowrap">
-    <ng-template #coach_content></ng-template>
+  <div style="height: 80%;" [ngStyle]="{ 'margin-bottom': nodeData?.wheels?.length ? '2rem' : '0' }" fxLayout="column nowrap">
+    <ng-template #node_content></ng-template>
   </div>
   <div fxLayout="row nowrap" fxLayoutAlign="space-around center" fxLayoutGap="1rem" class="wheels">
-    <wheel *ngFor="let wheel of coachData.wheels || []" [wheelData]="wheel" (click)="emitPromoterWheelClickEvt($event, wheel)"></wheel>
+    <wheel *ngFor="let wheel of nodeData.wheels || []" [wheelData]="wheel" (click)="emitPromoterWheelClickEvt($event, wheel)"></wheel>
   </div>
 </div>
 <!-- <svg>
@@ -26,11 +26,11 @@
     fill="cadetblue"
   ></rect>
   <foreignObject x="0" y="0">
-      <ng-template #coach_content></ng-template>
+      <ng-template #node_content></ng-template>
   </foreignObject>
   <g
     wheel
-    *ngFor="let wheel of coachData.wheels || []"
+    *ngFor="let wheel of nodeData.wheels || []"
     [wheelData]="wheel"
     (click)="emitPromoterWheelClickEvt($event, wheel)"
   ></g>

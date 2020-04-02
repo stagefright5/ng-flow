@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter, AfterViewInit, ViewChild, ViewContainerRef, ElementRef, Renderer2, HostBinding } from '@angular/core';
-import { Coach } from '../../utils/TypeDefs'
+import { Node } from '../../utils/TypeDefs'
 import { OverlayService } from '../../services/overlay.service';
 import { DynamicComponentService } from '../../services/dynamic-component.service';
 import { selectors } from '../../utils/constants';
@@ -8,15 +8,15 @@ import { selectors } from '../../utils/constants';
 	templateUrl: './node.component.html',
 	styleUrls: ['./node.component.scss']
 })
-export class CoachComponent implements AfterViewInit {
-	@Input() coachData: Coach.Data = {};
+export class NodeComponent implements AfterViewInit {
+	@Input() nodeData: Node.Data = {};
 	@Input() position: { x: number, y: number } = { x: 0, y: 0 };
 	@Input() dimension: { width: number, height: number };
 	@Input() promoteEvtCbFn: (...args) => void;
-	@Output() coachAdded: EventEmitter<any> = new EventEmitter();
+	@Output() nodeAdded: EventEmitter<any> = new EventEmitter();
 	@HostBinding('attr.id') id = '';
 
-	@ViewChild('coach_content', { static: false, read: ViewContainerRef }) coachContent: ViewContainerRef;
+	@ViewChild('node_content', { static: false, read: ViewContainerRef }) nodeContent: ViewContainerRef;
 	constructor(private _overlayService: OverlayService,
 		private _dynamicCompService: DynamicComponentService,
 		private renderer: Renderer2,
@@ -24,17 +24,17 @@ export class CoachComponent implements AfterViewInit {
 
 	ngAfterViewInit() {
 		setTimeout(() => {
-			if (this.coachData.component) {
-				this._dynamicCompService.loadComponent(this.coachContent, this.coachData.component);
+			if (this.nodeData.component) {
+				this._dynamicCompService.loadComponent(this.nodeContent, this.nodeData.component);
 			}
-			this.coachAdded.emit(this.coachData);
+			this.nodeAdded.emit(this.nodeData);
 		});
 	}
 
 	emitPromoterWheelClickEvt(e: MouseEvent, wheel) {
 		const dataObj = {
 			wheelData: wheel,
-			coachData: this.coachData
+			nodeData: this.nodeData
 		};
 		if (wheel.descriptionPanel) {
 			this._overlayService.open(<HTMLElement>event.target, wheel.descriptionPanel, dataObj);
@@ -42,7 +42,7 @@ export class CoachComponent implements AfterViewInit {
 			if (typeof this.promoteEvtCbFn === 'function') {
 				this.promoteEvtCbFn({
 					wheelData: wheel,
-					coachData: this.coachData
+					nodeData: this.nodeData
 				});
 			}
 		}

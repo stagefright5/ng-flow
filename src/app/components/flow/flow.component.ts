@@ -1,7 +1,7 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnDestroy, ViewChild, ViewContainerRef, AfterViewInit, OnChanges, DoCheck, ElementRef, ViewChildren, QueryList } from '@angular/core';
-import { Train, Coach } from '../../utils/TypeDefs';
+import { Component, OnInit, Input, Output, EventEmitter, OnDestroy, ViewChild, ViewContainerRef, AfterViewInit, OnChanges, DoCheck, ElementRef } from '@angular/core';
+import { Flow, Node } from '../../utils/TypeDefs';
 
-import { CoachComponent } from '../node/node.component';
+import { NodeComponent } from '../node/node.component';
 import { LeaderLineService } from '../../services/leader-line.service';
 import { DynamicComponentService } from '../../services/dynamic-component.service';
 import { PositionService } from '../../services/position.service';
@@ -13,13 +13,13 @@ import { selectors } from '../../utils/constants';
 	styleUrls: ['./flow.component.scss'],
 	exportAs: 'ngFlow'
 })
-export class TrainComponent implements OnInit, OnDestroy, AfterViewInit, OnChanges, DoCheck {
-	@Output('promote') promoterCoachClickEvtEmitter = new EventEmitter();
-	@Input() flowData: Train.Caoches = [];
-	@ViewChild('coaches', { read: ViewContainerRef, static: true }) coachesContanerRef: ViewContainerRef;
-	coachIdPrefix = 'coach_no_';
-	nodeDimension: Coach.Dimension = { width: 15, height: 18 };
-	private _oldFlowData: Train.Caoches = [];
+export class FlowComponent implements OnInit, OnDestroy, AfterViewInit, OnChanges, DoCheck {
+	@Output('promote') promoterNodeClickEvtEmitter = new EventEmitter();
+	@Input() flowData: Flow.Nodes = [];
+	@ViewChild('nodes', { read: ViewContainerRef, static: true }) nodesContanerRef: ViewContainerRef;
+	nodeIdPrefix = 'node_no_';
+	nodeDimension: Node.Dimension = { width: 15, height: 18 };
+	private _oldFlowData: Flow.Nodes = [];
 	constructor(private leaderLinesService: LeaderLineService,
 		private dynamicCompService: DynamicComponentService,
 		private elmRef: ElementRef,
@@ -56,12 +56,12 @@ export class TrainComponent implements OnInit, OnDestroy, AfterViewInit, OnChang
 	}
 
 	emitPromeEvt = (event: any) => {
-		if (event.coachData.index + 1 === this.flowData.length) {
-			this.promoterCoachClickEvtEmitter.emit(event)
+		if (event.nodeData.index + 1 === this.flowData.length) {
+			this.promoterNodeClickEvtEmitter.emit(event)
 		}
 	}
 
-	getCoachData(index: number) {
+	getNodeData(index: number) {
 		return ({
 			...(this.flowData[index]),
 			index
@@ -80,41 +80,41 @@ export class TrainComponent implements OnInit, OnDestroy, AfterViewInit, OnChang
 	private _detachOldNodes() {
 	}
 
-	private _renderFlow(nodes?: Train.Caoches, reRender = true) {
-		const coachesToRender = nodes || this.flowData;
+	private _renderFlow(nodes?: Flow.Nodes, reRender = true) {
+		const nodesToRender = nodes || this.flowData;
 		if (reRender) {
 			this.position.clearHistory();
-			this.dynamicCompService.removeFlowNodes(this.coachesContanerRef);
+			this.dynamicCompService.removeFlowNodes(this.nodesContanerRef);
 			this.leaderLinesService.removeAllConnectors();
 		}
-		coachesToRender.forEach(this._loadFlowNode);
+		nodesToRender.forEach(this._loadFlowNode);
 	}
 
-	private _loadFlowNode = (coach: Coach.Data, i: number) => {
+	private _loadFlowNode = (node: Node.Data, i: number) => {
 		this.dynamicCompService.appendNodeToFlow({
-			train: this.coachesContanerRef,
-			component: CoachComponent,
-			uniqueId: this.coachIdPrefix + i,
+			flow: this.nodesContanerRef,
+			component: NodeComponent,
+			uniqueId: this.nodeIdPrefix + i,
 			inputBindings: {
 				position: this.position.getAddingNodePos(),
-				coachData: { ...coach, index: i },
+				nodeData: { ...node, index: i },
 				dimension: this.nodeDimension,
 				promoteEvtCbFn: this.emitPromeEvt
 			},
 			outputBindings: {
-				coachAdded: () => {
+				nodeAdded: () => {
 					if (i > 0) {
-						this.onCoachAdd(coach, i)
+						this.onNodeAdd(node, i)
 					}
 				}
 			}
 		});
 	}
 
-	onCoachAdd(e: Coach.Data, i: number) {
+	onNodeAdd(e: Node.Data, i: number) {
 		this.leaderLinesService.drawConnector({
-			start: this.coachIdPrefix + (i - 1),
-			end: this.coachIdPrefix + (i)
+			start: this.nodeIdPrefix + (i - 1),
+			end: this.nodeIdPrefix + (i)
 		});
 	}
 

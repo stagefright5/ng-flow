@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Coach } from '../../utils/TypeDefs';
+import { Node } from '../../utils/TypeDefs';
 import { OverlayService } from '../../services/overlay.service';
 
 @Component({
@@ -9,8 +9,8 @@ import { OverlayService } from '../../services/overlay.service';
 })
 export class WheelComponent implements OnInit {
 
-	@Input() wheelData: Coach.Wheel;
-	@Output('promote') newCoachAdderWheelEvtEmitter = new EventEmitter();
+	@Input() wheelData: Node.Wheel;
+	@Output('promote') newNodeAdderWheelEvtEmitter = new EventEmitter();
 	constructor(private overlayService: OverlayService) { }
 
 	ngOnInit(): void {
@@ -22,7 +22,7 @@ export class WheelComponent implements OnInit {
 	// 		this.overlayService.open(<HTMLElement>event.target, this.wheelData.descriptionPanel, this.wheelData);
 	// 	} else {
 	// 		if (this.wheelData.promoter) {
-	// 			this.newCoachAdderWheelEvtEmitter.emit({
+	// 			this.newNodeAdderWheelEvtEmitter.emit({
 	// 				wheelData: this.wheelData
 	// 			});
 	// 		}

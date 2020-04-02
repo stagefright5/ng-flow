@@ -1,9 +1,9 @@
-import { Coach, Train } from '../utils/TypeDefs';
+import { Node, Flow } from '../utils/TypeDefs';
 import { ElementRef, Injectable, QueryList } from '@angular/core';
 import { from_direction_track, selectors } from '../utils/constants';
 import { PositonHistory } from '../utils/position-history';
 import { DynamicComponentService } from './dynamic-component.service';
-import { CoachComponent } from '../components/node/node.component';
+import { NodeComponent } from '../components/node/node.component';
 
 @Injectable({
 	providedIn: 'root'
@@ -16,13 +16,13 @@ export class PositionService {
 
 	private _nodeGap = 0;
 	private _parentElm: HTMLElement;
-	private _nodeDimension = <Coach.Dimension>{};
+	private _nodeDimension = <Node.Dimension>{};
 	private _parentElmRect: DOMRect;
 	private fromDirections = from_direction_track;
 
 	constructor(private dynamicComponentService: DynamicComponentService) { }
 
-	init(elmRef: ElementRef, initialNodeDimension: Coach.Dimension) {
+	init(elmRef: ElementRef, initialNodeDimension: Node.Dimension) {
 		this._parentElm = elmRef.nativeElement;
 		this.unit = parseFloat(getComputedStyle(document.querySelector('html')).fontSize);
 		/*-- this.unit dependent properties --*/
@@ -32,9 +32,9 @@ export class PositionService {
 		this._nodeGap = 5 * this.unit;
 	}
 
-	getAddingNodePos(): Coach.Position {
+	getAddingNodePos(): Node.Position {
 		const oneNodeSpace = this.spaceForOneNode;
-		const positionObject = <Coach.Position>{
+		const positionObject = <Node.Position>{
 			left: 0,
 			top: 0
 		}
@@ -95,7 +95,7 @@ export class PositionService {
 	}
 
 
-	private get spaceForOneNode(): Coach.Dimension {
+	private get spaceForOneNode(): Node.Dimension {
 		return ({
 			width: this._nodeGap + this._nodeDimension.width,
 			height: this._nodeDimension.height

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { DescPanelComponent } from './components/desc-panel/desc-panel.component';
-import { Train } from './utils/TypeDefs';
+import { Flow } from './utils/TypeDefs';
 
 @Component({
 	selector: 'app-root',
@@ -9,10 +9,10 @@ import { Train } from './utils/TypeDefs';
 })
 export class AppComponent {
 	title = 'console-app-deployment-status-ui';
-	coaches: Train.Caoches = [
+	nodes: Flow.Nodes = [
 		{
 			titles: {
-				'Train Name': 'h4'
+				'Flow Name': 'h4'
 			},
 			component: DescPanelComponent
 		},
@@ -49,7 +49,7 @@ export class AppComponent {
 
 	onPromoteHandler(e) {
 		console.log('onPromoteHandler::', e);
-		this.coaches.push({
+		this.nodes.push({
 			titles: {
 				'Last akhs': 'c1',
 				'Second sdh': 'c2',
@@ -65,7 +65,7 @@ export class AppComponent {
 					promoter: true,
 				},
 			],
-			lastCoach: true
+			lastNode: true
 		});
 	}
 }
