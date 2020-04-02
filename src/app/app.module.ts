@@ -4,11 +4,11 @@ import { FlexLayoutModule } from "@angular/flex-layout";
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { TrainComponent } from './flow/flow.component';
-import { CoachComponent } from './node/node.component';
-import { WheelComponent } from './wheel/wheel.component';
+import { TrainComponent } from './components/flow/flow.component';
+import { CoachComponent } from './components/node/node.component';
+import { WheelComponent } from './components/wheel/wheel.component';
 import { OverlayModule } from '@angular/cdk/overlay';
-import { DescPanelComponent } from './desc-panel/desc-panel.component';
+import { DescPanelComponent } from './components/desc-panel/desc-panel.component';
 import { DESC_PANEL_DATA } from './utils/cutom-tokens';
 
 @NgModule({

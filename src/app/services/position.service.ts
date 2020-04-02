@@ -3,7 +3,7 @@ import { ElementRef, Injectable, QueryList } from '@angular/core';
 import { from_direction_track, selectors } from '../utils/constants';
 import { PositonHistory } from '../utils/position-history';
 import { DynamicComponentService } from './dynamic-component.service';
-import { CoachComponent } from '../node/node.component';
+import { CoachComponent } from '../components/node/node.component';
 
 @Injectable({
 	providedIn: 'root'

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { DescPanelComponent } from './desc-panel/desc-panel.component';
+import { DescPanelComponent } from './components/desc-panel/desc-panel.component';
 import { Train } from './utils/TypeDefs';
 
 @Component({

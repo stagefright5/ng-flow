@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Coach } from '../utils/TypeDefs';
-import { OverlayService } from '../services/overlay.service';
+import { Coach } from '../../utils/TypeDefs';
+import { OverlayService } from '../../services/overlay.service';
 
 @Component({
 	selector: 'wheel',

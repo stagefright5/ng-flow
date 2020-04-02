@@ -1,11 +1,11 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnDestroy, ViewChild, ViewContainerRef, AfterViewInit, OnChanges, DoCheck, ElementRef, ViewChildren, QueryList } from '@angular/core';
-import { Train, Coach } from '../utils/TypeDefs';
+import { Train, Coach } from '../../utils/TypeDefs';
 
 import { CoachComponent } from '../node/node.component';
-import { LeaderLineService } from '../services/leader-line.service';
-import { DynamicComponentService } from '../services/dynamic-component.service';
-import { PositionService } from '../services/position.service';
-import { selectors } from '../utils/constants';
+import { LeaderLineService } from '../../services/leader-line.service';
+import { DynamicComponentService } from '../../services/dynamic-component.service';
+import { PositionService } from '../../services/position.service';
+import { selectors } from '../../utils/constants';
 
 @Component({
 	selector: selectors.FLOW,

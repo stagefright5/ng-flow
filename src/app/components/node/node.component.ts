@@ -1,8 +1,8 @@
 import { Component, Input, Output, EventEmitter, AfterViewInit, ViewChild, ViewContainerRef, ElementRef, Renderer2, HostBinding } from '@angular/core';
-import { Coach } from '../utils/TypeDefs'
-import { OverlayService } from '../services/overlay.service';
-import { DynamicComponentService } from '../services/dynamic-component.service';
-import { selectors } from '../utils/constants';
+import { Coach } from '../../utils/TypeDefs'
+import { OverlayService } from '../../services/overlay.service';
+import { DynamicComponentService } from '../../services/dynamic-component.service';
+import { selectors } from '../../utils/constants';
 @Component({
 	selector: selectors.NODE,
 	templateUrl: './node.component.html',

@@ -1,5 +1,5 @@
 import { Injectable, ComponentFactoryResolver, ViewContainerRef, Inject, ComponentRef } from '@angular/core';
-import { CoachComponent } from '../node/node.component';
+import { CoachComponent } from '../components/node/node.component';
 import { Coach, LoadedComponentData as NewComponentData } from '../utils/TypeDefs';
 import { DOCUMENT } from '@angular/common'
 
