@@ -24,7 +24,6 @@ export class Position {
 		this._nodeGap = 5 * this.unit;
 	}
 
-	// TODO: propely handle for mobile
 	getAddingNodePos(): Coach.Position {
 		const oneNodeSpace = this.spaceForOneNode;
 		const positionObject = <Coach.Position>{
@@ -35,7 +34,7 @@ export class Position {
 		let _direction = this.fromDirections.FROM_LEFT
 		if (l > -1) {
 			let prevNodeLeftPos = this.prevNodePos.leftPos;
-			let newLeftPosContainer = prevNodeLeftPos;
+			let newLeftPosContainer = prevNodeLeftPos + this.spaceForOneNode.width;
 			let _additionFactor = 0;
 			const prevfromDir = this.positionHistory[l] && this.positionHistory[l].direction;
 			const prevPrevFromDir = this.positionHistory[l - 1] && this.positionHistory[l - 1].direction;
@@ -59,9 +58,11 @@ export class Position {
 					_direction = prevfromDir;
 				}
 			}
-			newLeftPosContainer += _additionFactor;
+			if (_additionFactor) {
+				newLeftPosContainer += _additionFactor - this.spaceForOneNode.width;
+			}
 			const leftOverflow = newLeftPosContainer < 0;
-			const rightOverflow = (newLeftPosContainer + this._nodeDimension.width + this._nodeGap) > this.parentElmRect.width;
+			const rightOverflow = (newLeftPosContainer + this.spaceForOneNode.width) > this.parentElmRect.width;
 			if (rightOverflow || leftOverflow) {
 				if (rightOverflow) {
 					// rollback calculated width
