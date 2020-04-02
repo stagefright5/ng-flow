@@ -1,5 +1,5 @@
 import { ViewContainerRef, ComponentRef, ComponentFactory } from '@angular/core';
-import { CoachComponent } from '../coach/coach.component';
+import { CoachComponent } from '../node/node.component';
 import { from_direction_track } from './constants';
 
 export namespace Coach {
