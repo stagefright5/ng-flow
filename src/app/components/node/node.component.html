@@ -1,14 +1,4 @@
 <div fxLayout="column nowrap" class="node">
-  <!-- <div style="height: 80%;" [ngStyle]="{ 'margin-bottom': nodeData?.wheels?.length ? '2rem' : '0' }" fxLayout="column nowrap">
-    <div fxFlex="20" fxLayoutAlign="center center" fxLayout="column nowrap" class="titles">
-      <div *ngFor="let o of nodeData?.titles || [] | keyvalue" [class]="o.value">
-        {{ o.key }}
-      </div>
-      <div *ngIf="!!nodeData?.description" class="description">
-        {{ nodeData.description | json }}
-      </div>
-    </div>
-  </div> -->
   <div style="height: 80%;" [ngStyle]="{ 'margin-bottom': nodeData?.wheels?.length ? '2rem' : '0' }" fxLayout="column nowrap">
     <ng-template #node_content></ng-template>
   </div>
@@ -16,22 +6,3 @@
     <wheel *ngFor="let wheel of nodeData.wheels || []" [wheelData]="wheel" (click)="emitPromoterWheelClickEvt($event, wheel)"></wheel>
   </div>
 </div>
-<!-- <svg>
-  <rect
-    [attr.height]="dimension?.height"
-    [attr.width]="dimension?.width"
-    [attr.x]="position?.x"
-    [attr.y]="position?.y"
-    [attr.id]="id"
-    fill="cadetblue"
-  ></rect>
-  <foreignObject x="0" y="0">
-      <ng-template #node_content></ng-template>
-  </foreignObject>
-  <g
-    wheel
-    *ngFor="let wheel of nodeData.wheels || []"
-    [wheelData]="wheel"
-    (click)="emitPromoterWheelClickEvt($event, wheel)"
-  ></g>
-</svg> -->

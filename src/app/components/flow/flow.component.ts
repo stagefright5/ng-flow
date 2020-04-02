@@ -13,7 +13,7 @@ import { selectors } from '../../utils/constants';
 	styleUrls: ['./flow.component.scss'],
 	exportAs: 'ngFlow'
 })
-export class FlowComponent implements OnInit, OnDestroy, AfterViewInit, OnChanges, DoCheck {
+export class FlowComponent implements OnInit, OnDestroy, DoCheck {
 	@Output('promote') promoterNodeClickEvtEmitter = new EventEmitter();
 	@Input() flowData: Flow.Nodes = [];
 	@ViewChild('nodes', { read: ViewContainerRef, static: true }) nodesContanerRef: ViewContainerRef;
@@ -37,14 +37,6 @@ export class FlowComponent implements OnInit, OnDestroy, AfterViewInit, OnChange
 		// 		this.dynamicCompService.updateInputBindings({ position: this.position.getAddingNodePos() }, node);
 		// 	});
 		// });
-	}
-
-	ngAfterViewInit() {
-	}
-
-
-	ngOnChanges(changes) {
-		// console.log('changed:', changes);
 	}
 
 	ngDoCheck() {
