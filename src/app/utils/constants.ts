@@ -3,3 +3,4 @@ export const selectors = {
 	NODE: 'node',
 	FLOW: 'flow,[flow]'
 }
+export const NODE_ID_PREFIX = 'node_no_'; 

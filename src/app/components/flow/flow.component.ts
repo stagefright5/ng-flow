@@ -5,7 +5,7 @@ import { NodeComponent } from '../node/node.component';
 import { LeaderLineService } from '../../services/leader-line.service';
 import { DynamicComponentService } from '../../services/dynamic-component.service';
 import { PositionService } from '../../services/position.service';
-import { selectors } from '../../utils/constants';
+import { selectors, NODE_ID_PREFIX } from '../../utils/constants';
 
 @Component({
 	selector: selectors.FLOW,
@@ -17,7 +17,7 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck {
 	@Output('promote') promoterNodeClickEvtEmitter = new EventEmitter();
 	@Input() flowData: Flow.Nodes = [];
 	@ViewChild('nodes', { read: ViewContainerRef, static: true }) nodesContanerRef: ViewContainerRef;
-	nodeIdPrefix = 'node_no_';
+	nodeIdPrefix = NODE_ID_PREFIX;
 	nodeDimension: Node.Dimension = { width: 15, height: 18 };
 	private _oldFlowData: Flow.Nodes = [];
 	constructor(private leaderLinesService: LeaderLineService,
