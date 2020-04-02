@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { TrainComponent } from './train/train.component';
+import { TrainComponent } from './flow/flow.component';
 
 
 const routes: Routes = [

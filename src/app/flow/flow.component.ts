@@ -1,16 +1,17 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnDestroy, ViewChild, ViewContainerRef, AfterViewInit, OnChanges, DoCheck, ElementRef } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnDestroy, ViewChild, ViewContainerRef, AfterViewInit, OnChanges, DoCheck, ElementRef, ViewChildren, QueryList } from '@angular/core';
 import { Train, Coach } from '../utils/TypeDefs';
 
-import { CoachComponent } from '../coach/coach.component';
+import { CoachComponent } from '../node/node.component';
 import { LeaderLineService } from '../services/leader-line.service';
 import { DynamicComponentService } from '../services/dynamic-component.service';
-import { Position } from '../utils/position';
+import { PositionService } from '../services/position.service';
+import { selectors } from '../utils/constants';
 
 @Component({
-	selector: 'train,[flow]',
-	templateUrl: './train.component.html',
-	styleUrls: ['./train.component.scss'],
-	exportAs: 'flowInstance'
+	selector: selectors.FLOW,
+	templateUrl: './flow.component.html',
+	styleUrls: ['./flow.component.scss'],
+	exportAs: 'ngFlow'
 })
 export class TrainComponent implements OnInit, OnDestroy, AfterViewInit, OnChanges, DoCheck {
 	@Output('promote') promoterCoachClickEvtEmitter = new EventEmitter();
@@ -18,32 +19,36 @@ export class TrainComponent implements OnInit, OnDestroy, AfterViewInit, OnChang
 	@ViewChild('coaches', { read: ViewContainerRef, static: true }) coachesContanerRef: ViewContainerRef;
 	coachIdPrefix = 'coach_no_';
 	nodeDimension: Coach.Dimension = { width: 15, height: 18 };
-	position: Position;
 	private _oldFlowData: Train.Caoches = [];
 	constructor(private leaderLinesService: LeaderLineService,
 		private dynamicCompService: DynamicComponentService,
-		private elmRef: ElementRef) {
-		this.position = new Position(this.elmRef, this.nodeDimension);
+		private elmRef: ElementRef,
+		private position: PositionService) {
+		this.position.init(this.elmRef, this.nodeDimension);
 	}
 
 	ngOnInit(): void {
 		// TODO: Subscribe for media changes and "_renderFlow" again
-		// this.leaderLinesService.subscribeToMediaChange();
+		// this.leaderLinesService.subscribeToMediaChange((change) => {
+		// this._renderFlow(null, true);
+		// 	console.log('mchange: ', change.matches);
+		// 	this.position.clearHistory();
+		// 	this.dynamicCompService.attachedCompList[selectors.NODE].forEach(node => {
+		// 		this.dynamicCompService.updateInputBindings({ position: this.position.getAddingNodePos() }, node);
+		// 	});
+		// });
 	}
 
 	ngAfterViewInit() {
-		// setTimeout(() => {
-		// 	this._renderFlow();
-		// })
 	}
 
 
 	ngOnChanges(changes) {
-		console.log('changed:', changes);
+		// console.log('changed:', changes);
 	}
 
 	ngDoCheck() {
-		console.log('Do Check Called!');
+		// console.log('Do Check Called!');
 		if (this._oldFlowData.length < this.flowData.length) {
 			console.log('Did Check!');
 			this._appendNewNodes();
@@ -75,10 +80,12 @@ export class TrainComponent implements OnInit, OnDestroy, AfterViewInit, OnChang
 	private _detachOldNodes() {
 	}
 
-	private _renderFlow(nodes?: Train.Caoches, clearOldComps = true) {
+	private _renderFlow(nodes?: Train.Caoches, reRender = true) {
 		const coachesToRender = nodes || this.flowData;
-		if (clearOldComps) {
+		if (reRender) {
+			this.position.clearHistory();
 			this.dynamicCompService.removeFlowNodes(this.coachesContanerRef);
+			this.leaderLinesService.removeAllConnectors();
 		}
 		coachesToRender.forEach(this._loadFlowNode);
 	}
@@ -112,7 +119,7 @@ export class TrainComponent implements OnInit, OnDestroy, AfterViewInit, OnChang
 	}
 
 	ngOnDestroy() {
-		this.leaderLinesService.subs.unsubscribe();
+		this.leaderLinesService.mediaObserverSubs.unsubscribe();
 		delete this.leaderLinesService.connectors;
 	}
 }

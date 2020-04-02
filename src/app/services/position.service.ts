@@ -1,12 +1,18 @@
-import { Coach } from './TypeDefs';
-import { ElementRef } from '@angular/core';
-import { from_direction_track } from './constants';
+import { Coach, Train } from '../utils/TypeDefs';
+import { ElementRef, Injectable, QueryList } from '@angular/core';
+import { from_direction_track, selectors } from '../utils/constants';
+import { PositonHistory } from '../utils/position-history';
+import { DynamicComponentService } from './dynamic-component.service';
+import { CoachComponent } from '../node/node.component';
 
-export class Position {
+@Injectable({
+	providedIn: 'root'
+})
+export class PositionService {
 
 	rows = 0;
 	unit: number = 0;
-	positionHistory: Array<Coach.PositionHistoryEntry> = [];
+	positionHistory = new PositonHistory(2);
 
 	private _nodeGap = 0;
 	private _parentElm: HTMLElement;
@@ -14,7 +20,9 @@ export class Position {
 	private _parentElmRect: DOMRect;
 	private fromDirections = from_direction_track;
 
-	constructor(elmRef: ElementRef, initialNodeDimension: Coach.Dimension) {
+	constructor(private dynamicComponentService: DynamicComponentService) { }
+
+	init(elmRef: ElementRef, initialNodeDimension: Coach.Dimension) {
 		this._parentElm = elmRef.nativeElement;
 		this.unit = parseFloat(getComputedStyle(document.querySelector('html')).fontSize);
 		/*-- this.unit dependent properties --*/
@@ -36,8 +44,8 @@ export class Position {
 			let prevNodeLeftPos = this.prevNodePos.leftPos;
 			let newLeftPosContainer = prevNodeLeftPos + this.spaceForOneNode.width;
 			let _additionFactor = 0;
-			const prevfromDir = this.positionHistory[l] && this.positionHistory[l].direction;
-			const prevPrevFromDir = this.positionHistory[l - 1] && this.positionHistory[l - 1].direction;
+			const prevfromDir = this.positionHistory.get(l) && this.positionHistory.get(l).direction;
+			const prevPrevFromDir = this.positionHistory.get(l - 1) && this.positionHistory.get(l - 1).direction;
 			_direction = prevfromDir || _direction;
 
 			if (prevfromDir === this.fromDirections.FROM_TOP) {
@@ -62,7 +70,7 @@ export class Position {
 				newLeftPosContainer += _additionFactor - this.spaceForOneNode.width;
 			}
 			const leftOverflow = newLeftPosContainer < 0;
-			const rightOverflow = (newLeftPosContainer + this.spaceForOneNode.width) > this.parentElmRect.width;
+			const rightOverflow = (newLeftPosContainer + this._nodeDimension.width) > this.parentElmRect.width;
 			if (rightOverflow || leftOverflow) {
 				if (rightOverflow) {
 					// rollback calculated width
@@ -79,7 +87,7 @@ export class Position {
 			positionObject.top = this.rows * (oneNodeSpace.height + this._nodeGap);
 			positionObject.left = newLeftPosContainer;
 		}
-		this.positionHistory.push({
+		this.positionHistory.add({
 			...positionObject,
 			direction: _direction
 		});
@@ -95,7 +103,7 @@ export class Position {
 	}
 
 	private get prevNodePos() {
-		const leftPos = this.positionHistory[this.positionHistory.length - 1] && this.positionHistory[this.positionHistory.length - 1].left || 0;
+		const leftPos = this.positionHistory.get(this.positionHistory.length - 1) && this.positionHistory.get(this.positionHistory.length - 1).left || 0;
 		const rightPos = leftPos + this._nodeDimension.width
 		return ({
 			leftPos,
@@ -108,7 +116,7 @@ export class Position {
 		return this._parentElmRect;
 	}
 
-	prepareForPosUpdate() {
-		this.positionHistory = [];
+	clearHistory() {
+		this.positionHistory.clear();
 	}
 }

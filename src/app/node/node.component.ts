@@ -2,10 +2,11 @@ import { Component, Input, Output, EventEmitter, AfterViewInit, ViewChild, ViewC
 import { Coach } from '../utils/TypeDefs'
 import { OverlayService } from '../services/overlay.service';
 import { DynamicComponentService } from '../services/dynamic-component.service';
+import { selectors } from '../utils/constants';
 @Component({
-	selector: 'coach',
-	templateUrl: './coach.component.html',
-	styleUrls: ['./coach.component.scss']
+	selector: selectors.NODE,
+	templateUrl: './node.component.html',
+	styleUrls: ['./node.component.scss']
 })
 export class CoachComponent implements AfterViewInit {
 	@Input() coachData: Coach.Data = {};
