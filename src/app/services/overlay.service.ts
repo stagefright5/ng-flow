@@ -20,31 +20,6 @@ export class OverlayService {
 			overlayX: 'start',
 			overlayY: 'bottom',
 		}
-		/* ,
-		{
-			originX: 'start',
-			originY: 'top',
-			overlayX: 'end',
-			overlayY: 'top',
-		},
-		{
-			originX: 'start',
-			originY: 'top',
-			overlayX: 'end',
-			overlayY: 'bottom',
-		},
-		{
-			originX: 'end',
-			originY: 'top',
-			overlayX: 'start',
-			overlayY: 'top',
-		}, {
-			originX: 'end',
-			originY: 'bottom',
-			overlayX: 'start',
-			overlayY: 'bottom',
-		}, 
-		*/
 	];
 	_backDropClickSub: Subscription;
 	_compRef: ComponentRef<unknown>;
