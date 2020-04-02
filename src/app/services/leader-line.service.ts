@@ -1,17 +1,21 @@
 import { Injectable, NgZone } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Subscription, pipe } from 'rxjs';
+import { distinctUntilChanged, filter } from 'rxjs/operators'
 import { MediaChange, MediaObserver } from '@angular/flex-layout';
 
 @Injectable({ providedIn: 'root' })
 export class LeaderLineService {
-	constructor(private zone: NgZone, private mediaObserver: MediaObserver) { }
+	constructor(private zone: NgZone, private mediaObserver: MediaObserver) {
+		this._subsForMediaChange();
+	}
 	connectors = {};
+	mChangeObservers: Array<(change: MediaChange) => void> = [];
 	leaderLineDrawOptions = {
 		path: 'grid',
 		startSocket: 'auto',
 		endSocket: 'auto'
 	};
-	subs = new Subscription();
+	mediaObserverSubs: Subscription;
 	drawConnector(opts: { start: string, end: string, path?: string, startSocket?: string, endSocket?: string }) {
 		const startEndObj = {
 			start: document.getElementById(opts.start),
@@ -24,21 +28,18 @@ export class LeaderLineService {
 		});
 	}
 
-	//TODO: Not being called from anywhere. change implemetation or remove.
-	subscribeToMediaChange() {
-		const mediaObserverSubs = this.mediaObserver.media$.subscribe((mChange: MediaChange) => {
-			this.zone.runOutsideAngular(() => {
-				setTimeout(() => {
-					if (mChange.mqAlias === 'xs' && mChange.matches) {
-						this.setSockets('bottom', 'top');
-					} else {
-						this.setSockets('right', 'left');
-					}
-				})
-			})
-		});
-		this.subs.add(mediaObserverSubs);
-		return mediaObserverSubs;
+	//TODO: Not being called from anywhere.
+	subscribeToMediaChange(mediaChangeObserver: (change: MediaChange) => void) {
+		this.mChangeObservers.push(mediaChangeObserver);
+	}
+
+	_subsForMediaChange() {
+		this.mediaObserverSubs = this.mediaObserver.media$.pipe(
+			filter(v => v.matches),
+			distinctUntilChanged((a, b) => a.mqAlias !== b.mqAlias)
+		).subscribe((c: MediaChange) => {
+			this.mChangeObservers.forEach(a => a(c));
+		})
 	}
 
 	private setSockets(start: string, end: string, line?: any) {
@@ -47,13 +48,17 @@ export class LeaderLineService {
 			line.endSocket = end;
 		} else {
 			const lines = Object.values(this.connectors);
-			// AnimEvent.add(() => {
 			lines.forEach((line: any) => {
 				line.startSocket = start;
 				line.endSocket = end;
 			});
-			// });
 		}
+	}
 
+	removeAllConnectors() {
+		Object.values(this.connectors).forEach((v: any) => {
+			v.remove();
+		});
+		this.connectors = {};
 	}
 }
