@@ -1,5 +1,5 @@
 import { Component, OnInit, AfterViewInit, Inject, OnChanges } from '@angular/core';
-import { DESC_PANEL_DATA } from '../../utils/cutom-tokens';
+import { DESC_PANEL_DATA } from '../../modules/flow-module/utils/cutom-tokens';
 
 @Component({
 	selector: 'app-desc-panel',

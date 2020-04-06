@@ -2,9 +2,10 @@ import { Injectable, ComponentFactoryResolver, ViewContainerRef, Inject, Compone
 import { NodeComponent } from '../components/node/node.component';
 import { Node, LoadedComponentData as NewComponentData } from '../utils/TypeDefs';
 import { DOCUMENT } from '@angular/common'
+import { FlowModule } from '../flow.module';
 
 @Injectable({
-	providedIn: 'root'
+	providedIn: FlowModule
 })
 export class DynamicComponentService {
 	newCompData: NewComponentData;

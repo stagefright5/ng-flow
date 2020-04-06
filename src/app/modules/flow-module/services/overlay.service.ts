@@ -3,8 +3,9 @@ import { Overlay, OverlayRef, ConnectedPosition, OverlayConfig } from '@angular/
 import { ComponentPortal, ComponentType, PortalInjector } from '@angular/cdk/portal';
 import { Subscription } from 'rxjs';
 import { DESC_PANEL_DATA } from '../utils/cutom-tokens';
+import { FlowModule } from '../flow.module';
 @Injectable({
-	providedIn: 'root'
+	providedIn: FlowModule
 })
 export class OverlayService {
 	_overlayRef: OverlayRef;

@@ -1,9 +1,12 @@
 import { Injectable, NgZone } from '@angular/core';
-import { Subscription, pipe } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { distinctUntilChanged, filter } from 'rxjs/operators'
 import { MediaChange, MediaObserver } from '@angular/flex-layout';
+import { FlowModule } from '../flow.module';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({
+	providedIn: FlowModule
+})
 export class LeaderLineService {
 	constructor(private zone: NgZone, private mediaObserver: MediaObserver) {
 		this._subsForMediaChange();
@@ -42,18 +45,6 @@ export class LeaderLineService {
 		})
 	}
 
-	private setSockets(start: string, end: string, line?: any) {
-		if (line) {
-			line.startSocket = start;
-			line.endSocket = end;
-		} else {
-			const lines = Object.values(this.connectors);
-			lines.forEach((line: any) => {
-				line.startSocket = start;
-				line.endSocket = end;
-			});
-		}
-	}
 
 	removeAllConnectors() {
 		Object.values(this.connectors).forEach((v: any) => {

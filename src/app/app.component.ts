@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { DescPanelComponent } from './components/desc-panel/desc-panel.component';
-import { Flow } from './utils/TypeDefs';
+import { Flow } from './modules/flow-module/utils/TypeDefs';
 
 @Component({
 	selector: 'app-root',

@@ -1,12 +1,11 @@
-import { Node, Flow } from '../utils/TypeDefs';
-import { ElementRef, Injectable, QueryList } from '@angular/core';
-import { from_direction_track, selectors } from '../utils/constants';
+import { Node } from '../utils/TypeDefs';
+import { ElementRef, Injectable } from '@angular/core';
+import { from_direction_track } from '../utils/constants';
 import { PositonHistory } from '../utils/position-history';
-import { DynamicComponentService } from './dynamic-component.service';
-import { NodeComponent } from '../components/node/node.component';
+import { FlowModule } from '../flow.module';
 
 @Injectable({
-	providedIn: 'root'
+	providedIn: FlowModule
 })
 export class PositionService {
 
@@ -20,7 +19,7 @@ export class PositionService {
 	private _parentElmRect: DOMRect;
 	private fromDirections = from_direction_track;
 
-	constructor(private dynamicComponentService: DynamicComponentService) { }
+	constructor() { }
 
 	init(elmRef: ElementRef, initialNodeDimension: Node.Dimension) {
 		this._parentElm = elmRef.nativeElement;

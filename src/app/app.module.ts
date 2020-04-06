@@ -1,42 +1,20 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
-import { FlexLayoutModule } from "@angular/flex-layout";
+import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { FlowComponent } from './components/flow/flow.component';
-import { NodeComponent } from './components/node/node.component';
-import { WheelComponent } from './components/wheel/wheel.component';
-import { OverlayModule } from '@angular/cdk/overlay';
 import { DescPanelComponent } from './components/desc-panel/desc-panel.component';
-import { DESC_PANEL_DATA } from './utils/cutom-tokens';
+import { FlowModule } from './modules/flow-module/flow.module';
 
 @NgModule({
-	declarations: [
-		AppComponent,
-		FlowComponent,
-		NodeComponent,
-		WheelComponent,
-		DescPanelComponent
-	],
+	declarations: [],
 	imports: [
 		BrowserModule,
 		AppRoutingModule,
-		FlexLayoutModule,
-		OverlayModule
+		FlowModule
 	],
 	entryComponents: [
-		DescPanelComponent,
-		NodeComponent
-	],
-	schemas: [
-		NO_ERRORS_SCHEMA
-	],
-	providers: [
-		{
-			provide: DESC_PANEL_DATA,
-			useValue: DESC_PANEL_DATA
-		}
+		DescPanelComponent
 	],
 	bootstrap: [AppComponent]
 })

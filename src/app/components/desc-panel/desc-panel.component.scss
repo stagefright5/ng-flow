@@ -1,10 +1,8 @@
-@import "../../scss.vars.scss";
-
 .panel {
-  width: 20rem;
-  background-color: whitesmoke;
-  .panel-content {
-    height: inherit;
-    background-color: whitesmoke;
-  }
+	width: 20rem;
+	background-color: whitesmoke;
+	.panel-content {
+		height: inherit;
+		background-color: whitesmoke;
+	}
 }
