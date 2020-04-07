@@ -1,9 +1,10 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Node } from '../../utils/TypeDefs';
 import { OverlayService } from '../../services/overlay.service';
+import { CONST_SELECTORS } from '../../utils/constants';
 
 @Component({
-	selector: 'wheel',
+	selector: CONST_SELECTORS.WHEEL,
 	templateUrl: './wheel.component.html',
 	styleUrls: ['./wheel.component.scss']
 })
