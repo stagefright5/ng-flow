@@ -18,38 +18,33 @@ export class LeaderLineService {
 		startSocket: 'auto',
 		endSocket: 'auto'
 	};
-	mediaObserverSubs: Subscription;
-	drawConnector(opts: { start: string, end: string, path?: string, startSocket?: string, endSocket?: string }) {
-		const startEndObj = {
-			start: document.getElementById(opts.start),
-			end: document.getElementById(opts.end)
-		}
+
+	drawConnector(opts: Connector.DrawConnectorOptions) {
+		if (opts.start && opts.end) {
 		this.zone.runOutsideAngular(() => {
-			setTimeout(() => {
-				this.connectors[opts.start] = new LeaderLine(Object.assign(this.leaderLineDrawOptions, opts, startEndObj));
-			});
+				this.connectors[this._attr(opts.start, 'id')] = new LeaderLine({ ...this.leaderLineDrawOptions, ...(opts && opts) });
 		});
+		} else {
+			console.log('Could not draw connector between', opts.start, opts.end);
+		}
 	}
 
-	//TODO: Not being called from anywhere.
-	subscribeToMediaChange(mediaChangeObserver: (change: MediaChange) => void) {
-		this.mChangeObservers.push(mediaChangeObserver);
+	each(cb: (v: any, index, arr: any[]) => void) {
+		Object.values(this.connectors).forEach(cb);
 	}
 
-	_subsForMediaChange() {
-		this.mediaObserverSubs = this.mediaObserver.media$.pipe(
-			filter(v => v.matches),
-			distinctUntilChanged((a, b) => a.mqAlias !== b.mqAlias)
-		).subscribe((c: MediaChange) => {
-			this.mChangeObservers.forEach(a => a(c));
-		})
-	}
-
-
-	removeAllConnectors() {
-		Object.values(this.connectors).forEach((v: any) => {
+	removeAllConnectors = () => {
+		this.each((v) => {
+			delete this.connectors[this._attr(v.start, 'id')];
 			v.remove();
 		});
-		this.connectors = {};
+	}
+
+	refreshConnectors() {
+		this.each((v) => v.position());
+	}
+
+	private _attr(elm: HTMLElement, attr: string) {
+		return elm.attributes.getNamedItem(attr).value;
 	}
 }
