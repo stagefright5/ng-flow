@@ -19,6 +19,9 @@ import { distinctUntilChanged, filter } from 'rxjs/operators'
 export class FlowComponent implements OnInit, OnDestroy, DoCheck {
 	@Output('promote') promoterNodeClickEvtEmitter = new EventEmitter();
 	@Input() flowData: Flow.Nodes = [];
+	@Input() connetorColor: string = '#000';
+	@Input() connectorSize: number = 4;
+
 	@ViewChild('nodes', { read: ViewContainerRef, static: true }) nodesContanerRef: ViewContainerRef;
 	nodeIdPrefix = NODE_ID_PREFIX;
 	nodeDimension: Node.Dimension = { width: 15, height: 18 };
