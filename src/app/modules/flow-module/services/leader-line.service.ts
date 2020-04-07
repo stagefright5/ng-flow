@@ -22,7 +22,10 @@ export class LeaderLineService {
 	drawConnector(opts: Connector.DrawConnectorOptions) {
 		if (opts.start && opts.end) {
 		this.zone.runOutsideAngular(() => {
-				this.connectors[this._attr(opts.start, 'id')] = new LeaderLine({ ...this.leaderLineDrawOptions, ...(opts && opts) });
+				const key = this._getKey(opts.start, opts.end);
+				if (!this.connectors[key]) {
+					this.connectors[key] = new LeaderLine({ ...this.leaderLineDrawOptions, ...(opts && opts) });
+				}
 		});
 		} else {
 			console.log('Could not draw connector between', opts.start, opts.end);
