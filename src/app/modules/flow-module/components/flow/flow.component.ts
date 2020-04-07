@@ -135,7 +135,9 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck {
 	}
 
 	ngOnDestroy() {
-		this.leaderLinesService.mediaObserverSubs.unsubscribe();
-		delete this.leaderLinesService.connectors;
+		this.mediaObserverSubs.unsubscribe();
+		this.leaderLinesService.removeAllConnectors();
+		this.dynamicCompService.clearAttachedComps(this.nodesContanerRef, CONST_SELECTORS.NODE);
+		clearTimeout(this._setTimeoutTimer);
 	}
 }
