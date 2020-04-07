@@ -20,6 +20,9 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck {
 	nodeIdPrefix = NODE_ID_PREFIX;
 	nodeDimension: Node.Dimension = { width: 15, height: 18 };
 	private _oldFlowData: Flow.Nodes = [];
+	private mChangeObservers: Array<(change: MediaChange) => void> = [];
+	private mediaObserverSubs: Subscription;
+	private _setTimeoutTimer = null;
 	constructor(private leaderLinesService: LeaderLineService,
 		private dynamicCompService: DynamicComponentService,
 		private elmRef: ElementRef,
@@ -28,15 +31,8 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck {
 	}
 
 	ngOnInit(): void {
-		// TODO: Subscribe for media changes and "_renderFlow" again
-		// this.leaderLinesService.subscribeToMediaChange((change) => {
-		// this._renderFlow(null, true);
-		// 	console.log('mchange: ', change.matches);
-		// 	this.position.clearHistory();
-		// 	this.dynamicCompService.attachedCompList[selectors.NODE].forEach(node => {
-		// 		this.dynamicCompService.updateInputBindings({ position: this.position.getAddingNodePos() }, node);
-		// 	});
-		// });
+		// TODO: Use "MutationObserver" DOM API for finer control on when to reposition the nodes
+		this.addObserverForMediaChange(this.reCalculateNodePositions)
 	}
 
 	ngDoCheck() {
