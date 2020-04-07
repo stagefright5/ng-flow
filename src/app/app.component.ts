@@ -11,17 +11,9 @@ export class AppComponent {
 	title = 'console-app-deployment-status-ui';
 	nodes: Flow.Nodes = [
 		{
-			titles: {
-				'Flow Name': 'h4'
-			},
 			component: DescPanelComponent
 		},
 		{
-			titles: {
-				'Abnxbnxc': 'c1',
-				'AasdadKjasdh': 'c2',
-				'Aasdad Kjasdh': 'c3'
-			},
 			wheels: [
 				{
 					icon: 'assets/asterisk.svg',
@@ -30,9 +22,52 @@ export class AppComponent {
 			]
 		},
 		{
-			titles: {
-				'Abnxbnxc': 'c1',
-			},
+			wheels: [
+				{
+					descriptionPanel: DescPanelComponent
+				},
+				{
+					icon: 'assets/arrow-right.svg',
+					promoter: true,
+					// descriptionPanel: DescPanelComponent
+					// descriptionPanel: 'ss'
+				}
+			]
+		}, {
+			component: DescPanelComponent
+		},
+		{
+			wheels: [
+				{
+					icon: 'assets/asterisk.svg',
+					// descriptionPanel: 'ss'
+				}
+			]
+		},
+		{
+			wheels: [
+				{
+					descriptionPanel: DescPanelComponent
+				},
+				{
+					icon: 'assets/arrow-right.svg',
+					promoter: true,
+					// descriptionPanel: DescPanelComponent
+					// descriptionPanel: 'ss'
+				}
+			]
+		}, {
+			component: DescPanelComponent
+		},
+		{
+			wheels: [
+				{
+					icon: 'assets/asterisk.svg',
+					// descriptionPanel: 'ss'
+				}
+			]
+		},
+		{
 			wheels: [
 				{
 					descriptionPanel: DescPanelComponent
@@ -50,11 +85,6 @@ export class AppComponent {
 	onPromoteHandler(e) {
 		console.log('onPromoteHandler::', e);
 		this.nodes.push({
-			titles: {
-				'Last akhs': 'c1',
-				'Second sdh': 'c2',
-				'Aasdad Kjasdh': 'c3'
-			},
 			wheels: [
 				{
 					icon: 'assets/asterisk.svg',
@@ -66,6 +96,45 @@ export class AppComponent {
 				},
 			],
 			lastNode: true
-		});
+		},
+			{
+				wheels: [
+					{
+						descriptionPanel: DescPanelComponent
+					},
+					{
+						icon: 'assets/arrow-right.svg',
+						promoter: true,
+						// descriptionPanel: DescPanelComponent
+						// descriptionPanel: 'ss'
+					}
+				]
+			},
+			{
+				wheels: [
+					{
+						descriptionPanel: DescPanelComponent
+					},
+					{
+						icon: 'assets/arrow-right.svg',
+						promoter: true,
+						// descriptionPanel: DescPanelComponent
+						// descriptionPanel: 'ss'
+					}
+				]
+			},
+			{
+				wheels: [
+					{
+						descriptionPanel: DescPanelComponent
+					},
+					{
+						icon: 'assets/arrow-right.svg',
+						promoter: true,
+						// descriptionPanel: DescPanelComponent
+						// descriptionPanel: 'ss'
+					}
+				]
+			});
 	}
 }

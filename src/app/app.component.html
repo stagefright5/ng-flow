@@ -1,2 +1,12 @@
 <router-outlet></router-outlet>
-<div flow [flowData]="nodes" (promote)="onPromoteHandler($event)"></div>
+<button (click)="flow.reCalculateNodePositions()" class="reposition-btn">
+  Reposition the flow
+</button>
+<div style="height:2rem"></div>
+<flow
+  [flowData]="nodes"
+  (promote)="onPromoteHandler($event)"
+  #flow="ngFlow"
+  [connectorColor]="'blue'"
+  [connectorSize]="2"
+></flow>
