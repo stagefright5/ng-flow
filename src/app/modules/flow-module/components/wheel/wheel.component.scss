@@ -6,6 +6,7 @@
 	border-radius: 50%;
 	background-color: $node-paint;
 	border: 1px solid rgb(53, 52, 52);
+	z-index: 1;
 	img {
 		padding: 20%;
 	}

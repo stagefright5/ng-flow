@@ -1,9 +1,6 @@
-import { Injectable, ComponentFactoryResolver, ViewContainerRef, Inject, ComponentRef } from '@angular/core';
-import { NodeComponent } from '../components/node/node.component';
-import { Node, LoadedComponentData as NewComponentData } from '../utils/TypeDefs';
-import { DOCUMENT } from '@angular/common'
+import { Injectable, ComponentFactoryResolver, ViewContainerRef } from '@angular/core';
+import { Node, NewComponentData } from '../utils/TypeDefs';
 import { FlowModule } from '../flow.module';
-
 @Injectable({
 	providedIn: FlowModule
 })
@@ -11,14 +8,13 @@ export class DynamicComponentService {
 	newCompData: NewComponentData;
 	attachedCompList: { [key: string]: Array<NewComponentData> } = {};
 
-	constructor(private componentFactoryResolver: ComponentFactoryResolver,
-		@Inject(DOCUMENT) private d: Document) { }
+	constructor(private componentFactoryResolver: ComponentFactoryResolver) { }
 
-	appendNodeToFlow({ component, inputBindings, outputBindings, flow, uniqueId }: Node.New): void {
+	appendNodeToFlow({ component, inputBindings, outputBindings, flow, uniqueId }: Node.New): NewComponentData {
 		this.newCompData = this.loadComponent(flow, component);
 		this.updateComponentBindings({ inputBindings, outputBindings });
 		this._updateComponentInstaceMembers({ id: uniqueId });
-		(<NodeComponent>this.newCompData.compRef.instance).setPosition();
+		return this.newCompData;
 	}
 
 	loadComponent(parent: ViewContainerRef, component: any): NewComponentData {
@@ -26,16 +22,17 @@ export class DynamicComponentService {
 		const compRef = parent.createComponent(compFactory);
 		const newCompData = { compRef, inputs: compFactory.inputs, outputs: compFactory.outputs };
 		this.attachedCompList[compFactory.selector] && this.attachedCompList[compFactory.selector].push(newCompData) ||
-			(this.attachedCompList[compFactory.selector] = []);
+			(this.attachedCompList[compFactory.selector] = [newCompData]);
 		return newCompData;
 	}
 
-	updateComponentBindings({ inputBindings, outputBindings }, newCompData?: NewComponentData) {
-		this.updateInputBindings(inputBindings);
-		this.updateOutputBindings(outputBindings);
+	updateComponentBindings({ inputBindings, outputBindings }: Partial<Node.New>, newCompData?: NewComponentData) {
+		inputBindings && this._updateInputBindings(inputBindings, newCompData);
+		outputBindings && this._updateOutputBindings(outputBindings, newCompData);
+		(inputBindings || outputBindings) && (newCompData || this.newCompData).compRef.changeDetectorRef.detectChanges();
 	}
 
-	updateInputBindings(inputBindings, component?: NewComponentData) {
+	private _updateInputBindings(inputBindings, component?: NewComponentData) {
 		const compData = component || this.newCompData;
 		if (compData.inputs && compData.inputs.length) {
 			compData.inputs.forEach(({ propName }) => {
@@ -44,9 +41,8 @@ export class DynamicComponentService {
 				}
 			});
 		}
-		compData.compRef.changeDetectorRef.detectChanges();
 	}
-	updateOutputBindings(outputBindings, component?: NewComponentData) {
+	private _updateOutputBindings(outputBindings, component?: NewComponentData) {
 		const compData = component || this.newCompData;
 		if (compData.outputs && compData.outputs.length) {
 			compData.outputs.forEach(({ propName }) => {

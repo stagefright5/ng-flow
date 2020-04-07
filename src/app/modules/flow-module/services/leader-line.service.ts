@@ -1,32 +1,29 @@
 import { Injectable, NgZone } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { distinctUntilChanged, filter } from 'rxjs/operators'
-import { MediaChange, MediaObserver } from '@angular/flex-layout';
 import { FlowModule } from '../flow.module';
+import { Connector } from '../utils/TypeDefs'
 
 @Injectable({
 	providedIn: FlowModule
 })
 export class LeaderLineService {
-	constructor(private zone: NgZone, private mediaObserver: MediaObserver) {
-		this._subsForMediaChange();
-	}
 	connectors = {};
-	mChangeObservers: Array<(change: MediaChange) => void> = [];
-	leaderLineDrawOptions = {
+	leaderLineDrawOptions: Partial<Connector.DrawConnectorOptions> = {
 		path: 'grid',
 		startSocket: 'auto',
-		endSocket: 'auto'
+		endSocket: 'auto',
+		startPlug: "behind"
 	};
+
+	constructor(private zone: NgZone) { }
 
 	drawConnector(opts: Connector.DrawConnectorOptions) {
 		if (opts.start && opts.end) {
-		this.zone.runOutsideAngular(() => {
+			this.zone.runOutsideAngular(() => {
 				const key = this._getKey(opts.start, opts.end);
 				if (!this.connectors[key]) {
 					this.connectors[key] = new LeaderLine({ ...this.leaderLineDrawOptions, ...(opts && opts) });
 				}
-		});
+			});
 		} else {
 			console.log('Could not draw connector between', opts.start, opts.end);
 		}
@@ -36,7 +33,7 @@ export class LeaderLineService {
 		Object.values(this.connectors).forEach(cb);
 	}
 
-	removeAllConnectors = () => {
+	removeAllConnectors() {
 		this.each((v) => {
 			delete this.connectors[this._getKey(v.start, v.end)];
 			v.remove();

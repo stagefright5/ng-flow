@@ -8,11 +8,11 @@ export class PositonHistory {
 		this.maxLength = maxLength || this.maxLength;
 	}
 
-	add(entry: Node.PositionHistoryEntry) {
-		return this.addEntries([entry]);
-	}
-
-	addEntries(entries: Array<Node.PositionHistoryEntry>) {
+	push(newEntries: Node.PositionHistoryEntry | Node.PositionHistoryEntry[]) {
+		let entries = [];
+		if (!Array.isArray(newEntries)) {
+			entries = [newEntries];
+		}
 		this.entries.push(...entries);
 		if (this.entries.length > this.maxLength) {
 			this.entries = this.entries.slice(-this.maxLength, this.entries.length);

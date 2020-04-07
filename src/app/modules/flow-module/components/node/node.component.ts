@@ -2,15 +2,15 @@ import { Component, Input, Output, EventEmitter, AfterViewInit, ViewChild, ViewC
 import { Node } from '../../utils/TypeDefs'
 import { OverlayService } from '../../services/overlay.service';
 import { DynamicComponentService } from '../../services/dynamic-component.service';
-import { selectors } from '../../utils/constants';
+import { CONST_SELECTORS } from '../../utils/constants';
 @Component({
-	selector: selectors.NODE,
+	selector: CONST_SELECTORS.NODE,
 	templateUrl: './node.component.html',
 	styleUrls: ['./node.component.scss']
 })
 export class NodeComponent implements AfterViewInit {
 	@Input() nodeData: Node.Data = {};
-	@Input() position: { x: number, y: number } = { x: 0, y: 0 };
+	@Input() position: Node.Position = { top: 0, left: 0 };
 	@Input() dimension: { width: number, height: number };
 	@Input() promoteEvtCbFn: (...args) => void;
 	@Output() nodeAdded: EventEmitter<any> = new EventEmitter();
@@ -48,7 +48,7 @@ export class NodeComponent implements AfterViewInit {
 		}
 	}
 
-	setPosition() {
+	updateDOMPosition() {
 		Object.entries(this.position).forEach(([key, value]) => {
 			const el = this.elementRef.nativeElement;
 			this.renderer.setStyle(el, key, value + 'px');

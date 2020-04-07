@@ -1,16 +1,17 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnDestroy, ViewChild, ViewContainerRef, AfterViewInit, OnChanges, DoCheck, ElementRef } from '@angular/core';
-import { Flow, Node } from '../../utils/TypeDefs';
+import { Flow, Node, NewComponentData } from '../../utils/TypeDefs';
 
 import { NodeComponent } from '../node/node.component';
 import { LeaderLineService } from '../../services/leader-line.service';
 import { DynamicComponentService } from '../../services/dynamic-component.service';
 import { PositionService } from '../../services/position.service';
+import { CONST_SELECTORS, NODE_ID_PREFIX } from '../../utils/constants';
 import { MediaObserver, MediaChange } from '@angular/flex-layout/core';
 import { Subscription } from 'rxjs';
 import { distinctUntilChanged, filter } from 'rxjs/operators'
 
 @Component({
-	selector: selectors.FLOW,
+	selector: CONST_SELECTORS.FLOW,
 	templateUrl: './flow.component.html',
 	styleUrls: ['./flow.component.scss'],
 	exportAs: 'ngFlow'
@@ -25,12 +26,14 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck {
 	private mChangeObservers: Array<(change: MediaChange) => void> = [];
 	private mediaObserverSubs: Subscription;
 	private _setTimeoutTimer = null;
+
 	constructor(private leaderLinesService: LeaderLineService,
 		private dynamicCompService: DynamicComponentService,
 		private elmRef: ElementRef,
 		private position: PositionService,
 		private mediaObserver: MediaObserver) {
 		this.position.init(this.elmRef, this.nodeDimension);
+		this._subsForMediaChange();
 	}
 
 	ngOnInit(): void {
@@ -39,7 +42,6 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck {
 	}
 
 	ngDoCheck() {
-		// console.log('Do Check Called!');
 		if (this._oldFlowData.length < this.flowData.length) {
 			console.log('Did Check!');
 			this._appendNewNodes();
@@ -93,20 +95,20 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck {
 	private _renderFlow(nodes?: Flow.Nodes, reRender = true) {
 		const nodesToRender = nodes || this.flowData;
 		if (reRender) {
-			this.position.clearHistory();
-			this.dynamicCompService.removeFlowNodes(this.nodesContanerRef);
+			this.position.prepareForRecalculation();
 			this.leaderLinesService.removeAllConnectors();
+			this.dynamicCompService.clearAttachedComps(this.nodesContanerRef, CONST_SELECTORS.NODE);
 		}
 		nodesToRender.forEach(this._loadFlowNode);
 	}
 
+	// Will be called out of this class instance's context. Hence Arrow func.
 	private _loadFlowNode = (node: Node.Data, i: number) => {
-		this.dynamicCompService.appendNodeToFlow({
+		return this.dynamicCompService.appendNodeToFlow({
 			flow: this.nodesContanerRef,
 			component: NodeComponent,
 			uniqueId: this.nodeIdPrefix + i,
 			inputBindings: {
-				position: this.position.getAddingNodePos(),
 				nodeData: { ...node, index: i },
 				dimension: this.nodeDimension,
 				promoteEvtCbFn: this.emitPromeEvt
@@ -114,15 +116,22 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck {
 			outputBindings: {
 				nodeAdded: () => {
 					if (i > 0) {
-						this.onNodeAdd(node, i)
+						this.drawConnector({ from: this.nodeIdPrefix + (i - 1), to: this.nodeIdPrefix + i });
 					}
 				}
 			}
 		});
 	}
 
-	onNodeAdd(e: Node.Data, i: number) {
+	drawConnector({ from = '', to = '' }) {
 		this.leaderLinesService.drawConnector({
+			start: document.getElementById(from),
+			end: document.getElementById(to),
+			color: this.connetorColor,
+			size: this.connectorSize,
+		});
+	}
+
 	//TODO: Not being called from anywhere.
 	addObserverForMediaChange(mediaChangeObserver: (change: MediaChange) => void) {
 		this.mChangeObservers.push(mediaChangeObserver);
