@@ -1,9 +1,7 @@
 import { Injectable, ComponentFactoryResolver, ViewContainerRef } from '@angular/core';
 import { Node, NewComponentData } from '../utils/TypeDefs';
 import { FlowModule } from '../flow.module';
-@Injectable({
-	providedIn: FlowModule
-})
+@Injectable()
 export class DynamicComponentService {
 	newCompData: NewComponentData;
 	attachedCompList: { [key: string]: Array<NewComponentData> } = {};

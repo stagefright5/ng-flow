@@ -2,11 +2,10 @@ import { Injectable, ComponentRef, Injector } from '@angular/core';
 import { Overlay, OverlayRef, ConnectedPosition, OverlayConfig } from '@angular/cdk/overlay';
 import { ComponentPortal, ComponentType, PortalInjector } from '@angular/cdk/portal';
 import { Subscription } from 'rxjs';
-import { DESC_PANEL_DATA } from '../utils/cutom-tokens';
 import { FlowModule } from '../flow.module';
-@Injectable({
-	providedIn: FlowModule
-})
+import { DESC_PANEL_DATA } from '../utils/constants';
+
+@Injectable()
 export class OverlayService {
 	_overlayRef: OverlayRef;
 	positions: ConnectedPosition[] = [
@@ -28,13 +27,13 @@ export class OverlayService {
 	constructor(private _overlay: Overlay, private injector: Injector) { }
 
 	open(elToAttach: HTMLElement, comp: ComponentType<unknown>, config?: any) {
+		this._overlayRef = this._overlay.create(this._getOverlayConfig(elToAttach));
 		const customInjectors = this._createCustomInjector(config);
-		this._compRef = this._createAndAttachPanel(elToAttach, comp, customInjectors);
+		this._compRef = this._createAndAttachPanel(comp, customInjectors);
 		this.subscribeToBackDropClick();
 	}
 
-	_createAndAttachPanel(el: HTMLElement, comp: ComponentType<unknown>, customInjectors?: PortalInjector) {
-		this._overlayRef = this._overlay.create(this._getOverlayConfig(el));
+	_createAndAttachPanel(comp: ComponentType<unknown>, customInjectors?: PortalInjector) {
 		const panelPortal = new ComponentPortal(comp, null, customInjectors);
 		return this._overlayRef.attach(panelPortal);
 	}

@@ -1,42 +1,45 @@
-import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AppComponent } from 'src/app/app.component';
 import { FlowComponent } from './components/flow/flow.component';
 import { NodeComponent } from './components/node/node.component';
 import { WheelComponent } from './components/wheel/wheel.component';
-import { DescPanelComponent } from 'src/app/components/desc-panel/desc-panel.component';
-import { AppRoutingModule } from 'src/app/app-routing.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { DESC_PANEL_DATA } from './utils/cutom-tokens';
 import { OverlayModule } from '@angular/cdk/overlay';
+import { OverlayService } from './services/overlay.service';
+import { DynamicComponentService } from './services/dynamic-component.service';
+import { LeaderLineService } from './services/leader-line.service';
+import { PositionService } from './services/position.service';
+import { DESC_PANEL_DATA } from './utils/constants';
 
-
+declare global { var LeaderLine: any; };
 
 @NgModule({
 	declarations: [
-		AppComponent,
 		FlowComponent,
 		NodeComponent,
-		WheelComponent,
-		DescPanelComponent
+		WheelComponent
 	],
 	imports: [
 		CommonModule,
-		AppRoutingModule,
 		FlexLayoutModule,
 		OverlayModule
 	],
+	exports: [
+		FlowComponent,
+		NodeComponent,
+		WheelComponent
+	],
 	entryComponents: [
-		DescPanelComponent,
 		NodeComponent
 	],
-	schemas: [
-		NO_ERRORS_SCHEMA
-	],
 	providers: [
+		OverlayService,
+		DynamicComponentService,
+		LeaderLineService,
+		PositionService,
 		{
 			provide: DESC_PANEL_DATA,
-			useValue: DESC_PANEL_DATA
+			useValue: {}
 		}
 	],
 })

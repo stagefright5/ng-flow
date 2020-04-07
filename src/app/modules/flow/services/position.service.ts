@@ -4,9 +4,7 @@ import { CONST_DIRECTIONS } from '../utils/constants';
 import { PositonHistory } from '../utils/position-history';
 import { FlowModule } from '../flow.module';
 
-@Injectable({
-	providedIn: FlowModule
-})
+@Injectable()
 export class PositionService {
 
 	rows = 0;

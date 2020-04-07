@@ -31,8 +31,7 @@
 							"src/styles.scss"
 						],
 						"scripts": [
-							"node_modules/leader-line/leader-line.min.js",
-							"node_modules/anim-event/anim-event.min.js"
+							"node_modules/leader-line/leader-line.min.js"
 						]
 					},
 					"configurations": {

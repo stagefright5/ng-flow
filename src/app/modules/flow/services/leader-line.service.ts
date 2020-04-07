@@ -2,9 +2,7 @@ import { Injectable, NgZone } from '@angular/core';
 import { FlowModule } from '../flow.module';
 import { Connector } from '../utils/TypeDefs'
 
-@Injectable({
-	providedIn: FlowModule
-})
+@Injectable()
 export class LeaderLineService {
 	connectors = {};
 	leaderLineDrawOptions: Partial<Connector.DrawConnectorOptions> = {
