@@ -5,7 +5,9 @@ import { NodeComponent } from '../node/node.component';
 import { LeaderLineService } from '../../services/leader-line.service';
 import { DynamicComponentService } from '../../services/dynamic-component.service';
 import { PositionService } from '../../services/position.service';
-import { selectors, NODE_ID_PREFIX } from '../../utils/constants';
+import { MediaObserver, MediaChange } from '@angular/flex-layout/core';
+import { Subscription } from 'rxjs';
+import { distinctUntilChanged, filter } from 'rxjs/operators'
 
 @Component({
 	selector: selectors.FLOW,
@@ -26,7 +28,8 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck {
 	constructor(private leaderLinesService: LeaderLineService,
 		private dynamicCompService: DynamicComponentService,
 		private elmRef: ElementRef,
-		private position: PositionService) {
+		private position: PositionService,
+		private mediaObserver: MediaObserver) {
 		this.position.init(this.elmRef, this.nodeDimension);
 	}
 
