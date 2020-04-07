@@ -1,6 +1,6 @@
 import { Node } from '../utils/TypeDefs';
 import { ElementRef, Injectable } from '@angular/core';
-import { from_direction_track } from '../utils/constants';
+import { CONST_DIRECTIONS } from '../utils/constants';
 import { PositonHistory } from '../utils/position-history';
 import { FlowModule } from '../flow.module';
 
@@ -17,7 +17,7 @@ export class PositionService {
 	private _parentElm: HTMLElement;
 	private _nodeDimension = <Node.Dimension>{};
 	private _parentElmRect: DOMRect;
-	private fromDirections = from_direction_track;
+	private _DIRECTIONS = CONST_DIRECTIONS;
 
 	constructor() { }
 
@@ -32,44 +32,44 @@ export class PositionService {
 	}
 
 	getAddingNodePos(): Node.Position {
-		const oneNodeSpace = this.spaceForOneNode;
+		const oneNodeSpace = this.ONE_NODE_SPACE;
 		const positionObject = <Node.Position>{
 			left: 0,
 			top: 0
 		}
 		const l = this.positionHistory.length - 1;
-		let _direction = this.fromDirections.FROM_LEFT
+		let _direction = this._DIRECTIONS.FROM_LEFT
 		if (l > -1) {
 			let prevNodeLeftPos = this.prevNodePos.leftPos;
-			let newLeftPosContainer = prevNodeLeftPos + this.spaceForOneNode.width;
+			let newLeftPosContainer = prevNodeLeftPos + this.ONE_NODE_SPACE.width;
 			let _additionFactor = 0;
 			const prevfromDir = this.positionHistory.get(l) && this.positionHistory.get(l).direction;
 			const prevPrevFromDir = this.positionHistory.get(l - 1) && this.positionHistory.get(l - 1).direction;
 			_direction = prevfromDir || _direction;
 
-			if (prevfromDir === this.fromDirections.FROM_TOP) {
+			if (prevfromDir === this._DIRECTIONS.FROM_TOP) {
 				// check the history upto 2 and decide the "direction"
-				if (prevPrevFromDir === this.fromDirections.FROM_LEFT) {
-					_additionFactor = -this.spaceForOneNode.width;
-					_direction = this.fromDirections.FROM_RIGHT;
-				} else if (prevPrevFromDir === this.fromDirections.FROM_RIGHT) {
-					_additionFactor = this.spaceForOneNode.width;
-					_direction = this.fromDirections.FROM_LEFT
+				if (prevPrevFromDir === this._DIRECTIONS.FROM_LEFT) {
+					_additionFactor = -this.ONE_NODE_SPACE.width;
+					_direction = this._DIRECTIONS.FROM_RIGHT;
+				} else if (prevPrevFromDir === this._DIRECTIONS.FROM_RIGHT) {
+					_additionFactor = this.ONE_NODE_SPACE.width;
+					_direction = this._DIRECTIONS.FROM_LEFT
 				}
 			} else {
-				if (prevfromDir === this.fromDirections.FROM_LEFT) {
-					_additionFactor = this.spaceForOneNode.width;
+				if (prevfromDir === this._DIRECTIONS.FROM_LEFT) {
+					_additionFactor = this.ONE_NODE_SPACE.width;
 					_direction = prevfromDir;
-				} else if (prevfromDir === this.fromDirections.FROM_RIGHT) {
-					_additionFactor = -this.spaceForOneNode.width;
+				} else if (prevfromDir === this._DIRECTIONS.FROM_RIGHT) {
+					_additionFactor = -this.ONE_NODE_SPACE.width;
 					_direction = prevfromDir;
 				}
 			}
 			if (_additionFactor) {
-				newLeftPosContainer += _additionFactor - this.spaceForOneNode.width;
+				newLeftPosContainer += _additionFactor - this.ONE_NODE_SPACE.width;
 			}
 			const leftOverflow = newLeftPosContainer < 0;
-			const rightOverflow = (newLeftPosContainer + this._nodeDimension.width) > this.parentElmRect.width;
+			const rightOverflow = (newLeftPosContainer + this._nodeDimension.width) > this.ENCLOSING_RECT.width;
 			if (rightOverflow || leftOverflow) {
 				if (rightOverflow) {
 					// rollback calculated width
@@ -80,13 +80,13 @@ export class PositionService {
 				// This node should be rendered in a new row
 				this.rows++;
 				// Which also means that the direction is "FROM_TOP"
-				_direction = this.fromDirections.FROM_TOP
+				_direction = this._DIRECTIONS.FROM_TOP
 			}
 
 			positionObject.top = this.rows * (oneNodeSpace.height + this._nodeGap);
 			positionObject.left = newLeftPosContainer;
 		}
-		this.positionHistory.add({
+		this.positionHistory.push({
 			...positionObject,
 			direction: _direction
 		});
@@ -94,7 +94,7 @@ export class PositionService {
 	}
 
 
-	private get spaceForOneNode(): Node.Dimension {
+	private get ONE_NODE_SPACE(): Node.Dimension {
 		return ({
 			width: this._nodeGap + this._nodeDimension.width,
 			height: this._nodeDimension.height
@@ -110,7 +110,7 @@ export class PositionService {
 		});
 	}
 
-	private get parentElmRect(): DOMRect {
+	private get ENCLOSING_RECT(): DOMRect {
 		this._parentElmRect = <DOMRect>(this._parentElmRect || this._parentElm.getBoundingClientRect());
 		return this._parentElmRect;
 	}

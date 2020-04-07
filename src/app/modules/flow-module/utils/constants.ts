@@ -1,5 +1,5 @@
-export enum from_direction_track { FROM_LEFT = 0, FROM_RIGHT, FROM_TOP }
-export const selectors = {
+export enum CONST_DIRECTIONS { FROM_LEFT = 0, FROM_RIGHT, FROM_TOP }
+export const CONST_SELECTORS = {
 	NODE: 'node',
 	FLOW: 'flow,[flow]'
 }
