@@ -118,4 +118,10 @@ export class PositionService {
 	clearHistory() {
 		this.positionHistory.clear();
 	}
+
+	prepareForRecalculation() {
+		this.clearHistory();
+		this.rows = 0;
+		this._parentElmRect = null;
+	}
 }
