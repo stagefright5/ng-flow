@@ -60,11 +60,30 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck {
 		});
 	}
 
+	reCalculateNodePositions = (change?: MediaChange) => {
+		clearTimeout(this._setTimeoutTimer);
+		this._setTimeoutTimer = setTimeout(() => {
+			console.log('mchange: ', change);
+			this.position.prepareForRecalculation();
+			this.dynamicCompService.attachedCompList[CONST_SELECTORS.NODE].forEach(this.updateNodePosition);
+			this.leaderLinesService.refreshConnectors();
+		}, 600);
+	}
+	// Will be called out of this class instance's context. Hence Arrow func.
+	updateNodePosition = (node?: NewComponentData) => {
+		this.dynamicCompService.updateComponentBindings({
+			inputBindings: {
+				position: this.position.getAddingNodePos()
+			}
+		}, node);
+		(<NodeComponent>node.compRef.instance).updateDOMPosition();
+	}
+
 	private _appendNewNodes() {
 		const newNodesToAppend = this.flowData.slice(this._oldFlowData.length, this.flowData.length)
 		newNodesToAppend.forEach((node, i) => {
-			this._loadFlowNode(node, i + this._oldFlowData.length);
-		})
+			this.updateNodePosition(this._loadFlowNode(node, i + this._oldFlowData.length));
+		});
 		this._oldFlowData.push(...newNodesToAppend);
 	}
 
