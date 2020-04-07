@@ -64,7 +64,8 @@ export class DynamicComponentService {
 		Object.assign(componentInstance, kvObject);
 	}
 
-	removeFlowNodes(containerRef: ViewContainerRef) {
+	clearAttachedComps(containerRef: ViewContainerRef, selector: string) {
 		containerRef.clear();
+		this.attachedCompList[selector] = [];
 	}
 }
