@@ -38,7 +38,7 @@ export class LeaderLineService {
 
 	removeAllConnectors = () => {
 		this.each((v) => {
-			delete this.connectors[this._attr(v.start, 'id')];
+			delete this.connectors[this._getKey(v.start, v.end)];
 			v.remove();
 		});
 	}
