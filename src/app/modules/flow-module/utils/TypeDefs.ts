@@ -1,6 +1,6 @@
 import { ViewContainerRef, ComponentRef, ComponentFactory } from '@angular/core';
 import { NodeComponent } from '../components/node/node.component';
-import { from_direction_track } from './constants';
+import { CONST_DIRECTIONS } from './constants';
 
 export namespace Node {
 
@@ -8,8 +8,6 @@ export namespace Node {
 	export type Titles = Record<string, string>;
 
 	export interface Data {
-		titles?: Titles;
-		description?: Description;
 		wheels?: Wheel[];
 		lastNode?: boolean;
 		index?: number;
@@ -27,7 +25,7 @@ export namespace Node {
 	}
 
 	export interface PositionHistoryEntry extends Position {
-		direction: from_direction_track
+		direction: CONST_DIRECTIONS
 	}
 
 	export interface Position {
@@ -36,17 +34,17 @@ export namespace Node {
 	}
 
 	export interface New {
-		flow: ViewContainerRef,
-		component: typeof NodeComponent,
-		uniqueId: string,
+		flow?: ViewContainerRef,
+		component?: typeof NodeComponent,
+		uniqueId?: string,
 		inputBindings: {
-			nodeData: Node.Data,
-			position: Node.Position,
-			dimension: Node.Dimension,
-			promoteEvtCbFn: (...args) => void
+			nodeData?: Node.Data,
+			position?: Node.Position,
+			dimension?: Node.Dimension,
+			promoteEvtCbFn?: (...args) => void
 		},
 		outputBindings: {
-			nodeAdded: (...args) => void
+			nodeAdded?: (...args) => void
 		}
 	}
 }
@@ -56,7 +54,7 @@ type BindableProperty = {
 	propName: string;
 	templateName: string;
 };
-export interface LoadedComponentData {
+export interface NewComponentData {
 	compRef: ComponentRef<unknown>;
 	inputs: BindableProperty[];
 	outputs: BindableProperty[];
@@ -64,4 +62,22 @@ export interface LoadedComponentData {
 
 export namespace Flow {
 	export type Nodes = Node.Data[];
+}
+
+export namespace Connector {
+	export interface DrawConnectorOptions {
+		start?: HTMLElement,
+		end?: HTMLElement,
+		color?: string,
+		size?: number,
+		path?: 'straight' | 'arc' | 'fluid' | 'magnet' | 'grid',
+		startSocket?: 'top' | 'right' | 'bottom' | 'left' | 'auto',
+		endSocket?: 'top' | 'right' | 'bottom' | 'left' | 'auto',
+		startSocketGravity?: number | string | number[] | string[],
+		endSocketGravity?: number | string | number[] | string[],
+		startPlug?: 'disc' | 'square' | 'arrow1' | 'arrow2' | 'arrow3' | 'hand' | 'crosshair' | 'behind',
+		endPlug?: 'disc' | 'square' | 'arrow1' | 'arrow2' | 'arrow3' | 'hand' | 'crosshair' | 'behind',
+		startPlugColor?: 'auto' | string
+		endPlugColor?: 'auto' | string
+	}
 }
