@@ -105,8 +105,17 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck {
 
 	onNodeAdd(e: Node.Data, i: number) {
 		this.leaderLinesService.drawConnector({
-			start: this.nodeIdPrefix + (i - 1),
-			end: this.nodeIdPrefix + (i)
+	//TODO: Not being called from anywhere.
+	addObserverForMediaChange(mediaChangeObserver: (change: MediaChange) => void) {
+		this.mChangeObservers.push(mediaChangeObserver);
+	}
+
+	_subsForMediaChange() {
+		this.mediaObserverSubs = this.mediaObserver.media$.pipe(
+			distinctUntilChanged((x, y) => x.mqAlias === y.mqAlias),
+			filter((v) => v.matches)
+		).subscribe((c: MediaChange) => {
+			this.mChangeObservers.forEach(a => a(c));
 		});
 	}
 
