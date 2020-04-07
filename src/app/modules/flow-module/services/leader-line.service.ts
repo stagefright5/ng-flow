@@ -44,6 +44,16 @@ export class LeaderLineService {
 		this.each((v) => v.position());
 	}
 
+	private _getKey(start: string | HTMLElement, end: string | HTMLElement) {
+		if (typeof start !== 'string') {
+			start = this._attr(start, 'id');
+		}
+		if (typeof end !== 'string') {
+			end = this._attr(end, 'id');
+		}
+		return `${start}::${end}`;
+	}
+
 	private _attr(elm: HTMLElement, attr: string) {
 		return elm.attributes.getNamedItem(attr).value;
 	}
