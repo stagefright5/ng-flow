@@ -1,94 +1,27 @@
-# Basic Flow-Like UI (Angular)
+# NgFlow
 
-## Components
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.2.2.
 
-### `Class` Train
+## Development server
 
-#### Selectors
+Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
-- `train,[flow]`
+## Code scaffolding
 
-#### Properties
+Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
 
-| Name                                                            | Description                                        |
-| --------------------------------------------------------------- | -------------------------------------------------- |
-| `@Input()` trainData: [Train.Caoches](#Caoches)                 | Data to build each coach                           |
-| `@Output('promote')` addNewCoachEvtEmitter: EventEmitter\<any\> | Event Emitted when the `promoter` wheel is clicked |
+## Build
 
-### `Class` Coach
+Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
 
-#### Selectors
+## Running unit tests
 
-- `coach`
+Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
 
-#### Properties
+## Running end-to-end tests
 
-| Name                                                                  | Description                                        |
-| --------------------------------------------------------------------- | -------------------------------------------------- |
-| `@Input()` coachData: [Coach.Data](#Data)                             | Name of the flow being visualized                  |
-| `@Output('promote')` promoterWheelClickedEmitter: EventEmitter\<any\> | Event Emitted when the `promoter` wheel is clicked |
+Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
 
-### `Class` Wheel
+## Further help
 
-#### Selectors
-
-- `wheel`
-
-#### Properties
-
-| Name                                                                   | Description                                        |
-| ---------------------------------------------------------------------- | -------------------------------------------------- |
-| `@Input()` wheel: [Coach.Wheel](#Wheel)                                | wheel data                                         |
-| `@Output('promote')` newCoachAdderWheelEvtEmitter: EventEmitter\<any\> | Event Emitted when the `promoter` wheel is clicked |
-
-### **TypeDefinition**
-
-### Namespace: `Coach`
-
-#### Wheel
-
-```typescript
-interface Wheel {
-  icon?: string;
-  descriptionPanel?: ComponentType<unknown>;
-  promoter?: boolean;
-}
-```
-
-#### Data
-
-- Dependancies
-  - [Titles](#Titles)
-  - [Description](#Description)
-
-```typescript
-interface Data {
-  titles?: Titles;
-  description?: Description;
-  wheels?: Array<Wheel>;
-  lastCoach?: boolean;
-}
-```
-
-#### Titles
-
-```typescript
-type Titles = Record<string, string>;
-```
-
-#### Description
-
-```typescript
-type Description = null | Record<string, string>;
-```
-
-### Namespace `Train`
-
-#### Caoches
-
-- Dependancies
-  - [Coach.Data](#Data)
-
-```typescript
-type Caoches = Array<Coach.Data>;
-```
+To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).

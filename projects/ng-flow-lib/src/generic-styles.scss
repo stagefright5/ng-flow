@@ -1,0 +1,14 @@
+@import "./scss.vars.scss";
+@import "./from-cdk-overlay.scss";
+
+.rounded-rectangle {
+	background-color: $node-paint;
+	border: 1px solid rgb(53, 52, 52);
+	border-radius: 0.75rem;
+}
+
+.desc-panel-backdrop {
+	background-color: darken($color: #0000002f, $amount: 0);
+}
+
+@include cdk-overlay();

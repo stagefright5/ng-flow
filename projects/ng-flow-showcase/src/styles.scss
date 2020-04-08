@@ -1,0 +1,6 @@
+/* You can add global styles to this file, and also import other style files */
+@import "~@angular/cdk/overlay-prebuilt.css";
+
+.desc-panel-backdrop {
+	background-color: darken($color: #0000002f, $amount: 0);
+}

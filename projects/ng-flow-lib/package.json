@@ -1,0 +1,16 @@
+{
+	"name": "ng-flow-lib",
+	"version": "0.0.3-alpha.0",
+	"dependencies": {
+		"leader-line": "1.0.5",
+		"@angular/flex-layout": "8.0.0-beta.26",
+		"@angular/cdk": "^8.2.3"
+	},
+	"peerDependencies": {
+		"@angular/common": "^8.2.0",
+		"@angular/core": "^8.2.0",
+		"@angular/flex-layout": "8.0.0-beta.26",
+		"leader-line": "1.0.5",
+		"@angular/cdk": "^8.2.3"
+	}
+}

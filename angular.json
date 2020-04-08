@@ -3,43 +3,79 @@
 	"version": 1,
 	"newProjectRoot": "projects",
 	"projects": {
-		"console-app-deployment-status-ui": {
+		"ng-flow-lib": {
+			"projectType": "library",
+			"root": "projects/ng-flow-lib",
+			"sourceRoot": "projects/ng-flow-lib/src",
+			"prefix": "lib",
+			"architect": {
+				"build": {
+					"builder": "@angular-devkit/build-ng-packagr:build",
+					"options": {
+						"tsConfig": "projects/ng-flow-lib/tsconfig.lib.json",
+						"project": "projects/ng-flow-lib/ng-package.json"
+					}
+				},
+				"test": {
+					"builder": "@angular-devkit/build-angular:karma",
+					"options": {
+						"main": "projects/ng-flow-lib/src/test.ts",
+						"tsConfig": "projects/ng-flow-lib/tsconfig.spec.json",
+						"karmaConfig": "projects/ng-flow-lib/karma.conf.js"
+					}
+				},
+				"lint": {
+					"builder": "@angular-devkit/build-angular:tslint",
+					"options": {
+						"tsConfig": [
+							"projects/ng-flow-lib/tsconfig.lib.json",
+							"projects/ng-flow-lib/tsconfig.spec.json"
+						],
+						"exclude": [
+							"**/node_modules/**"
+						]
+					}
+				}
+			}
+		},
+		"ng-flow-showcase": {
 			"projectType": "application",
 			"schematics": {
 				"@schematics/angular:component": {
 					"style": "scss"
 				}
 			},
-			"root": "",
-			"sourceRoot": "src",
+			"root": "projects/ng-flow-showcase",
+			"sourceRoot": "projects/ng-flow-showcase/src",
 			"prefix": "app",
 			"architect": {
 				"build": {
 					"builder": "@angular-devkit/build-angular:browser",
 					"options": {
-						"outputPath": "dist/console-app-deployment-status-ui",
-						"index": "src/index.html",
-						"main": "src/main.ts",
-						"polyfills": "src/polyfills.ts",
-						"tsConfig": "tsconfig.app.json",
-						"aot": true,
+						"preserveSymlinks": true,
+						"outputPath": "dist/ng-flow-showcase",
+						"index": "projects/ng-flow-showcase/src/index.html",
+						"main": "projects/ng-flow-showcase/src/main.ts",
+						"polyfills": "projects/ng-flow-showcase/src/polyfills.ts",
+						"tsConfig": "projects/ng-flow-showcase/tsconfig.app.json",
+						"aot": false,
 						"assets": [
-							"src/favicon.ico",
-							"src/assets"
+							"projects/ng-flow-showcase/src/favicon.ico",
+							"projects/ng-flow-showcase/src/assets"
 						],
 						"styles": [
-							"src/styles.scss"
+							"projects/ng-flow-showcase/src/styles.scss"
 						],
 						"scripts": [
-							"node_modules/leader-line/leader-line.min.js"
+							"./node_modules/leader-line/leader-line.min.js"
 						]
 					},
 					"configurations": {
 						"production": {
 							"fileReplacements": [
 								{
-									"replace": "src/environments/environment.ts",
-									"with": "src/environments/environment.prod.ts"
+									"replace": "projects/ng-flow-showcase/src/environments/environment.ts",
+									"with": "projects/ng-flow-showcase/src/environments/environment.prod.ts"
 								}
 							],
 							"optimization": true,
@@ -47,6 +83,7 @@
 							"sourceMap": false,
 							"extractCss": true,
 							"namedChunks": false,
+							"aot": true,
 							"extractLicenses": true,
 							"vendorChunk": false,
 							"buildOptimizer": true,
@@ -68,34 +105,64 @@
 				"serve": {
 					"builder": "@angular-devkit/build-angular:dev-server",
 					"options": {
-						"browserTarget": "console-app-deployment-status-ui:build"
+						"browserTarget": "ng-flow-showcase:build"
 					},
 					"configurations": {
 						"production": {
-							"browserTarget": "console-app-deployment-status-ui:build:production"
+							"browserTarget": "ng-flow-showcase:build:production"
 						}
 					}
 				},
 				"extract-i18n": {
 					"builder": "@angular-devkit/build-angular:extract-i18n",
 					"options": {
-						"browserTarget": "console-app-deployment-status-ui:build"
+						"browserTarget": "ng-flow-showcase:build"
+					}
+				},
+				"test": {
+					"builder": "@angular-devkit/build-angular:karma",
+					"options": {
+						"main": "projects/ng-flow-showcase/src/test.ts",
+						"polyfills": "projects/ng-flow-showcase/src/polyfills.ts",
+						"tsConfig": "projects/ng-flow-showcase/tsconfig.spec.json",
+						"karmaConfig": "projects/ng-flow-showcase/karma.conf.js",
+						"assets": [
+							"projects/ng-flow-showcase/src/favicon.ico",
+							"projects/ng-flow-showcase/src/assets"
+						],
+						"styles": [
+							"projects/ng-flow-showcase/src/styles.scss"
+						],
+						"scripts": []
 					}
 				},
 				"lint": {
 					"builder": "@angular-devkit/build-angular:tslint",
 					"options": {
 						"tsConfig": [
-							"tsconfig.app.json",
-							"tsconfig.spec.json"
+							"projects/ng-flow-showcase/tsconfig.app.json",
+							"projects/ng-flow-showcase/tsconfig.spec.json",
+							"projects/ng-flow-showcase/e2e/tsconfig.json"
 						],
 						"exclude": [
 							"**/node_modules/**"
 						]
 					}
+				},
+				"e2e": {
+					"builder": "@angular-devkit/build-angular:protractor",
+					"options": {
+						"protractorConfig": "projects/ng-flow-showcase/e2e/protractor.conf.js",
+						"devServerTarget": "ng-flow-showcase:serve"
+					},
+					"configurations": {
+						"production": {
+							"devServerTarget": "ng-flow-showcase:serve:production"
+						}
+					}
 				}
 			}
 		}
 	},
-	"defaultProject": "console-app-deployment-status-ui"
+	"defaultProject": "ng-flow-lib"
 }
