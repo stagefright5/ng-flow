@@ -1,4 +1,4 @@
-@import  "../../scss.vars.scss";
+@import "../../scss.vars.scss";
 
 .wheel {
 	width: 2rem;
@@ -6,8 +6,8 @@
 	border-radius: 50%;
 	background-color: $node-paint;
 	border: 1px solid rgb(53, 52, 52);
+	padding: 10%;
+}
+:host {
 	z-index: 1;
-	img {
-		padding: 20%;
-	}
 }

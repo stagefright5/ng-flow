@@ -4,7 +4,7 @@ import { NodeComponent } from './components/node/node.component';
 import { WheelComponent } from './components/wheel/wheel.component';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { CommonModule } from '@angular/common';
-
+import { FlexLayoutModule } from '@angular/flex-layout'
 @NgModule({
 	declarations: [
 		FlowComponent,
@@ -13,7 +13,8 @@ import { CommonModule } from '@angular/common';
 	],
 	imports: [
 		OverlayModule,
-		CommonModule
+		CommonModule,
+		FlexLayoutModule
 	],
 	exports: [
 		FlowComponent,
