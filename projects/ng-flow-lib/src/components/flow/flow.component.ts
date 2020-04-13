@@ -193,12 +193,12 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck {
 	reRenderFlow() {
 		this._firstTime = false;
 		this.position.resetStores();
+		const oldConnectors = Array.from(
+			this.leaderLinesService.connectors.keys()
+		);
 		this.dynamicCompService.clearAttachedComps(
 			this.nodesContanerRef,
 			CONST_SELECTORS.NODE
-		);
-		const oldConnectors = Array.from(
-			this.leaderLinesService.connectors.keys()
 		);
 		this.leaderLinesService.removeAllConnectors();
 		this._oldFlowData = [];

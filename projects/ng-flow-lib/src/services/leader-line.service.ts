@@ -75,7 +75,10 @@ export class LeaderLineService {
 		this.pubSub.$sub(Events.NODE_DELETE, obj => {
 			console.log(obj.id + " :: " + Events.NODE_DELETE + "d");
 			this.connectors.forEach((value, key) => {
-				if (key.start === obj.id || key.end === obj.id) {
+				if (
+					obj.id === _.attr(key.start, "id") ||
+					obj.id === _.attr(key.end, "id")
+				) {
 					this.connectors.delete(key);
 					this.removeConnector(value);
 				}
