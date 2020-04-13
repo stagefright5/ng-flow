@@ -25,7 +25,9 @@ export namespace Node {
 	}
 
 	export interface PositionHistoryEntry extends Position {
-		direction: CONST_DIRECTIONS
+		direction: CONST_DIRECTIONS,
+		row: number,
+		node: any
 	}
 
 	export interface Position {
@@ -45,7 +47,8 @@ export namespace Node {
 		},
 		outputBindings: {
 			nodeAdded?: (...args) => void
-		}
+		},
+		_data: Node.Data
 	}
 }
 
@@ -54,10 +57,11 @@ type BindableProperty = {
 	propName: string;
 	templateName: string;
 };
-export interface NewComponentData {
+export interface AttachedComponentData {
 	compRef: ComponentRef<unknown>;
 	inputs: BindableProperty[];
 	outputs: BindableProperty[];
+	_data?: Node.Data
 }
 
 export namespace Flow {
@@ -66,8 +70,8 @@ export namespace Flow {
 
 export namespace Connector {
 	export interface DrawConnectorOptions {
-		start?: HTMLElement,
-		end?: HTMLElement,
+		start?: HTMLElement | string,
+		end?: HTMLElement | string,
 		color?: string,
 		size?: number,
 		path?: 'straight' | 'arc' | 'fluid' | 'magnet' | 'grid',
