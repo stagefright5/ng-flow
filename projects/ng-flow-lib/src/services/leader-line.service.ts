@@ -29,10 +29,11 @@ export class LeaderLineService {
 				typeof opts.end === "string"
 					? document.getElementById(opts.end)
 					: opts.end;
-			this.zone.runOutsideAngular(() => {
-				opts = { ...this.leaderLineDrawOptions, ...(opts && opts) };
-				this.connectors.set(opts, new LeaderLine(opts));
-			});
+			if (opts.start && opts.end)
+				this.zone.runOutsideAngular(() => {
+					opts = { ...this.leaderLineDrawOptions, ...(opts && opts) };
+					this.connectors.set(opts, new LeaderLine(opts));
+				});
 		} else {
 			console.log(
 				"Could not draw connector between",
