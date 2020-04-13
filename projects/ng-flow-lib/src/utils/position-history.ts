@@ -28,6 +28,10 @@ export class PositonHistory {
 		return this.entries[index];
 	}
 
+	get recent() {
+		return this.get(this.length - 1);
+	}
+
 	pop() {
 		return this.entries.pop();
 	}
