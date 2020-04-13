@@ -11,3 +11,6 @@ export const CONST_SELECTORS = {
 	WHEEL: 'wheel'
 }
 export const NODE_ID_PREFIX = 'node_no_';
+export const Events = {
+	'NODE_DELETE': 'node-delete'
+}

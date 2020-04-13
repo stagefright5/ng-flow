@@ -1,5 +1,5 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnDestroy, ViewChild, ViewContainerRef, AfterViewInit, OnChanges, DoCheck, ElementRef } from '@angular/core';
-import { Flow, Node, NewComponentData } from '../../utils/TypeDefs';
+import { Component, OnInit, Input, Output, EventEmitter, OnDestroy, ViewChild, ViewContainerRef, DoCheck, ElementRef } from '@angular/core';
+import { Flow, Node, AttachedComponentData, Connector } from '../../utils/TypeDefs';
 
 import { NodeComponent } from '../node/node.component';
 import { LeaderLineService } from '../../services/leader-line.service';
@@ -9,6 +9,7 @@ import { CONST_SELECTORS, NODE_ID_PREFIX } from '../../utils/constants';
 import { MediaObserver, MediaChange } from '@angular/flex-layout/core';
 import { Subscription } from 'rxjs';
 import { distinctUntilChanged, filter } from 'rxjs/operators'
+import { _ } from '../../utils/generic-ops';
 
 @Component({
 	selector: CONST_SELECTORS.FLOW,
@@ -122,7 +123,8 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck {
 						this.drawConnector({ from: this.nodeIdPrefix + (i - 1), to: this.nodeIdPrefix + i });
 					}
 				}
-			}
+			},
+			_data: node
 		});
 	}
 
@@ -147,6 +149,12 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck {
 		).subscribe((c: MediaChange) => {
 			this.mChangeObservers.forEach(a => a(c));
 		});
+	}
+
+	deleteNode(id: string) {
+		const deletedNode = this.dynamicCompService.detachComponent(CONST_SELECTORS.NODE, id);
+		this._oldFlowData = this.flowData.slice();
+		this.flowData = this.flowData.filter(n => n !== deletedNode);
 	}
 
 	ngOnDestroy() {

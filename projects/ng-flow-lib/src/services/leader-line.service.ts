@@ -1,28 +1,32 @@
 import { Injectable, NgZone } from '@angular/core';
 import { Connector } from '../utils/TypeDefs'
-declare global { var LeaderLine: any; };
-
+import { _ } from '../utils/generic-ops';
+import { PubSubService } from './pub-sub.service';
+import { Events } from '../utils/constants';
 @Injectable({
 	providedIn: 'root'
 })
 export class LeaderLineService {
-	connectors = {};
+	connectors = new Map();
 	leaderLineDrawOptions: Partial<Connector.DrawConnectorOptions> = {
-		path: 'grid',
+		path: 'fluid',
 		startSocket: 'auto',
 		endSocket: 'auto',
-		startPlug: "behind"
+		startPlug: 'behind'
 	};
 
-	constructor(private zone: NgZone) { }
+	constructor(private zone: NgZone,
+		private pubSub: PubSubService) {
+		this._subscribeForEvts();
+	}
 
 	drawConnector(opts: Connector.DrawConnectorOptions) {
 		if (opts.start && opts.end) {
+			opts.start = typeof opts.start === 'string' ? document.getElementById(opts.start) : opts.start;
+			opts.end = typeof opts.end === 'string' ? document.getElementById(opts.end) : opts.end;
 			this.zone.runOutsideAngular(() => {
-				const key = this._getKey(opts.start, opts.end);
-				if (!this.connectors[key]) {
-					this.connectors[key] = new LeaderLine({ ...this.leaderLineDrawOptions, ...(opts && opts) });
-				}
+				opts = { ...this.leaderLineDrawOptions, ...(opts && opts) };
+				this.connectors.set(opts, new LeaderLine(opts));
 			});
 		} else {
 			console.log('Could not draw connector between', opts.start, opts.end);
@@ -33,28 +37,40 @@ export class LeaderLineService {
 		Object.values(this.connectors).forEach(cb);
 	}
 
+	removeConnector(con) {
+		con.remove();
+	}
+
 	removeAllConnectors() {
-		this.each((v) => {
-			delete this.connectors[this._getKey(v.start, v.end)];
-			v.remove();
+		this.connectors.forEach((value, key) => {
+			this.connectors.delete(key);
+			this.removeConnector(value);
 		});
 	}
 
 	refreshConnectors() {
-		this.each((v) => v.position());
+		this.connectors.forEach((v, k) => v.position());
 	}
 
-	private _getKey(start: string | HTMLElement, end: string | HTMLElement) {
+	private _getLLKey(start: string | HTMLElement, end: string | HTMLElement) {
 		if (typeof start !== 'string') {
-			start = this._attr(start, 'id');
+			start = _.attr(start, 'id');
 		}
 		if (typeof end !== 'string') {
-			end = this._attr(end, 'id');
+			end = _.attr(end, 'id');
 		}
-		return `${start}::${end}`;
+		return { start, end };
 	}
 
-	private _attr(elm: HTMLElement, attr: string) {
-		return elm.attributes.getNamedItem(attr).value;
+	private _subscribeForEvts() {
+		this.pubSub.$sub(Events.NODE_DELETE, (obj) => {
+			console.log(obj.id + ' :: ' + Events.NODE_DELETE + 'd');
+			this.connectors.forEach((value, key) => {
+				if (key.start === obj.id || key.end === obj.id) {
+					this.connectors.delete(key);
+					this.removeConnector(value);
+				}
+			});
+		});
 	}
 }
