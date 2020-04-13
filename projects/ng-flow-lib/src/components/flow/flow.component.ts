@@ -30,6 +30,7 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck {
 	private mChangeObservers: Array<(change: MediaChange) => void> = [];
 	private mediaObserverSubs: Subscription;
 	private _setTimeoutTimer = null;
+	private _firstTime = true;
 
 	constructor(private leaderLinesService: LeaderLineService,
 		private dynamicCompService: DynamicComponentService,
@@ -52,10 +53,8 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck {
 		}
 	}
 
-	emitPromeEvt = (event: any) => {
-		if (event.nodeData.index + 1 === this.flowData.length) {
-			this.promoterNodeClickEvtEmitter.emit(event)
-		}
+	emitWheelClick = (event: any) => {
+		this.promoterNodeClickEvtEmitter.emit(event)
 	}
 
 	getNodeData(index: number) {
@@ -75,10 +74,10 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck {
 		}, 600);
 	}
 	// Will be called out of this class instance's context. Hence Arrow func.
-	updateNodePosition = (node?: NewComponentData) => {
+	updateNodePosition = (node?: AttachedComponentData) => {
 		this.dynamicCompService.updateComponentBindings({
 			inputBindings: {
-				position: this.position.getAddingNodePos()
+				position: this.position.getAddingNodePos(node._data)
 			}
 		}, node);
 		(<NodeComponent>node.compRef.instance).updateDOMPosition();
@@ -92,19 +91,6 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck {
 		this._oldFlowData.push(...newNodesToAppend);
 	}
 
-	// TODO: Implement remove old nodes
-	private _detachOldNodes() {
-	}
-
-	private _renderFlow(nodes?: Flow.Nodes, reRender = true) {
-		const nodesToRender = nodes || this.flowData;
-		if (reRender) {
-			this.position.prepareForRecalculation();
-			this.leaderLinesService.removeAllConnectors();
-			this.dynamicCompService.clearAttachedComps(this.nodesContanerRef, CONST_SELECTORS.NODE);
-		}
-		nodesToRender.forEach(this._loadFlowNode);
-	}
 
 	// Will be called out of this class instance's context. Hence Arrow func.
 	private _loadFlowNode = (node: Node.Data, i: number) => {
@@ -115,29 +101,31 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck {
 			inputBindings: {
 				nodeData: { ...node, index: i },
 				dimension: this.nodeDimension,
-				promoteEvtCbFn: this.emitPromeEvt
+				promoteEvtCbFn: this.emitWheelClick
 			},
 			outputBindings: {
 				nodeAdded: () => {
-					if (i > 0) {
-						this.drawConnector({ from: this.nodeIdPrefix + (i - 1), to: this.nodeIdPrefix + i });
-					}
+					if (this._firstTime)
+						if (i > 0) {
+							this.drawConnector({ start: this.nodeIdPrefix + (i - 1), end: this.nodeIdPrefix + i });
+						}
 				}
 			},
 			_data: node
 		});
 	}
 
-	drawConnector({ from = '', to = '' }) {
+	drawConnector({ start = '', end = '', path = 'grid' }: Partial<Connector.DrawConnectorOptions>) {
 		this.leaderLinesService.drawConnector({
-			start: document.getElementById(from),
-			end: document.getElementById(to),
+			start: typeof start === 'string' ? document.getElementById(start) : start,
+			end: typeof end === 'string' ? document.getElementById(end) : end,
 			color: this.connectorColor,
 			size: this.connectorSize,
+			path: path,
+			// startSocket: this.position.history.get()
 		});
 	}
 
-	//TODO: Not being called from anywhere.
 	addObserverForMediaChange(mediaChangeObserver: (change: MediaChange) => void) {
 		this.mChangeObservers.push(mediaChangeObserver);
 	}
@@ -155,6 +143,28 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck {
 		const deletedNode = this.dynamicCompService.detachComponent(CONST_SELECTORS.NODE, id);
 		this._oldFlowData = this.flowData.slice();
 		this.flowData = this.flowData.filter(n => n !== deletedNode);
+	}
+
+	reRenderFlow() {
+		this._firstTime = false;
+		this.position.prepareForRecalculation();
+		this.dynamicCompService.clearAttachedComps(this.nodesContanerRef, CONST_SELECTORS.NODE);
+		const oldConnectors = Array.from(this.leaderLinesService.connectors.keys());
+		this.leaderLinesService.removeAllConnectors();
+		this._oldFlowData = []
+		this._appendNewNodes();
+		// KEEP_AN_EYE: Might fail to draw some connectors due to timing issues
+		setTimeout(() => {
+			this.reDrawConnectors(oldConnectors);
+		})
+	}
+
+	reDrawConnectors(keys: Array<any>) {
+		keys.map((key) => ({
+			...key,
+			start: _.attr(key.start, 'id'),
+			end: _.attr(key.end, 'id'),
+		})).forEach(k => this.leaderLinesService.drawConnector(k));
 	}
 
 	ngOnDestroy() {
