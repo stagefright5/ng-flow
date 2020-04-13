@@ -120,9 +120,8 @@ export class PositionService {
 		this.history.clear();
 	}
 
-	prepareForRecalculation() {
+	resetStores() {
 		this.clearHistory();
-		this.rows = 0;
 		this._parentElmRect = null;
 	}
 }

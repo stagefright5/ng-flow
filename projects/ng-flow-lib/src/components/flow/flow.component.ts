@@ -68,7 +68,7 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck {
 		clearTimeout(this._setTimeoutTimer);
 		this._setTimeoutTimer = setTimeout(() => {
 			console.log('mchange: ', change);
-			this.position.prepareForRecalculation();
+			this.position.resetStores();
 			this.dynamicCompService.attachedCompList[CONST_SELECTORS.NODE].forEach(this.updateNodePosition);
 			this.leaderLinesService.refreshConnectors();
 		}, 600);
@@ -147,7 +147,7 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck {
 
 	reRenderFlow() {
 		this._firstTime = false;
-		this.position.prepareForRecalculation();
+		this.position.resetStores();
 		this.dynamicCompService.clearAttachedComps(this.nodesContanerRef, CONST_SELECTORS.NODE);
 		const oldConnectors = Array.from(this.leaderLinesService.connectors.keys());
 		this.leaderLinesService.removeAllConnectors();
@@ -171,6 +171,7 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck {
 		this.mediaObserverSubs.unsubscribe();
 		this.leaderLinesService.removeAllConnectors();
 		this.dynamicCompService.clearAttachedComps(this.nodesContanerRef, CONST_SELECTORS.NODE);
+		this.position.resetStores();
 		clearTimeout(this._setTimeoutTimer);
 	}
 }
