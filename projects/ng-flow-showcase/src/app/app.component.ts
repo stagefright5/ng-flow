@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { DescPanelComponent } from './desc-panel/desc-panel.component';
 import { Flow } from 'ng-flow-lib';
+import { FlowComponent } from 'ng-flow-lib';
 
 @Component({
 	selector: 'app-root',
@@ -9,6 +10,10 @@ import { Flow } from 'ng-flow-lib';
 })
 export class AppComponent {
 	title = 'console-app-deployment-status-ui';
+	no = '2';
+	from = '1';
+	to = '3';
+	type: any = 'arc';
 	nodes: Flow.Nodes = [
 		{
 			component: DescPanelComponent
@@ -84,57 +89,66 @@ export class AppComponent {
 
 	onPromoteHandler(e) {
 		console.log('onPromoteHandler::', e);
-		this.nodes.push({
-			wheels: [
+		if (e.nodeData.index === this.nodes.length - 1)
+			this.nodes.push({
+				wheels: [
+					{
+						icon: 'assets/asterisk.svg',
+						descriptionPanel: DescPanelComponent
+					},
+					{
+						icon: 'assets/arrow-right.svg',
+						promoter: true,
+					},
+				],
+				lastNode: true
+			},
 				{
-					icon: 'assets/asterisk.svg',
-					descriptionPanel: DescPanelComponent
+					wheels: [
+						{
+							descriptionPanel: DescPanelComponent
+						},
+						{
+							icon: 'assets/arrow-right.svg',
+							promoter: true,
+							// descriptionPanel: DescPanelComponent
+							// descriptionPanel: 'ss'
+						}
+					]
 				},
 				{
-					icon: 'assets/arrow-right.svg',
-					promoter: true,
+					wheels: [
+						{
+							descriptionPanel: DescPanelComponent
+						},
+						{
+							icon: 'assets/arrow-right.svg',
+							promoter: true,
+							// descriptionPanel: DescPanelComponent
+							// descriptionPanel: 'ss'
+						}
+					]
 				},
-			],
-			lastNode: true
-		},
-			{
-				wheels: [
-					{
-						descriptionPanel: DescPanelComponent
-					},
-					{
-						icon: 'assets/arrow-right.svg',
-						promoter: true,
-						// descriptionPanel: DescPanelComponent
-						// descriptionPanel: 'ss'
-					}
-				]
-			},
-			{
-				wheels: [
-					{
-						descriptionPanel: DescPanelComponent
-					},
-					{
-						icon: 'assets/arrow-right.svg',
-						promoter: true,
-						// descriptionPanel: DescPanelComponent
-						// descriptionPanel: 'ss'
-					}
-				]
-			},
-			{
-				wheels: [
-					{
-						descriptionPanel: DescPanelComponent
-					},
-					{
-						icon: 'assets/arrow-right.svg',
-						promoter: true,
-						// descriptionPanel: DescPanelComponent
-						// descriptionPanel: 'ss'
-					}
-				]
-			});
+				{
+					wheels: [
+						{
+							descriptionPanel: DescPanelComponent
+						},
+						{
+							icon: 'assets/arrow-right.svg',
+							promoter: true,
+							// descriptionPanel: DescPanelComponent
+							// descriptionPanel: 'ss'
+						}
+					]
+				});
+	}
+
+	deleteNode(flow) {
+		flow.deleteNode('node_no_' + this.no);
+	}
+
+	drawConnector(flow: FlowComponent) {
+		flow.drawConnector({ start: `node_no_${this.from}` as any, end: `node_no_${this.to}` as any, path: this.type })
 	}
 }

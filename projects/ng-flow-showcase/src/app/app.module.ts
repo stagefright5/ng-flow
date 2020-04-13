@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
+import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { DescPanelComponent } from './desc-panel/desc-panel.component';
@@ -15,7 +15,8 @@ import { FlowModule } from 'ng-flow-lib';
 		BrowserModule,
 		CommonModule,
 		AppRoutingModule,
-		FlowModule
+		FlowModule,
+		FormsModule
 	],
 	providers: [],
 	bootstrap: [AppComponent],

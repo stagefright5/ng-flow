@@ -4,3 +4,9 @@
 .desc-panel-backdrop {
 	background-color: darken($color: #0000002f, $amount: 0);
 }
+.desc-panel {
+	overflow: auto;
+	// max-width: 20rem;
+	// max-height: 30rem;
+	background-color: white;
+}

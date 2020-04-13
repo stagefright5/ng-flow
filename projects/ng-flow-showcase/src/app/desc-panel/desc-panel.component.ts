@@ -12,6 +12,9 @@ export class DescPanelComponent implements OnInit {
 		console.log('injectedData::', this.data);
 	}
 
+	Array(n: number) {
+		return Array.from({ length: n || 0 });
+	}
 	ngOnInit() {
 	}
 
