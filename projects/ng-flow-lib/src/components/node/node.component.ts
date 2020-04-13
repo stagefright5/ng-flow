@@ -1,34 +1,51 @@
-import { Component, Input, Output, EventEmitter, AfterViewInit, ViewChild, ViewContainerRef, ElementRef, Renderer2, HostBinding, OnDestroy } from '@angular/core';
-import { Node } from '../../utils/TypeDefs'
-import { OverlayService } from '../../services/overlay.service';
-import { DynamicComponentService } from '../../services/dynamic-component.service';
-import { CONST_SELECTORS, Events } from '../../utils/constants';
-import { PubSubService } from '../../services/pub-sub.service';
-import { _ } from '../../utils/generic-ops';
+import {
+	Component,
+	Input,
+	Output,
+	EventEmitter,
+	AfterViewInit,
+	ViewChild,
+	ViewContainerRef,
+	ElementRef,
+	Renderer2,
+	HostBinding,
+	OnDestroy
+} from "@angular/core";
+import { Node } from "../../utils/TypeDefs";
+import { OverlayService } from "../../services/overlay.service";
+import { DynamicComponentService } from "../../services/dynamic-component.service";
+import { CONST_SELECTORS, Events } from "../../utils/constants";
+import { PubSubService } from "../../services/pub-sub.service";
+import { _ } from "../../utils/generic-ops";
 @Component({
 	selector: CONST_SELECTORS.NODE,
-	templateUrl: './node.component.html',
-	styleUrls: ['./node.component.scss']
+	templateUrl: "./node.component.html",
+	styleUrls: ["./node.component.scss"]
 })
 export class NodeComponent implements AfterViewInit, OnDestroy {
 	@Input() nodeData: Node.Data = {};
 	@Input() position: Node.Position = { top: 0, left: 0 };
-	@Input() dimension: { width: number, height: number };
+	@Input() dimension: { width: number; height: number };
 	@Input() promoteEvtCbFn: (...args) => void;
 	@Output() nodeAdded: EventEmitter<any> = new EventEmitter();
-	@HostBinding('attr.id') id = '';
+	@HostBinding("attr.id") id = "";
 
-	@ViewChild('node_content', { static: false, read: ViewContainerRef }) nodeContent: ViewContainerRef;
-	constructor(private _overlayService: OverlayService,
+	@ViewChild("node_content", { static: false, read: ViewContainerRef })
+	nodeContent: ViewContainerRef;
+	constructor(
+		private _overlayService: OverlayService,
 		private _dynamicCompService: DynamicComponentService,
 		private renderer: Renderer2,
 		private elementRef: ElementRef,
-		private pubSub: PubSubService) { }
+		private pubSub: PubSubService
+	) {}
 
 	ngAfterViewInit() {
 		setTimeout(() => {
 			if (this.nodeData.component) {
-				this._dynamicCompService.loadComponent(this.nodeContent, { component: this.nodeData.component });
+				this._dynamicCompService.loadComponent(this.nodeContent, {
+					component: this.nodeData.component
+				});
 			}
 			this.nodeAdded.emit(this.nodeData);
 		});
@@ -40,9 +57,13 @@ export class NodeComponent implements AfterViewInit, OnDestroy {
 			nodeData: this.nodeData
 		};
 		if (wheel.descriptionPanel) {
-			this._overlayService.open(<HTMLElement>event.target, wheel.descriptionPanel, dataObj);
+			this._overlayService.open(
+				<HTMLElement>event.target,
+				wheel.descriptionPanel,
+				dataObj
+			);
 		} else {
-			if (typeof this.promoteEvtCbFn === 'function') {
+			if (typeof this.promoteEvtCbFn === "function") {
 				this.promoteEvtCbFn({
 					wheelData: wheel,
 					nodeData: this.nodeData
@@ -54,14 +75,13 @@ export class NodeComponent implements AfterViewInit, OnDestroy {
 	updateDOMPosition() {
 		Object.entries(this.position).forEach(([key, value]) => {
 			const el = this.elementRef.nativeElement;
-			this.renderer.setStyle(el, key, value + 'px');
+			this.renderer.setStyle(el, key, value + "px");
 		});
 	}
 
 	ngOnDestroy() {
 		this.pubSub.$pub(Events.NODE_DELETE, {
-			id: _.attr(this.elementRef.nativeElement, 'id')
-		})
+			id: _.attr(this.elementRef.nativeElement, "id")
+		});
 	}
-
 }

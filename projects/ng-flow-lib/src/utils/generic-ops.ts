@@ -25,7 +25,7 @@ export const _ = {
 			let t = false;
 			if (
 				(typeof keySelector === "function" && keySelector(key)) ||
-				(keySelector && (<unknown>keySelector as RegExp).test(key)) ||
+				(keySelector && ((<unknown>keySelector) as RegExp).test(key)) ||
 				!keySelector
 			) {
 				cbs.forEach(cb => {

@@ -1,4 +1,4 @@
-import { Node } from './TypeDefs';
+import { Node } from "./TypeDefs";
 
 export class PositonHistory {
 	entries: Array<Node.PositionHistoryEntry> = [];
@@ -15,7 +15,10 @@ export class PositonHistory {
 		}
 		this.entries.push(...entries);
 		if (this.entries.length > this.maxLength) {
-			this.entries = this.entries.slice(-this.maxLength, this.entries.length);
+			this.entries = this.entries.slice(
+				-this.maxLength,
+				this.entries.length
+			);
 		}
 		return this.entries;
 	}

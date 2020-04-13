@@ -1,8 +1,21 @@
 <div fxLayout="column nowrap" class="node">
-  <div style="height: 80%;" [ngStyle]="{ 'margin-bottom': nodeData?.wheels?.length ? '2rem' : '0' }" fxLayout="column nowrap">
-    <ng-template #node_content></ng-template>
-  </div>
-  <div fxLayout="row nowrap" fxLayoutAlign="space-around center" fxLayoutGap="1rem" class="wheels">
-    <wheel *ngFor="let wheel of nodeData.wheels || []" [wheelData]="wheel" (click)="emitPromoterWheelClickEvt($event, wheel)"></wheel>
-  </div>
+	<div
+		style="height: 80%;"
+		[ngStyle]="{ 'margin-bottom': nodeData?.wheels?.length ? '2rem' : '0' }"
+		fxLayout="column nowrap"
+	>
+		<ng-template #node_content></ng-template>
+	</div>
+	<div
+		fxLayout="row nowrap"
+		fxLayoutAlign="space-around center"
+		fxLayoutGap="1rem"
+		class="wheels"
+	>
+		<wheel
+			*ngFor="let wheel of nodeData.wheels || []"
+			[wheelData]="wheel"
+			(click)="emitPromoterWheelClickEvt($event, wheel)"
+		></wheel>
+	</div>
 </div>
