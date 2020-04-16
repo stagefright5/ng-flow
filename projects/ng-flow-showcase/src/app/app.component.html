@@ -1,3 +1,29 @@
+<div>Connector Controls</div>
+<div fxLayout="column">
+	<div fxLayout="row">
+		<label>From: </label><input type="text" [(ngModel)]="from" />
+	</div>
+	<div fxLayout="row">
+		<label>To: </label><input type="text" [(ngModel)]="to" />
+	</div>
+	<div fxLayout="row">
+		<label>Type: </label
+		><select value="'fluid'" [(ngModel)]="type">
+			<option *ngFor="let t of con_types" value="{{ t }}">{{ t }}</option>
+		</select>
+	</div>
+	<div fxLayout="row">
+		<button
+			fxFlexAlign="flex-end"
+			(click)="drawConnector(flow)"
+			class="reposition-btn"
+		>
+			Draw Connector
+		</button>
+	</div>
+</div>
+<div style="height:2rem"></div>
+<div>Node Control</div>
 <div fxLayout="row">
 	<input type="text" [(ngModel)]="no" />
 	<button (click)="deleteNode(flow)" class="reposition-btn">
@@ -5,20 +31,8 @@
 	</button>
 </div>
 <div style="height:2rem"></div>
-<div fxLayout="row">
-	<input type="text" [(ngModel)]="from" />
-	<input type="text" [(ngModel)]="to" />
-	<input type="text" [(ngModel)]="type" />
-	<button
-		fxFlexAlign="flex-end"
-		(click)="drawConnector(flow)"
-		class="reposition-btn"
-	>
-		Draw Connector
-	</button>
-</div>
-<div style="height:2rem"></div>
-<div fxLayout="row">
+<div>Reset Controls</div>
+<div fxLayout="column">
 	<button (click)="flow.reCalculateNodePositions()" class="reposition-btn">
 		Reposition the flow
 	</button>
@@ -27,11 +41,29 @@
 	</button>
 </div>
 <div style="height:2rem"></div>
+<div>Dimension Controls</div>
+<div id="node_dim" fxLayout="column">
+	<div fxLayout="row">
+		<label>Width: </label><input [(ngModel)]="dim.width" type="number" />
+	</div>
+	<div fxLayout="row">
+		<label>Height: </label><input [(ngModel)]="dim.height" type="number" />
+	</div>
+	<div fxLayout="row">
+		<label>Gap: </label><input [(ngModel)]="dim.gap" type="number" />
+	</div>
+</div>
+<div style="height:2rem"></div>
+<div style="height:2rem"></div>
+<!-- <div id="flow-container"  style="height:30rem; overflow-y: auto;"> -->
 <flow
 	[flowData]="nodes"
 	(promote)="onPromoteHandler($event)"
 	#flow="ngFlow"
 	[connectorColor]="'blue'"
 	[connectorSize]="2"
+	[nodeWidth]="dim.width"
+	[nodeHeight]="dim.height"
+	[nodeGap]="dim.gap"
 ></flow>
-<router-outlet></router-outlet>
+<!-- </div> -->
