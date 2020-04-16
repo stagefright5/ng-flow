@@ -15,24 +15,24 @@ export class DynamicComponentService {
 	appendNodeToFlow(newNode: Node.New): AttachedComponentData {
 		const {
 			component,
-			_data,
+			__data__,
 			inputBindings,
 			outputBindings,
 			flow,
-			uniqueId
+			id
 		} = newNode;
-		const newCompData = this.loadComponent(flow, { component, _data });
+		const newCompData = this.loadComponent(flow, { component, __data__ });
 		this.updateComponentBindings(
 			{ inputBindings, outputBindings },
 			newCompData
 		);
-		this._updateComponentInstaceMembers({ id: uniqueId }, newCompData);
+		this._updateComponentInstaceMembers({ id: id }, newCompData);
 		return newCompData;
 	}
 
 	loadComponent(
 		parent: ViewContainerRef,
-		newNode: { component: any; _data?: any }
+		newNode: { component: any; __data__?: any, id?: string }
 	): AttachedComponentData {
 		const compFactory = this.componentFactoryResolver.resolveComponentFactory(
 			newNode.component
@@ -42,7 +42,8 @@ export class DynamicComponentService {
 			compRef,
 			inputs: compFactory.inputs,
 			outputs: compFactory.outputs,
-			_data: newNode._data
+			__data__: newNode.__data__,
+			id: newNode.id
 		};
 		(this.attachedCompList[compFactory.selector] &&
 			this.attachedCompList[compFactory.selector].push(newCompData)) ||
@@ -51,7 +52,7 @@ export class DynamicComponentService {
 	}
 
 	updateComponentBindings(
-		{ inputBindings, outputBindings }: Partial<Node.New>,
+		{ inputBindings = null, outputBindings = null }: Partial<Node.New>,
 		compData: AttachedComponentData
 	) {
 		inputBindings && this._updateInputBindings(inputBindings, compData);
@@ -67,7 +68,7 @@ export class DynamicComponentService {
 		].filter(compData => {
 			if ((<any>compData.compRef.instance).id === id) {
 				compData.compRef.destroy();
-				deletedNode = compData._data;
+				deletedNode = compData.__data__;
 				return false;
 			}
 			return true;

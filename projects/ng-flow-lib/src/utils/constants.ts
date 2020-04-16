@@ -14,7 +14,7 @@ export const CONST_SELECTORS = {
 	FLOW: "flow,[flow]",
 	WHEEL: "wheel"
 };
-export const NODE_ID_PREFIX = "node_no_";
+export const NODE_ID_PREFIX = "node_";
 export const Events = {
 	NODE_DELETE: "node-delete"
 };

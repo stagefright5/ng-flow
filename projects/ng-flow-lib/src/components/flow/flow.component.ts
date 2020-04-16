@@ -194,7 +194,7 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck, OnChanges {
 	drawConnector({
 		start = "",
 		end = "",
-		path = "grid"
+		path = "fluid"
 	}: Partial<Connector.DrawConnectorOptions>) {
 		this.leaderLinesService.drawConnector({
 			start:
@@ -205,7 +205,6 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck, OnChanges {
 			color: this.connectorColor,
 			size: this.connectorSize,
 			path: path
-			// startSocket: this.position.history.get()
 		});
 	}
 
@@ -251,6 +250,14 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck, OnChanges {
 		// KEEP_AN_EYE: Might fail to draw some connectors due to timing issues
 		setTimeout(() => {
 			this.reDrawConnectors(oldConnectors);
+		});
+	}
+
+	@HostListener("scroll", ["$event"])
+	scrollListener(e) {
+		window.requestAnimationFrame(time => {
+			console.log(time);
+			this.leaderLinesService.refreshConnectors();
 		});
 	}
 
