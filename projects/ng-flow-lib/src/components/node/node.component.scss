@@ -1,8 +1,6 @@
 @import "../../generic-styles.scss";
 
 .node {
-	width: 15rem;
-	height: 18rem;
 	overflow: auto;
 	@extend .rounded-rectangle;
 }

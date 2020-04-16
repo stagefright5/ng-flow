@@ -7,6 +7,7 @@
 /*.tgz
 # Only exists if Bazel was run
 /bazel-out
+/.backups
 
 # dependencies
 /node_modules

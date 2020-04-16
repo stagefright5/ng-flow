@@ -1,4 +1,9 @@
-<div fxLayout="column nowrap" class="node">
+<div
+	fxLayout="column nowrap"
+	class="node"
+	[style.width.px]="dimension.width"
+	[style.height.px]="dimension.height"
+>
 	<div
 		style="height: 80%;"
 		[ngStyle]="{ 'margin-bottom': nodeData?.wheels?.length ? '2rem' : '0' }"

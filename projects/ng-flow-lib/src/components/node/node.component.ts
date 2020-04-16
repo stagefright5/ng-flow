@@ -25,7 +25,7 @@ import { _ } from "../../utils/generic-ops";
 export class NodeComponent implements AfterViewInit, OnDestroy {
 	@Input() nodeData: Node.Data = {};
 	@Input() position: Node.Position = { top: 0, left: 0 };
-	@Input() dimension: { width: number; height: number };
+	@Input() dimension: Node.Dimension = { width: 250, height: 300 };
 	@Input() promoteEvtCbFn: (...args) => void;
 	@Output() nodeAdded: EventEmitter<any> = new EventEmitter();
 	@HostBinding("attr.id") id = "";

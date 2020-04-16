@@ -15,6 +15,7 @@ export namespace Node {
 		lastNode?: boolean;
 		index?: number;
 		component?: any;
+		id?: string
 	}
 
 	export interface Wheel {
@@ -41,7 +42,7 @@ export namespace Node {
 	export interface New {
 		flow?: ViewContainerRef;
 		component?: typeof NodeComponent;
-		uniqueId?: string;
+		id?: string;
 		inputBindings: {
 			nodeData?: Node.Data;
 			position?: Node.Position;
@@ -51,7 +52,7 @@ export namespace Node {
 		outputBindings: {
 			nodeAdded?: (...args) => void;
 		};
-		_data: Node.Data;
+		__data__: Node.Data;
 	}
 }
 
@@ -63,7 +64,8 @@ export interface AttachedComponentData {
 	compRef: ComponentRef<unknown>;
 	inputs: BindableProperty[];
 	outputs: BindableProperty[];
-	_data?: Node.Data;
+	id?: string;
+	__data__?: Node.Data;
 }
 
 export namespace Flow {

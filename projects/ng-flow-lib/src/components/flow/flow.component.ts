@@ -8,7 +8,10 @@ import {
 	ViewChild,
 	ViewContainerRef,
 	DoCheck,
-	ElementRef
+	ElementRef,
+	OnChanges,
+	SimpleChanges,
+	HostListener
 } from "@angular/core";
 import {
 	Flow,
@@ -33,16 +36,18 @@ import { _ } from "../../utils/generic-ops";
 	styleUrls: ["./flow.component.scss"],
 	exportAs: "ngFlow"
 })
-export class FlowComponent implements OnInit, OnDestroy, DoCheck {
+export class FlowComponent implements OnInit, OnDestroy, DoCheck, OnChanges {
 	@Output("promote") promoterNodeClickEvtEmitter = new EventEmitter();
 	@Input() flowData: Flow.Nodes = [];
 	@Input() connectorColor: string = "#000";
 	@Input() connectorSize: number = 4;
+	@Input() nodeWidth = 250;
+	@Input() nodeHeight = 300;
+	@Input() nodeGap = 0;
 
 	@ViewChild("nodes", { read: ViewContainerRef, static: true })
 	nodesContanerRef: ViewContainerRef;
 	nodeIdPrefix = NODE_ID_PREFIX;
-	nodeDimension: Node.Dimension = { width: 15, height: 18 };
 	private _oldFlowData: Flow.Nodes = [];
 	private mChangeObservers: Array<(change: MediaChange) => void> = [];
 	private mediaObserverSubs: Subscription;
@@ -56,13 +61,50 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck {
 		private position: PositionService,
 		private mediaObserver: MediaObserver
 	) {
-		this.position.init(this.elmRef, this.nodeDimension);
 		this._subsForMediaChange();
 	}
 
 	ngOnInit(): void {
 		// TODO: Use "MutationObserver" DOM API for finer control on when to reposition the nodes
 		this.addObserverForMediaChange(this.reCalculateNodePositions);
+		this.position.initBasePositionParams(
+			this.elmRef,
+			{
+				width: this.nodeWidth,
+				height: this.nodeHeight
+			},
+			this.nodeGap
+		);
+	}
+
+	ngOnChanges(changes: SimpleChanges) {
+		if (
+			(changes.nodeWidth && !changes.nodeWidth.firstChange) ||
+			(changes.nodeHeight && !changes.nodeHeight.firstChange) ||
+			(changes.nodeGap && !changes.nodeGap.firstChange)
+		) {
+			setTimeout(() => {
+				const dimension = {
+					width: this.nodeWidth,
+					height: this.nodeHeight
+				};
+				this.position.initBasePositionParams(
+					this.elmRef,
+					dimension,
+					this.nodeGap
+				);
+				this.dynamicCompService.attachedCompList[
+					CONST_SELECTORS.NODE
+				].forEach(compData =>
+					this.dynamicCompService.updateComponentBindings(
+						{ inputBindings: { dimension } },
+						compData
+					)
+				);
+				console.log("recalcing pos after width changed");
+				this.reCalculateNodePositions();
+			});
+		}
 	}
 
 	ngDoCheck() {
@@ -92,14 +134,14 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck {
 				CONST_SELECTORS.NODE
 			].forEach(this.updateNodePosition);
 			this.leaderLinesService.refreshConnectors();
-		}, 600);
+		}, 200);
 	};
 	// Will be called out of this class instance's context. Hence Arrow func.
 	updateNodePosition = (node?: AttachedComponentData) => {
 		this.dynamicCompService.updateComponentBindings(
 			{
 				inputBindings: {
-					position: this.position.getAddingNodePos(node._data)
+					position: this.position.getAddingNodePos(node.__data__)
 				}
 			},
 			node
@@ -125,10 +167,13 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck {
 		return this.dynamicCompService.appendNodeToFlow({
 			flow: this.nodesContanerRef,
 			component: NodeComponent,
-			uniqueId: this.nodeIdPrefix + i,
+			id: this.nodeIdPrefix + i,
 			inputBindings: {
 				nodeData: { ...node, index: i },
-				dimension: this.nodeDimension,
+				dimension: {
+					width: this.nodeWidth,
+					height: this.nodeHeight
+				},
 				promoteEvtCbFn: this.emitWheelClick
 			},
 			outputBindings: {
@@ -142,7 +187,7 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck {
 						}
 				}
 			},
-			_data: node
+			__data__: node
 		});
 	};
 

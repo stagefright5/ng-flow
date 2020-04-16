@@ -12,22 +12,28 @@ export class PositionService {
 
 	private _nodeGap = 0;
 	private _parentElm: HTMLElement;
-	private _nodeDimension = <Node.Dimension>{};
+	private _nodeDimension = { width: 0, height: 0 };
 	private _parentElmRect: DOMRect;
 	private _DIRECTIONS = CONST_DIRECTIONS;
 
 	constructor() {}
 
-	init(elmRef: ElementRef, initialNodeDimension: Node.Dimension) {
+	initBasePositionParams(
+		elmRef: ElementRef,
+		initialNodeDimension: Node.Dimension,
+		gap: number
+	) {
 		this._parentElm = elmRef.nativeElement;
-		this.unit = parseFloat(
-			getComputedStyle(document.querySelector("html")).fontSize
-		);
+		this.unit =
+			1 ||
+			parseFloat(
+				getComputedStyle(document.querySelector("html")).fontSize
+			);
 		/*-- this.unit dependent properties --*/
 		Object.entries(initialNodeDimension).forEach(([k, v]) => {
-			this._nodeDimension[k] = v * this.unit;
+			this._nodeDimension[k] = parseFloat(v) * this.unit;
 		});
-		this._nodeGap = 5 * this.unit;
+		this._nodeGap = parseFloat(gap + "") || this._nodeDimension.width * 0.5;
 	}
 
 	getAddingNodePos(node): Node.Position {
@@ -101,7 +107,7 @@ export class PositionService {
 		return positionObject;
 	}
 
-	private get ONE_NODE_SPACE(): Node.Dimension {
+	private get ONE_NODE_SPACE(): { width: number; height: number } {
 		return {
 			width: this._nodeGap + this._nodeDimension.width,
 			height: this._nodeDimension.height
