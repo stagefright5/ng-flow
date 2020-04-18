@@ -1,8 +1,4 @@
-import {
-	Injectable,
-	ComponentFactoryResolver,
-	ViewContainerRef
-} from "@angular/core";
+import { Injectable, ComponentFactoryResolver, ViewContainerRef } from "@angular/core";
 import { Node, AttachedComponentData } from "../utils/TypeDefs";
 @Injectable({
 	providedIn: "root"
@@ -13,30 +9,18 @@ export class DynamicComponentService {
 	constructor(private componentFactoryResolver: ComponentFactoryResolver) {}
 
 	appendNodeToFlow(newNode: Node.New): AttachedComponentData {
-		const {
-			component,
-			__data__,
-			inputBindings,
-			outputBindings,
-			flow,
-			id
-		} = newNode;
+		const { component, __data__, inputBindings, outputBindings, flow, id } = newNode;
 		const newCompData = this.loadComponent(flow, { component, __data__ });
-		this.updateComponentBindings(
-			{ inputBindings, outputBindings },
-			newCompData
-		);
+		this.updateComponentBindings({ inputBindings, outputBindings }, newCompData);
 		this._updateComponentInstaceMembers({ id: id }, newCompData);
 		return newCompData;
 	}
 
 	loadComponent(
 		parent: ViewContainerRef,
-		newNode: { component: any; __data__?: any, id?: string }
+		newNode: { component: any; __data__?: any; id?: string }
 	): AttachedComponentData {
-		const compFactory = this.componentFactoryResolver.resolveComponentFactory(
-			newNode.component
-		);
+		const compFactory = this.componentFactoryResolver.resolveComponentFactory(newNode.component);
 		const compRef = parent.createComponent(compFactory);
 		const newCompData = {
 			compRef,
@@ -57,15 +41,12 @@ export class DynamicComponentService {
 	) {
 		inputBindings && this._updateInputBindings(inputBindings, compData);
 		outputBindings && this._updateOutputBindings(outputBindings, compData);
-		(inputBindings || outputBindings) &&
-			compData.compRef.changeDetectorRef.detectChanges();
+		(inputBindings || outputBindings) && compData.compRef.changeDetectorRef.detectChanges();
 	}
 
 	public detachComponent(selector: string, id: string) {
 		let deletedNode = null;
-		this.attachedCompList[selector] = this.attachedCompList[
-			selector
-		].filter(compData => {
+		this.attachedCompList[selector] = this.attachedCompList[selector].filter(compData => {
 			if ((<any>compData.compRef.instance).id === id) {
 				compData.compRef.destroy();
 				deletedNode = compData.__data__;
@@ -76,23 +57,16 @@ export class DynamicComponentService {
 		return deletedNode;
 	}
 
-	private _updateInputBindings(
-		inputBindings,
-		compData: AttachedComponentData
-	) {
+	private _updateInputBindings(inputBindings, compData: AttachedComponentData) {
 		if (compData.inputs && compData.inputs.length) {
 			compData.inputs.forEach(({ propName }) => {
 				if (inputBindings[propName]) {
-					compData.compRef.instance[propName] =
-						inputBindings[propName];
+					compData.compRef.instance[propName] = inputBindings[propName];
 				}
 			});
 		}
 	}
-	private _updateOutputBindings(
-		outputBindings,
-		compData: AttachedComponentData
-	) {
+	private _updateOutputBindings(outputBindings, compData: AttachedComponentData) {
 		if (compData.outputs && compData.outputs.length) {
 			compData.outputs.forEach(({ propName }) => {
 				if (outputBindings[propName]) {
@@ -104,10 +78,7 @@ export class DynamicComponentService {
 		}
 	}
 
-	private _updateComponentInstaceMembers(
-		kvObject: { [key: string]: any },
-		component: AttachedComponentData
-	) {
+	private _updateComponentInstaceMembers(kvObject: { [key: string]: any }, component: AttachedComponentData) {
 		const componentInstance = component.compRef.instance;
 		Object.assign(componentInstance, kvObject);
 	}

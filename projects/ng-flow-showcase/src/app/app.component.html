@@ -1,11 +1,7 @@
 <div>Connector Controls</div>
 <div fxLayout="column">
-	<div fxLayout="row">
-		<label>From: </label><input type="text" [(ngModel)]="from" />
-	</div>
-	<div fxLayout="row">
-		<label>To: </label><input type="text" [(ngModel)]="to" />
-	</div>
+	<div fxLayout="row"><label>From: </label><input type="text" [(ngModel)]="from" /></div>
+	<div fxLayout="row"><label>To: </label><input type="text" [(ngModel)]="to" /></div>
 	<div fxLayout="row">
 		<label>Type: </label
 		><select value="'fluid'" [(ngModel)]="type">
@@ -13,11 +9,7 @@
 		</select>
 	</div>
 	<div fxLayout="row">
-		<button
-			fxFlexAlign="flex-end"
-			(click)="drawConnector(flow)"
-			class="reposition-btn"
-		>
+		<button fxFlexAlign="flex-end" (click)="drawConnector(flow)" class="reposition-btn">
 			Draw Connector
 		</button>
 	</div>
@@ -43,15 +35,9 @@
 <div style="height:2rem"></div>
 <div>Dimension Controls</div>
 <div id="node_dim" fxLayout="column">
-	<div fxLayout="row">
-		<label>Width: </label><input [(ngModel)]="dim.width" type="number" />
-	</div>
-	<div fxLayout="row">
-		<label>Height: </label><input [(ngModel)]="dim.height" type="number" />
-	</div>
-	<div fxLayout="row">
-		<label>Gap: </label><input [(ngModel)]="dim.gap" type="number" />
-	</div>
+	<div fxLayout="row"><label>Width: </label><input [(ngModel)]="dim.width" type="number" /></div>
+	<div fxLayout="row"><label>Height: </label><input [(ngModel)]="dim.height" type="number" /></div>
+	<div fxLayout="row"><label>Gap: </label><input [(ngModel)]="dim.gap" type="number" /></div>
 </div>
 <div style="height:2rem"></div>
 <div style="height:2rem"></div>

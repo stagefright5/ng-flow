@@ -1,8 +1,4 @@
-import {
-	ViewContainerRef,
-	ComponentRef,
-	ComponentFactory
-} from "@angular/core";
+import { ViewContainerRef, ComponentRef, ComponentFactory } from "@angular/core";
 import { NodeComponent } from "../components/node/node.component";
 import { CONST_DIRECTIONS } from "./constants";
 
@@ -15,7 +11,7 @@ export namespace Node {
 		lastNode?: boolean;
 		index?: number;
 		component?: any;
-		id?: string
+		id?: string;
 	}
 
 	export interface Wheel {
@@ -83,24 +79,8 @@ export namespace Connector {
 		endSocket?: "top" | "right" | "bottom" | "left" | "auto";
 		startSocketGravity?: number | string | number[] | string[];
 		endSocketGravity?: number | string | number[] | string[];
-		startPlug?:
-			| "disc"
-			| "square"
-			| "arrow1"
-			| "arrow2"
-			| "arrow3"
-			| "hand"
-			| "crosshair"
-			| "behind";
-		endPlug?:
-			| "disc"
-			| "square"
-			| "arrow1"
-			| "arrow2"
-			| "arrow3"
-			| "hand"
-			| "crosshair"
-			| "behind";
+		startPlug?: "disc" | "square" | "arrow1" | "arrow2" | "arrow3" | "hand" | "crosshair" | "behind";
+		endPlug?: "disc" | "square" | "arrow1" | "arrow2" | "arrow3" | "hand" | "crosshair" | "behind";
 		startPlugColor?: "auto" | string;
 		endPlugColor?: "auto" | string;
 	}

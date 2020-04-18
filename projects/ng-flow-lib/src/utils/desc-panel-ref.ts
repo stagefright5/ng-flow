@@ -4,11 +4,7 @@ import { ESCAPE, hasModifierKey } from "@angular/cdk/keycodes";
 import { ComponentRef } from "@angular/core";
 
 export class DescPanelRef {
-	constructor(
-		private _overlayRef: OverlayRef,
-		private _containerRef: ComponentRef<unknown>,
-		private _config: any
-	) {
+	constructor(private _overlayRef: OverlayRef, private _containerRef: ComponentRef<unknown>, private _config: any) {
 		this._subscribeToKeyDownEvts();
 		this._subscribeToBackDropClick();
 	}
@@ -24,11 +20,7 @@ export class DescPanelRef {
 			.keydownEvents()
 			.pipe(
 				filter(event => {
-					return (
-						event.keyCode === ESCAPE &&
-						!this._config.disableClose &&
-						!hasModifierKey(event)
-					);
+					return event.keyCode === ESCAPE && !this._config.disableClose && !hasModifierKey(event);
 				})
 			)
 			.subscribe(e => {

@@ -13,27 +13,16 @@ export class PubSubService implements IPubSubService {
 
 	public $sub(event: string): Observable<any>;
 	public $sub(event: string, callback: (value: any) => void): Subscription;
-	public $sub(
-		event: string,
-		callback: (value: any) => void,
-		error: (error: any) => void
-	): Subscription;
+	public $sub(event: string, callback: (value: any) => void, error: (error: any) => void): Subscription;
 	public $sub(
 		event: string,
 		callback: (value: any) => void,
 		error: (error: any) => void,
 		complete: () => void
 	): Subscription;
-	public $sub(
-		event: string,
-		callback?: (value: any) => void,
-		error?: (error: any) => void,
-		complete?: () => void
-	) {
+	public $sub(event: string, callback?: (value: any) => void, error?: (error: any) => void, complete?: () => void) {
 		if (!event) {
-			throw new Error(
-				`[${ServiceName}] => Subscription method must get event name.`
-			);
+			throw new Error(`[${ServiceName}] => Subscription method must get event name.`);
 		}
 
 		if (this.events[event] === undefined) {
@@ -43,17 +32,13 @@ export class PubSubService implements IPubSubService {
 		if (typeof callback !== "function") {
 			return this.events[event].asObservable();
 		} else {
-			return this.events[event]
-				.asObservable()
-				.subscribe(callback, error, complete);
+			return this.events[event].asObservable().subscribe(callback, error, complete);
 		}
 	}
 
 	public $pub(event: string, eventObject?: any) {
 		if (!event) {
-			throw new Error(
-				`[${ServiceName}] => Publish method must get event name.`
-			);
+			throw new Error(`[${ServiceName}] => Publish method must get event name.`);
 		} else if (!this.events[event]) {
 			return;
 		}
@@ -65,11 +50,7 @@ export interface IPubSubService {
 	$pub(event: string, eventObject?: any);
 	$sub(event: string): Observable<any>;
 	$sub(event: string, callback: (value: any) => void): Subscription;
-	$sub(
-		event: string,
-		callback: (value: any) => void,
-		error: (error: any) => void
-	): Subscription;
+	$sub(event: string, callback: (value: any) => void, error: (error: any) => void): Subscription;
 	$sub(
 		event: string,
 		callback: (value: any) => void,
@@ -81,15 +62,6 @@ export interface IPubSubService {
 interface I$sub {
 	(event: string): Observable<any>;
 	(event: string, callback: (value: any) => void): Subscription;
-	(
-		event: string,
-		callback: (value: any) => void,
-		error: (error: any) => void
-	): Subscription;
-	(
-		event: string,
-		callback: (value: any) => void,
-		error: (error: any) => void,
-		complete: () => void
-	): Subscription;
+	(event: string, callback: (value: any) => void, error: (error: any) => void): Subscription;
+	(event: string, callback: (value: any) => void, error: (error: any) => void, complete: () => void): Subscription;
 }

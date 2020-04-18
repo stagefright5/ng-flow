@@ -21,25 +21,15 @@ export class LeaderLineService {
 
 	drawConnector(opts: Connector.DrawConnectorOptions) {
 		if (opts.start && opts.end) {
-			opts.start =
-				typeof opts.start === "string"
-					? document.getElementById(opts.start)
-					: opts.start;
-			opts.end =
-				typeof opts.end === "string"
-					? document.getElementById(opts.end)
-					: opts.end;
+			opts.start = typeof opts.start === "string" ? document.getElementById(opts.start) : opts.start;
+			opts.end = typeof opts.end === "string" ? document.getElementById(opts.end) : opts.end;
 			if (opts.start && opts.end)
 				this.zone.runOutsideAngular(() => {
 					opts = { ...this.leaderLineDrawOptions, ...(opts && opts) };
 					this.connectors.set(opts, new LeaderLine(opts));
 				});
 		} else {
-			console.log(
-				"Could not draw connector between",
-				opts.start,
-				opts.end
-			);
+			console.log("Could not draw connector between", opts.start, opts.end);
 		}
 	}
 
@@ -76,10 +66,7 @@ export class LeaderLineService {
 		this.pubSub.$sub(Events.NODE_DELETE, obj => {
 			console.log(obj.id + " :: " + Events.NODE_DELETE + "d");
 			this.connectors.forEach((value, key) => {
-				if (
-					obj.id === _.attr(key.start, "id") ||
-					obj.id === _.attr(key.end, "id")
-				) {
+				if (obj.id === _.attr(key.start, "id") || obj.id === _.attr(key.end, "id")) {
 					this.connectors.delete(key);
 					this.removeConnector(value);
 				}

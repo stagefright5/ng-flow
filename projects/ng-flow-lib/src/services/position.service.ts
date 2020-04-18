@@ -18,17 +18,9 @@ export class PositionService {
 
 	constructor() {}
 
-	initBasePositionParams(
-		elmRef: ElementRef,
-		initialNodeDimension: Node.Dimension,
-		gap: number
-	) {
+	initBasePositionParams(elmRef: ElementRef, initialNodeDimension: Node.Dimension, gap: number) {
 		this._parentElm = elmRef.nativeElement;
-		this.unit =
-			1 ||
-			parseFloat(
-				getComputedStyle(document.querySelector("html")).fontSize
-			);
+		this.unit = 1 || parseFloat(getComputedStyle(document.querySelector("html")).fontSize);
 		/*-- this.unit dependent properties --*/
 		Object.entries(initialNodeDimension).forEach(([k, v]) => {
 			this._nodeDimension[k] = parseFloat(v) * this.unit;
@@ -47,13 +39,10 @@ export class PositionService {
 		let rowNum = (this.history.recent && this.history.recent.row) || 0;
 		if (l > -1) {
 			let prevNodeLeftPos = this.prevNodePos.leftPos;
-			let newLeftPosContainer =
-				prevNodeLeftPos + this.ONE_NODE_SPACE.width;
+			let newLeftPosContainer = prevNodeLeftPos + this.ONE_NODE_SPACE.width;
 			let _additionFactor = 0;
-			const prevfromDir =
-				this.history.get(l) && this.history.get(l).direction;
-			const prevPrevFromDir =
-				this.history.get(l - 1) && this.history.get(l - 1).direction;
+			const prevfromDir = this.history.get(l) && this.history.get(l).direction;
+			const prevPrevFromDir = this.history.get(l - 1) && this.history.get(l - 1).direction;
 			_direction = prevfromDir || _direction;
 
 			if (prevfromDir === this._DIRECTIONS.FROM_TOP) {
@@ -75,13 +64,10 @@ export class PositionService {
 				}
 			}
 			if (_additionFactor) {
-				newLeftPosContainer +=
-					_additionFactor - this.ONE_NODE_SPACE.width;
+				newLeftPosContainer += _additionFactor - this.ONE_NODE_SPACE.width;
 			}
 			const leftOverflow = newLeftPosContainer < 0;
-			const rightOverflow =
-				newLeftPosContainer + this._nodeDimension.width >
-				this.ENCLOSING_RECT.width;
+			const rightOverflow = newLeftPosContainer + this._nodeDimension.width > this.ENCLOSING_RECT.width;
 			if (rightOverflow || leftOverflow) {
 				if (rightOverflow) {
 					// rollback calculated width
@@ -116,9 +102,7 @@ export class PositionService {
 
 	private get prevNodePos() {
 		const leftPos =
-			(this.history.get(this.history.length - 1) &&
-				this.history.get(this.history.length - 1).left) ||
-			0;
+			(this.history.get(this.history.length - 1) && this.history.get(this.history.length - 1).left) || 0;
 		const rightPos = leftPos + this._nodeDimension.width;
 		return {
 			leftPos,
@@ -127,9 +111,7 @@ export class PositionService {
 	}
 
 	private get ENCLOSING_RECT(): DOMRect {
-		this._parentElmRect = <DOMRect>(
-			(this._parentElmRect || this._parentElm.getBoundingClientRect())
-		);
+		this._parentElmRect = <DOMRect>(this._parentElmRect || this._parentElm.getBoundingClientRect());
 		return this._parentElmRect;
 	}
 
