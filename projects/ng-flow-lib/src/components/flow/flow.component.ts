@@ -13,28 +13,26 @@ import {
 	SimpleChanges,
 	HostListener
 } from "@angular/core";
-import {
-	Flow,
-	Node,
-	AttachedComponentData,
-	Connector
-} from "../../utils/TypeDefs";
+import { Flow, Node, AttachedComponentData, Connector } from "../../utils/TypeDefs";
 
 import { NodeComponent } from "../node/node.component";
 import { LeaderLineService } from "../../services/leader-line.service";
 import { DynamicComponentService } from "../../services/dynamic-component.service";
 import { PositionService } from "../../services/position.service";
-import { CONST_SELECTORS, NODE_ID_PREFIX } from "../../utils/constants";
+import { CONST_SELECTORS as directive_selectors, NODE_ID_PREFIX, classes } from "../../utils/constants";
 import { MediaObserver, MediaChange } from "@angular/flex-layout/core";
 import { Subscription } from "rxjs";
 import { distinctUntilChanged, filter } from "rxjs/operators";
 import { _ } from "../../utils/generic-ops";
 
 @Component({
-	selector: CONST_SELECTORS.FLOW,
+	selector: directive_selectors.FLOW,
 	templateUrl: "./flow.component.html",
 	styleUrls: ["./flow.component.scss"],
-	exportAs: "ngFlow"
+	exportAs: "ngFlow",
+	host: {
+		class: classes.FLOW
+	}
 })
 export class FlowComponent implements OnInit, OnDestroy, DoCheck, OnChanges {
 	@Output("promote") promoterNodeClickEvtEmitter = new EventEmitter();
@@ -45,9 +43,11 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck, OnChanges {
 	@Input() nodeHeight = 300;
 	@Input() nodeGap = 0;
 
-	@ViewChild("nodes", { read: ViewContainerRef, static: true })
-	nodesContanerRef: ViewContainerRef;
-	nodeIdPrefix = NODE_ID_PREFIX;
+	@ViewChild("nodes", { read: ViewContainerRef, static: true }) nodesRef: ViewContainerRef;
+	@ViewChild("nodes_container", { read: ElementRef, static: true }) nodesContanerRef: ElementRef;
+	@ViewChild("connectors_container", { read: ElementRef, static: true }) connectorsContainer: ElementRef;
+	classes = classes;
+	private nodeIdPrefix = NODE_ID_PREFIX;
 	private _oldFlowData: Flow.Nodes = [];
 	private mChangeObservers: Array<(change: MediaChange) => void> = [];
 	private mediaObserverSubs: Subscription;
@@ -66,15 +66,15 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck, OnChanges {
 
 	ngOnInit(): void {
 		// TODO: Use "MutationObserver" DOM API for finer control on when to reposition the nodes
-		this.addObserverForMediaChange(this.reCalculateNodePositions);
-		this.position.initBasePositionParams(
-			this.elmRef,
+		this.position.init(
+			this.nodesContanerRef,
 			{
 				width: this.nodeWidth,
 				height: this.nodeHeight
 			},
 			this.nodeGap
 		);
+		this.leaderLinesService.init(this.connectorsContainer);
 	}
 
 	ngOnChanges(changes: SimpleChanges) {
@@ -270,13 +270,13 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck, OnChanges {
 	}
 
 	ngOnDestroy() {
-		this.mediaObserverSubs.unsubscribe();
-		this.leaderLinesService.removeAllConnectors();
-		this.dynamicCompService.clearAttachedComps(
-			this.nodesContanerRef,
-			CONST_SELECTORS.NODE
-		);
-		this.position.resetStores();
+		if (this.mediaObserverSubs) {
+			this.mediaObserverSubs.unsubscribe();
+			this.mediaObserverSubs = null;
+		}
+		this.dynamicCompService.clearAttachedComps(this.nodesRef, directive_selectors.NODE);
+		this.leaderLinesService.cleanup();
+		this.position.cleanup();
 		clearTimeout(this._setTimeoutTimer);
 	}
 }

@@ -18,7 +18,7 @@ export class PositionService {
 
 	constructor() {}
 
-	initBasePositionParams(elmRef: ElementRef, initialNodeDimension: Node.Dimension, gap: number) {
+	init(elmRef: ElementRef, initialNodeDimension: Node.Dimension, gap: number) {
 		this._parentElm = elmRef.nativeElement;
 		this.unit = 1 || parseFloat(getComputedStyle(document.querySelector("html")).fontSize);
 		/*-- this.unit dependent properties --*/
@@ -122,5 +122,13 @@ export class PositionService {
 	resetStores() {
 		this.clearHistory();
 		this._parentElmRect = null;
+	}
+
+	cleanup() {
+		this._parentElm = null;
+		this._nodeDimension = null;
+		this.resetStores();
+		this.unit = null;
+		this._nodeGap = null;
 	}
 }

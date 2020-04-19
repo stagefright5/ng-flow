@@ -87,4 +87,8 @@ export class DynamicComponentService {
 		containerRef.clear();
 		this.attachedCompList[selector] = [];
 	}
+
+	cleanup(containerRef: ViewContainerRef, selector: string) {
+		this.clearAttachedComps(containerRef, selector);
+	}
 }

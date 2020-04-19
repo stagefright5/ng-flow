@@ -4,8 +4,12 @@
 		height: 30rem;
 		overflow: auto;
 	}
-	/* .nodes-container {
+	.ng_flow_class_nodes-container,
+	.ng_flow_class_leader-lines-container {
 		position: relative;
-	} */
+	}
 </style>
-<ng-template class="nodes-container" #nodes></ng-template>
+<div [attr.class]="classes.NODE_CONTAINER" #nodes_container>
+	<ng-template #nodes></ng-template>
+</div>
+<div [attr.id]="classes.CONNECTORS_CONTAINER" #connectors_container></div>
