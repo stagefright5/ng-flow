@@ -9,7 +9,7 @@
 		</select>
 	</div>
 	<div fxLayout="row">
-		<button fxFlexAlign="flex-end" (click)="drawConnector(flow)" class="reposition-btn">
+		<button fxFlexAlign="flex-end" (click)="drawConnector()" class="reposition-btn">
 			Draw Connector
 		</button>
 	</div>
@@ -18,7 +18,7 @@
 <div>Node Control</div>
 <div fxLayout="row">
 	<input type="text" [(ngModel)]="no" />
-	<button (click)="deleteNode(flow)" class="reposition-btn">
+	<button (click)="deleteNode()" class="reposition-btn">
 		Delete Node
 	</button>
 </div>
