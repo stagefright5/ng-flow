@@ -113,8 +113,8 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck, OnChanges {
 		this._setTimeoutTimer = setTimeout(() => {
 			console.log("mchange: ", change);
 			this.position.resetStores();
-			this.leaderLinesService.positionContainer();
 			this.dynamicCompService.attachedCompList[directive_selectors.NODE].forEach(this._updateNodePosition);
+			this.leaderLinesService.positionContainer();
 			this.leaderLinesService.positionConnectors();
 		}, 200);
 	};
@@ -132,12 +132,12 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck, OnChanges {
 	};
 
 	private _appendNewNodes() {
-		this.leaderLinesService.positionContainer();
 		const newNodesToAppend = this.flowData.slice(this._oldFlowData.length, this.flowData.length);
 		newNodesToAppend.forEach((node, i) => {
 			this._updateNodePosition(this._loadFlowNode(node, i + this._oldFlowData.length));
 		});
 		this._oldFlowData.push(...newNodesToAppend);
+		this.leaderLinesService.positionContainer();
 		this.leaderLinesService.positionConnectors();
 	}
 
@@ -200,6 +200,7 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck, OnChanges {
 	reRenderFlow() {
 		this._firstTime = false;
 		this.position.resetStores();
+		// Save all the old connectors' config
 		const oldConnectors = Array.from(this.leaderLinesService.connectors.keys());
 		this.dynamicCompService.clearAttachedComps(this.nodesRef, directive_selectors.NODE);
 		this.leaderLinesService.removeAllConnectors();
@@ -207,6 +208,7 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck, OnChanges {
 		this._appendNewNodes();
 		// KEEP_AN_EYE: Might fail to draw some connectors due to timing issues
 		setTimeout(() => {
+			// redraw connectors with the same config
 			this.reDrawConnectors(oldConnectors);
 		});
 	}
