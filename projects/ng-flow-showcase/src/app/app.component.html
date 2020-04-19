@@ -40,16 +40,16 @@
 	<div fxLayout="row"><label>Gap: </label><input [(ngModel)]="dim.gap" type="number" /></div>
 </div>
 <div style="height:2rem"></div>
+<button (click)="show = !show">Show/Hide</button>
 <div style="height:2rem"></div>
-<!-- <div id="flow-container"  style="height:30rem; overflow-y: auto;"> -->
 <flow
+	*ngIf="show"
 	[flowData]="nodes"
 	(promote)="onPromoteHandler($event)"
-	#flow="ngFlow"
+	#flow
 	[connectorColor]="'blue'"
 	[connectorSize]="2"
 	[nodeWidth]="dim.width"
 	[nodeHeight]="dim.height"
 	[nodeGap]="dim.gap"
 ></flow>
-<!-- </div> -->
