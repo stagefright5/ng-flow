@@ -14,7 +14,12 @@ export const CONST_SELECTORS = {
 	FLOW: "flow,[flow]",
 	WHEEL: "wheel"
 };
-export const NODE_ID_PREFIX = "node_";
+export const NODE_ID_PREFIX = "node_no_";
 export const Events = {
 	NODE_DELETE: "node-delete"
+};
+export const classes = {
+	FLOW: 'ng_flow_class_ng-flow',
+	NODE_CONTAINER: "ng_flow_class_nodes-container",
+	CONNECTORS_CONTAINER: "ng_flow_class_leader-lines-container"
 };

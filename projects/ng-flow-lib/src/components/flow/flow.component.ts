@@ -49,7 +49,6 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck, OnChanges {
 	classes = classes;
 	private nodeIdPrefix = NODE_ID_PREFIX;
 	private _oldFlowData: Flow.Nodes = [];
-	private mChangeObservers: Array<(change: MediaChange) => void> = [];
 	private mediaObserverSubs: Subscription;
 	private _setTimeoutTimer = null;
 	private _firstTime = true;
@@ -88,18 +87,9 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck, OnChanges {
 					width: this.nodeWidth,
 					height: this.nodeHeight
 				};
-				this.position.initBasePositionParams(
-					this.elmRef,
-					dimension,
-					this.nodeGap
-				);
-				this.dynamicCompService.attachedCompList[
-					CONST_SELECTORS.NODE
-				].forEach(compData =>
-					this.dynamicCompService.updateComponentBindings(
-						{ inputBindings: { dimension } },
-						compData
-					)
+				this.position.init(this.elmRef, dimension, this.nodeGap);
+				this.dynamicCompService.attachedCompList[directive_selectors.NODE].forEach(compData =>
+					this.dynamicCompService.updateComponentBindings({ inputBindings: { dimension } }, compData)
 				);
 				console.log("recalcing pos after width changed");
 				this.reCalculateNodePositions();
@@ -114,30 +104,22 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck, OnChanges {
 		}
 	}
 
-	emitWheelClick = (event: any) => {
+	private _emitWheelClick = (event: any) => {
 		this.promoterNodeClickEvtEmitter.emit(event);
 	};
-
-	getNodeData(index: number) {
-		return {
-			...this.flowData[index],
-			index
-		};
-	}
 
 	reCalculateNodePositions = (change?: MediaChange) => {
 		clearTimeout(this._setTimeoutTimer);
 		this._setTimeoutTimer = setTimeout(() => {
 			console.log("mchange: ", change);
 			this.position.resetStores();
-			this.dynamicCompService.attachedCompList[
-				CONST_SELECTORS.NODE
-			].forEach(this.updateNodePosition);
-			this.leaderLinesService.refreshConnectors();
+			this.leaderLinesService.positionContainer();
+			this.dynamicCompService.attachedCompList[directive_selectors.NODE].forEach(this._updateNodePosition);
+			this.leaderLinesService.positionConnectors();
 		}, 200);
 	};
 	// Will be called out of this class instance's context. Hence Arrow func.
-	updateNodePosition = (node?: AttachedComponentData) => {
+	private _updateNodePosition = (node?: AttachedComponentData) => {
 		this.dynamicCompService.updateComponentBindings(
 			{
 				inputBindings: {
@@ -150,22 +132,19 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck, OnChanges {
 	};
 
 	private _appendNewNodes() {
-		const newNodesToAppend = this.flowData.slice(
-			this._oldFlowData.length,
-			this.flowData.length
-		);
+		this.leaderLinesService.positionContainer();
+		const newNodesToAppend = this.flowData.slice(this._oldFlowData.length, this.flowData.length);
 		newNodesToAppend.forEach((node, i) => {
-			this.updateNodePosition(
-				this._loadFlowNode(node, i + this._oldFlowData.length)
-			);
+			this._updateNodePosition(this._loadFlowNode(node, i + this._oldFlowData.length));
 		});
 		this._oldFlowData.push(...newNodesToAppend);
+		this.leaderLinesService.positionConnectors();
 	}
 
 	// Will be called out of this class instance's context. Hence Arrow func.
 	private _loadFlowNode = (node: Node.Data, i: number) => {
 		return this.dynamicCompService.appendNodeToFlow({
-			flow: this.nodesContanerRef,
+			flow: this.nodesRef,
 			component: NodeComponent,
 			id: this.nodeIdPrefix + i,
 			inputBindings: {
@@ -174,7 +153,7 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck, OnChanges {
 					width: this.nodeWidth,
 					height: this.nodeHeight
 				},
-				promoteEvtCbFn: this.emitWheelClick
+				promoteEvtCbFn: this._emitWheelClick
 			},
 			outputBindings: {
 				nodeAdded: () => {
@@ -191,16 +170,9 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck, OnChanges {
 		});
 	};
 
-	drawConnector({
-		start = "",
-		end = "",
-		path = "fluid"
-	}: Partial<Connector.DrawConnectorOptions>) {
+	drawConnector({ start = "", end = "", path = "fluid" }: Partial<Connector.DrawConnectorOptions>) {
 		this.leaderLinesService.drawConnector({
-			start:
-				typeof start === "string"
-					? document.getElementById(start)
-					: start,
+			start: typeof start === "string" ? document.getElementById(start) : start,
 			end: typeof end === "string" ? document.getElementById(end) : end,
 			color: this.connectorColor,
 			size: this.connectorSize,
@@ -208,28 +180,19 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck, OnChanges {
 		});
 	}
 
-	addObserverForMediaChange(
-		mediaChangeObserver: (change: MediaChange) => void
-	) {
-		this.mChangeObservers.push(mediaChangeObserver);
-	}
-
-	_subsForMediaChange() {
+	private _subsForMediaChange() {
 		this.mediaObserverSubs = this.mediaObserver.media$
 			.pipe(
 				distinctUntilChanged((x, y) => x.mqAlias === y.mqAlias),
 				filter(v => v.matches)
 			)
 			.subscribe((c: MediaChange) => {
-				this.mChangeObservers.forEach(a => a(c));
+				this.reCalculateNodePositions(c);
 			});
 	}
 
 	deleteNode(id: string) {
-		const deletedNode = this.dynamicCompService.detachComponent(
-			CONST_SELECTORS.NODE,
-			id
-		);
+		const deletedNode = this.dynamicCompService.detachComponent(directive_selectors.NODE, id);
 		this._oldFlowData = this.flowData.slice();
 		this.flowData = this.flowData.filter(n => n !== deletedNode);
 	}
@@ -237,13 +200,8 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck, OnChanges {
 	reRenderFlow() {
 		this._firstTime = false;
 		this.position.resetStores();
-		const oldConnectors = Array.from(
-			this.leaderLinesService.connectors.keys()
-		);
-		this.dynamicCompService.clearAttachedComps(
-			this.nodesContanerRef,
-			CONST_SELECTORS.NODE
-		);
+		const oldConnectors = Array.from(this.leaderLinesService.connectors.keys());
+		this.dynamicCompService.clearAttachedComps(this.nodesRef, directive_selectors.NODE);
 		this.leaderLinesService.removeAllConnectors();
 		this._oldFlowData = [];
 		this._appendNewNodes();
@@ -253,15 +211,7 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck, OnChanges {
 		});
 	}
 
-	@HostListener("scroll", ["$event"])
-	scrollListener(e) {
-		window.requestAnimationFrame(time => {
-			console.log(time);
-			this.leaderLinesService.refreshConnectors();
-		});
-	}
-
-	reDrawConnectors(keys: Array<any>) {
+	private reDrawConnectors(keys: Array<any>) {
 		keys.map(key => ({
 			...key,
 			start: _.attr(key.start, "id"),

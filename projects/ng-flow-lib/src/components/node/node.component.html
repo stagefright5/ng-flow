@@ -1,22 +1,8 @@
-<div
-	fxLayout="column nowrap"
-	class="node"
-	[style.width.px]="dimension.width"
-	[style.height.px]="dimension.height"
->
-	<div
-		style="height: 80%;"
-		[ngStyle]="{ 'margin-bottom': nodeData?.wheels?.length ? '2rem' : '0' }"
-		fxLayout="column nowrap"
-	>
+<div fxLayout="column nowrap" class="node" [style.width.px]="dimension.width" [style.height.px]="dimension.height">
+	<div [ngStyle]="{ 'margin-bottom': nodeData?.wheels?.length ? '2rem' : '0' }" fxLayout="column nowrap">
 		<ng-template #node_content></ng-template>
 	</div>
-	<div
-		fxLayout="row nowrap"
-		fxLayoutAlign="space-around center"
-		fxLayoutGap="1rem"
-		class="wheels"
-	>
+	<div fxLayout="row nowrap" fxLayoutAlign="space-around center" fxLayoutGap="1rem" class="wheels">
 		<wheel
 			*ngFor="let wheel of nodeData.wheels || []"
 			[wheelData]="wheel"
