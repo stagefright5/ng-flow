@@ -1,11 +1,11 @@
 @import "../../generic-styles.scss";
 
-.node {
+.ng_flow_class_node {
 	overflow: auto;
-	@extend .rounded-rectangle;
+	@extend .ng_flow_class_rounded-rectangle;
 }
 
-.wheels {
+.ng_flow_class_wheels {
 	position: absolute;
 	bottom: -1rem;
 	width: 90%;
