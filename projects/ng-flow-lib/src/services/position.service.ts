@@ -1,6 +1,6 @@
 import { Node } from "../utils/TypeDefs";
 import { ElementRef, Injectable } from "@angular/core";
-import { CONST_DIRECTIONS } from "../utils/constants";
+import { Directions } from "../utils/constants";
 import { PositonHistory } from "../utils/position-history";
 
 @Injectable({
@@ -14,7 +14,7 @@ export class PositionService {
 	private _parentElm: HTMLElement;
 	private _nodeDimension = { width: 0, height: 0 };
 	private _parentElmRect: DOMRect;
-	private _DIRECTIONS = CONST_DIRECTIONS;
+	private _dirs = Directions;
 
 	constructor() { }
 
@@ -35,17 +35,17 @@ export class PositionService {
 			top: 0
 		};
 		const l = this.history.length - 1;
-		let _direction = this._DIRECTIONS.FROM_LEFT;
+		let _direction = this._dirs.FROM_LEFT;
 		let rowNum = (this.history.recent && this.history.recent.row) || 0;
 		if (l > -1) {
 			let prevNodeLeftPos = this.prevNodePos.leftPos;
-			let newLeftPosContainer = prevNodeLeftPos;
-			let _additionFactor = 0;
+			// Assuming that this node will be rendered to the right of the previous node.
+			let _leftPosAdditionFactor = this.ONE_NODE_SPACE.width;
 			const prevfromDir = this.history.get(l) && this.history.get(l).direction;
 			const prevPrevFromDir = this.history.get(l - 1) && this.history.get(l - 1).direction;
 			_direction = prevfromDir || _direction;
 
-			if (prevfromDir === this._DIRECTIONS.FROM_TOP) {
+			if (prevfromDir === this._dirs.FROM_TOP) {
 				/**
 				 * 		  |
 				 * 		  |
@@ -57,7 +57,7 @@ export class PositionService {
 				 *		------ 
 				 */
 				// check the history upto 2 and decide the "direction"
-				if (prevPrevFromDir === this._DIRECTIONS.FROM_LEFT) {
+				if (prevPrevFromDir === this._dirs.FROM_LEFT) {
 					/**
 					 * If true, the flow will look something like this:
 					 *	 ------	   		  ------	
@@ -74,9 +74,9 @@ export class PositionService {
 					 *		   	    	|     |
 					 *		  			------ 
 					 */
-					_additionFactor = -this.ONE_NODE_SPACE.width;
-					_direction = this._DIRECTIONS.FROM_RIGHT;
-				} else if (prevPrevFromDir === this._DIRECTIONS.FROM_RIGHT) {
+					_leftPosAdditionFactor = -this.ONE_NODE_SPACE.width;
+					_direction = this._dirs.FROM_RIGHT;
+				} else if (prevPrevFromDir === this._dirs.FROM_RIGHT) {
 					/**
 					 * If true, the flow will look something like this:
 					 *	 ------	   		  ------	
@@ -93,11 +93,37 @@ export class PositionService {
 					 * |     |
 					 * ------ 
 					 */
-					_additionFactor = this.ONE_NODE_SPACE.width;
-					_direction = this._DIRECTIONS.FROM_LEFT;
+					_leftPosAdditionFactor = this.ONE_NODE_SPACE.width;
+					_direction = this._dirs.FROM_LEFT;
+				} else {
+					/**
+					  * Which means, there was no right or left space for the previous and
+					  * previous to previous nodes. Hence, the new node should be rendered in a
+					  * new row.
+					  * 		  |
+					  * 		  |
+					  * 		  v
+					  * 		 ------
+					  * 	    |     |
+					  * 		| pp  |
+					  * 		|     |
+					  *			------ 
+					  * 		  |
+					  * 		  |
+					  * 		  v
+					  * 		 ------
+					  * 	    |     |
+					  * 		|  p  |
+					  * 		|     |
+					  *			------ 
+					  * 		  |
+					  * 		  |
+					  * 		  v
+					  * 	  [new_node]
+					  */
 				}
 			} else {
-				if (prevfromDir === this._DIRECTIONS.FROM_LEFT) {
+				if (prevfromDir === this._dirs.FROM_LEFT) {
 					/**
 					 * If true, the flow will look something like this:
 					 *  	  ------	
@@ -106,9 +132,9 @@ export class PositionService {
 					 * 		 |     |
 					 * 		 ------
 					 */
-					_additionFactor = this.ONE_NODE_SPACE.width;
+					_leftPosAdditionFactor = this.ONE_NODE_SPACE.width;
 					_direction = prevfromDir;
-				} else if (prevfromDir === this._DIRECTIONS.FROM_RIGHT) {
+				} else if (prevfromDir === this._dirs.FROM_RIGHT) {
 					/**
 					 * If true, the flow will look something like this:
 					 * 				   ------
@@ -117,13 +143,14 @@ export class PositionService {
 					 * 				  |     |
 					 * 				  ------
 					 */
-					_additionFactor = -this.ONE_NODE_SPACE.width;
+					_leftPosAdditionFactor = -this.ONE_NODE_SPACE.width;
 					_direction = prevfromDir;
 				}
 			}
-			if (_additionFactor) {
-				newLeftPosContainer += _additionFactor;
-			}
+
+			// Get the node's "left" value by adding to the previous node's left position.
+			let newLeftPosContainer = prevNodeLeftPos + _leftPosAdditionFactor;
+			
 			const leftOverflow = newLeftPosContainer < 0;
 			const rightOverflow = newLeftPosContainer + this._nodeDimension.width > this.ENCLOSING_RECT.width;
 			if (rightOverflow || leftOverflow) {
@@ -136,7 +163,7 @@ export class PositionService {
 				// This node should be rendered in a new row
 				rowNum = rowNum + 1;
 				// Which also means that the direction is "FROM_TOP"
-				_direction = this._DIRECTIONS.FROM_TOP;
+				_direction = this._dirs.FROM_TOP;
 			}
 
 			positionObject.top = rowNum * (oneNodeSpace.height + this._nodeGap);
