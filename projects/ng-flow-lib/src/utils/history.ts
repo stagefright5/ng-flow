@@ -1,14 +1,14 @@
 import { Node } from "./TypeDefs";
 
-export class PositonHistory {
-	entries: Array<Node.PositionHistoryEntry> = [];
+export class History {
+	entries: any[] = [];
 	maxLength: number = null;
 
 	constructor(maxLength: number) {
 		this.maxLength = maxLength || this.maxLength;
 	}
 
-	push(newEntries: Node.PositionHistoryEntry | Node.PositionHistoryEntry[]) {
+	push<T>(newEntries: T | T[]): T[] {
 		let entries = [];
 		if (!Array.isArray(newEntries)) {
 			entries = [newEntries];
@@ -24,15 +24,15 @@ export class PositonHistory {
 		return this.entries.length;
 	}
 
-	get(index: number) {
+	get<T>(index: number): T {
 		return this.entries[index];
 	}
 
-	get recent() {
+	get latest() {
 		return this.get(this.length - 1);
 	}
 
-	pop() {
+	pop<T>(): T {
 		return this.entries.pop();
 	}
 

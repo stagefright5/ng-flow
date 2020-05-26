@@ -1,18 +1,18 @@
 import { Node } from "../utils/TypeDefs";
 import { ElementRef, Injectable } from "@angular/core";
 import { Directions } from "../utils/constants";
-import { PositonHistory } from "../utils/position-history";
+import { History } from "../utils/history";
 
 @Injectable({
 	providedIn: "root"
 })
 export class PositionService {
 	unit: number = 0;
-	history = new PositonHistory(Infinity);
+	history = new History(Infinity);
 
 	private _nodeGap = 0;
 	private _parentElm: HTMLElement;
-	private _nodeDimension = { width: 0, height: 0 };
+	private _nodeDimension: Node.Dimension;
 	private _parentElmRect: DOMRect;
 	private _dirs = Directions;
 
@@ -20,6 +20,7 @@ export class PositionService {
 
 	init(elmRef: ElementRef, initialNodeDimension: Node.Dimension, gap: number) {
 		this._parentElm = elmRef.nativeElement;
+		this._nodeDimension = { width: 0, height: 0 };
 		this.unit = 1 || parseFloat(getComputedStyle(document.querySelector("html")).fontSize);
 		/*-- this.unit dependent properties --*/
 		Object.entries(initialNodeDimension).forEach(([k, v]) => {
@@ -36,13 +37,13 @@ export class PositionService {
 		};
 		const l = this.history.length - 1;
 		let _direction = this._dirs.FROM_LEFT;
-		let rowNum = (this.history.recent && this.history.recent.row) || 0;
+		let rowNum = (this.history.latest && (<Node.PositionHistoryEntry>this.history.latest).row) || 0;
 		if (l > -1) {
-			let prevNodeLeftPos = this.prevNodePos.leftPos;
+			let prevNodeLeftPos = this.latestNodePos.leftPos;
 			// Assuming that this node will be rendered to the right of the previous node.
 			let _leftPosAdditionFactor = this.ONE_NODE_SPACE.width;
-			const prevfromDir = this.history.get(l) && this.history.get(l).direction;
-			const prevPrevFromDir = this.history.get(l - 1) && this.history.get(l - 1).direction;
+			const prevfromDir = this.history.latest && (<Node.PositionHistoryEntry>this.history.latest).direction;
+			const prevPrevFromDir = this.history.get(l - 1) && (<Node.PositionHistoryEntry>this.history.get(l - 1)).direction;
 			_direction = prevfromDir || _direction;
 
 			if (prevfromDir === this._dirs.FROM_TOP) {
@@ -169,13 +170,24 @@ export class PositionService {
 			positionObject.top = rowNum * (oneNodeSpace.height + this._nodeGap);
 			positionObject.left = newLeftPosContainer;
 		}
-		this.history.push({
+		this.history.push<Node.PositionHistoryEntry>({
 			...positionObject,
 			row: rowNum,
 			direction: _direction,
-			node: node
+			/**
+			 * // WATCHOUT: May be store the "node" (Data) in the history
+			 * node: node
+			 */
 		});
 		return positionObject;
+	}
+
+	calculateNodesPositions(nodes: Array<Node.Data>) {
+		const positonsArray = [];
+		nodes.forEach(nodeData => {
+			positonsArray.push(this.getAddingNodePos(nodeData));
+		});
+		return positonsArray.map(({ top, left }) => ({ top, left }));
 	}
 
 	private get ONE_NODE_SPACE(): { width: number; height: number } {
@@ -185,9 +197,9 @@ export class PositionService {
 		};
 	}
 
-	private get prevNodePos() {
+	private get latestNodePos() {
 		const leftPos =
-			(this.history.get(this.history.length - 1) && this.history.get(this.history.length - 1).left) || 0;
+			(this.history.latest && (<Node.PositionHistoryEntry>this.history.latest).left) || 0;
 		const rightPos = leftPos + this._nodeDimension.width;
 		return {
 			leftPos,
@@ -201,7 +213,7 @@ export class PositionService {
 	}
 
 	get NODES_TOTAL_HEIGHT(): string {
-		return (this.history.get(this.history.length - 1).row + 1) * (this.ONE_NODE_SPACE.height + this._nodeGap) + 'px';
+		return ((<Node.PositionHistoryEntry>this.history.latest).row + 1) * (this.ONE_NODE_SPACE.height + this._nodeGap) + 'px';
 	}
 
 	clearHistory() {
