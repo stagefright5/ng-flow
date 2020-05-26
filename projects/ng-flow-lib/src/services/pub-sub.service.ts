@@ -4,7 +4,7 @@ import { Subject, Observable, Subscription } from "rxjs";
 const ServiceName: string = "PubSub Service";
 
 @Injectable({
-	providedIn: "root"
+	providedIn: "root",
 })
 export class PubSubService implements IPubSubService {
 	private events = {};

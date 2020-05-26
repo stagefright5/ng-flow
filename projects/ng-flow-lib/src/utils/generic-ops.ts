@@ -16,19 +16,19 @@ export const _ = {
 			cbs.push(cb);
 		}
 		if (op === "delete") {
-			cbs.push(key => {
+			cbs.push((key) => {
 				delete o[key];
 			});
 		} else if (op === "get") {
 		}
-		keys.forEach(key => {
+		keys.forEach((key) => {
 			let t = false;
 			if (
 				(typeof keySelector === "function" && keySelector(key)) ||
 				(keySelector && ((<unknown>keySelector) as RegExp).test(key)) ||
 				!keySelector
 			) {
-				cbs.forEach(cb => {
+				cbs.forEach((cb) => {
 					cb(key, o[key] || retO[key]);
 					retO[key] = o[key];
 				});
@@ -44,5 +44,5 @@ export const _ = {
 				.substring(1);
 		}
 		return __s4() + __s4() + "-" + __s4() + "-" + __s4() + "-" + __s4() + "-" + __s4() + __s4() + __s4();
-	}
+	},
 };

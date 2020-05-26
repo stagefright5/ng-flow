@@ -11,6 +11,6 @@ import { FlowModule } from "ng-flow-lib";
 	imports: [BrowserModule, CommonModule, AppRoutingModule, FlowModule, FormsModule],
 	providers: [],
 	bootstrap: [AppComponent],
-	entryComponents: [DescPanelComponent]
+	entryComponents: [DescPanelComponent],
 })
 export class AppModule {}

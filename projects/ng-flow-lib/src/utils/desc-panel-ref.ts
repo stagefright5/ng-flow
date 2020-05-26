@@ -19,11 +19,11 @@ export class DescPanelRef {
 		this._overlayRef
 			.keydownEvents()
 			.pipe(
-				filter(event => {
+				filter((event) => {
 					return event.keyCode === ESCAPE && !this._config.disableClose && !hasModifierKey(event);
 				})
 			)
-			.subscribe(e => {
+			.subscribe((e) => {
 				e.preventDefault();
 				this.close();
 			});

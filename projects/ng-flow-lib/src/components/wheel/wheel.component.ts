@@ -5,7 +5,7 @@ import { Selectors } from "../../utils/constants";
 @Component({
 	selector: Selectors.WHEEL,
 	templateUrl: "./wheel.component.html",
-	styleUrls: ["./wheel.component.scss"]
+	styleUrls: ["./wheel.component.scss"],
 })
 export class WheelComponent {
 	@Input() wheelData: Node.Wheel;

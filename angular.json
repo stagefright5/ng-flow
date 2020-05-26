@@ -31,9 +31,7 @@
 							"projects/ng-flow-lib/tsconfig.lib.json",
 							"projects/ng-flow-lib/tsconfig.spec.json"
 						],
-						"exclude": [
-							"**/node_modules/**"
-						]
+						"exclude": ["**/node_modules/**"]
 					}
 				}
 			}
@@ -59,16 +57,9 @@
 						"polyfills": "projects/ng-flow-showcase/src/polyfills.ts",
 						"tsConfig": "projects/ng-flow-showcase/tsconfig.app.json",
 						"aot": false,
-						"assets": [
-							"projects/ng-flow-showcase/src/favicon.ico",
-							"projects/ng-flow-showcase/src/assets"
-						],
-						"styles": [
-							"projects/ng-flow-showcase/src/styles.scss"
-						],
-						"scripts": [
-							"./node_modules/leader-line/leader-line.min.js"
-						]
+						"assets": ["projects/ng-flow-showcase/src/favicon.ico", "projects/ng-flow-showcase/src/assets"],
+						"styles": ["projects/ng-flow-showcase/src/styles.scss"],
+						"scripts": ["./node_modules/leader-line/leader-line.min.js"]
 					},
 					"configurations": {
 						"production": {
@@ -126,13 +117,8 @@
 						"polyfills": "projects/ng-flow-showcase/src/polyfills.ts",
 						"tsConfig": "projects/ng-flow-showcase/tsconfig.spec.json",
 						"karmaConfig": "projects/ng-flow-showcase/karma.conf.js",
-						"assets": [
-							"projects/ng-flow-showcase/src/favicon.ico",
-							"projects/ng-flow-showcase/src/assets"
-						],
-						"styles": [
-							"projects/ng-flow-showcase/src/styles.scss"
-						],
+						"assets": ["projects/ng-flow-showcase/src/favicon.ico", "projects/ng-flow-showcase/src/assets"],
+						"styles": ["projects/ng-flow-showcase/src/styles.scss"],
 						"scripts": []
 					}
 				},
@@ -144,9 +130,7 @@
 							"projects/ng-flow-showcase/tsconfig.spec.json",
 							"projects/ng-flow-showcase/e2e/tsconfig.json"
 						],
-						"exclude": [
-							"**/node_modules/**"
-						]
+						"exclude": ["**/node_modules/**"]
 					}
 				},
 				"e2e": {
