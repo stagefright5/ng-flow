@@ -16,7 +16,7 @@ export class PositionService {
 	private _parentElmRect: DOMRect;
 	private _dirs = Directions;
 
-	constructor() { }
+	constructor() {}
 
 	init(elmRef: ElementRef, rowHeight: number, nodeWidth: number, gap: number) {
 		this._parentElm = elmRef.nativeElement;
@@ -40,7 +40,8 @@ export class PositionService {
 			// Assuming that this node will be rendered to the right of the previous node.
 			let _leftPosAdditionFactor = thisNodeCompleteSpace.width;
 			const prevfromDir = prevNode && prevNode.direction;
-			const prevPrevFromDir = this.history.get(l - 1) && (<Node.PositionHistoryEntry>this.history.get(l - 1)).direction;
+			const prevPrevFromDir =
+				this.history.get(l - 1) && (<Node.PositionHistoryEntry>this.history.get(l - 1)).direction;
 			_direction = prevfromDir || _direction;
 
 			if (prevfromDir === this._dirs.FROM_TOP) {
@@ -74,11 +75,11 @@ export class PositionService {
 					 *	|
 					 *  |
 					 * This is the new left
-					 * 
-					 * 
+					 *
+					 *
 					 * And, the new node goes "from right" to left
 					 */
-					_leftPosAdditionFactor = -(thisNodeCompleteSpace.width);
+					_leftPosAdditionFactor = -thisNodeCompleteSpace.width;
 					_direction = this._dirs.FROM_RIGHT;
 				} else if (prevPrevFromDir === this._dirs.FROM_RIGHT) {
 					/**
@@ -99,8 +100,8 @@ export class PositionService {
 					 * 						   |
 					 * 						   |
 					 * 					This is the new left
-					 * 
-					 * 
+					 *
+					 *
 					 * And, the new node goes "from left" to right
 					 */
 					_leftPosAdditionFactor = prevNode.hSpace;
@@ -144,7 +145,7 @@ export class PositionService {
 				 * This is the new left
 				 *  And, the new node goes "from right" to left
 				 */
-				_leftPosAdditionFactor = -(thisNodeCompleteSpace.width); // taking the leftmost coordinate
+				_leftPosAdditionFactor = -thisNodeCompleteSpace.width; // taking the leftmost coordinate
 				_direction = this._dirs.FROM_RIGHT;
 			} else if (prevfromDir === this._dirs.FROM_LEFT) {
 				/**
@@ -157,7 +158,7 @@ export class PositionService {
 				 * 								 |
 				 * 								 |
 				 * 						This is the new left
-				 * 
+				 *
 				 * And, the new node goes "from left" to right
 				 */
 				_leftPosAdditionFactor = prevNode.hSpace;
@@ -167,7 +168,7 @@ export class PositionService {
 			// Get the node's "left" value by adding to the previous node's left position.
 			nodeLeft = prevNode.left + _leftPosAdditionFactor;
 
-			const thisNodeWidth = this.getNodeSize(node).width
+			const thisNodeWidth = this.getNodeSize(node).width;
 
 			/** Start: Check if the node is overflowing its container and update the "nodeLeft" **/
 			const leftOverflow = nodeLeft < 0;
@@ -175,7 +176,7 @@ export class PositionService {
 			if (rightOverflow || leftOverflow) {
 				if (rightOverflow) {
 					// rollback calculated width
-					const latestNodeWidth = (prevNode.hSpace - this._nodeGap);
+					const latestNodeWidth = prevNode.hSpace - this._nodeGap;
 					const diffInWidth = thisNodeWidth - latestNodeWidth;
 					nodeLeft = prevNode.left - diffInWidth;
 				} else if (leftOverflow) {
@@ -210,10 +211,10 @@ export class PositionService {
 			 * node: node
 			 */
 		});
-		return ({
+		return {
 			top: nodeTop,
 			left: nodeLeft
-		});
+		};
 	}
 
 	entireSpaceOccupiedByNode(node: Node.Data): Node.Dimension {
@@ -226,8 +227,9 @@ export class PositionService {
 
 	getNodeSize(node) {
 		return {
-			width: (node.width || this._defaultNodeSize.width),
-			height: (!node.height || node.height >= this._defaultNodeSize.height) ? this._defaultNodeSize.height : node.height
+			width: node.width || this._defaultNodeSize.width,
+			height:
+				!node.height || node.height >= this._defaultNodeSize.height ? this._defaultNodeSize.height : node.height
 		};
 	}
 
@@ -245,7 +247,9 @@ export class PositionService {
 	}
 
 	get NODES_TOTAL_HEIGHT(): string {
-		return (<Node.PositionHistoryEntry>this.history.latest).top + this._defaultNodeSize.height + this._nodeGap + 'px';
+		return (
+			(<Node.PositionHistoryEntry>this.history.latest).top + this._defaultNodeSize.height + this._nodeGap + 'px'
+		);
 	}
 
 	clearHistory() {

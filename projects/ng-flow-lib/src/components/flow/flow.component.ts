@@ -65,13 +65,9 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck, OnChanges {
 
 	ngOnInit(): void {
 		// TODO: Use "MutationObserver" DOM API for finer control on when to reposition the nodes
-		this.position.init(
-			this.nodesContanerRef,
-			this.nodeHeight,
-			this.nodeWidth,
-			this.nodeGap
-		);
-		this.elmRef.nativeElement.style.height = this.containerHeight !== 'auto' ? `${this.containerHeight}px` : this.containerHeight;
+		this.position.init(this.nodesContanerRef, this.nodeHeight, this.nodeWidth, this.nodeGap);
+		this.elmRef.nativeElement.style.height =
+			this.containerHeight !== 'auto' ? `${this.containerHeight}px` : this.containerHeight;
 		this.leaderLinesService.init(this.connectorsContainer);
 	}
 
@@ -88,7 +84,7 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck, OnChanges {
 				};
 				this.position.init(this.elmRef, this.nodeHeight, this.nodeWidth, this.nodeGap);
 				this.dynamicCompService.attachedCompList[directive_selectors.NODE].forEach(data => {
-					const size = this.position.getNodeSize(data.__data__)
+					const size = this.position.getNodeSize(data.__data__);
 					const dimension = {
 						width: size.width,
 						height: size.height
@@ -143,14 +139,16 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck, OnChanges {
 	private _appendNewNodes() {
 		const newNodesToAppend = this.flowData.slice(this._oldFlowData.length, this.flowData.length);
 		this._updatePositions(
-			newNodesToAppend.map((node, i, thisArr) => this._loadFlowNode(node, i, i + this._oldFlowData.length, thisArr))
+			newNodesToAppend.map((node, i, thisArr) =>
+				this._loadFlowNode(node, i, i + this._oldFlowData.length, thisArr)
+			)
 		);
 		this._oldFlowData.push(...newNodesToAppend);
 	}
 
 	// Will be called out of this class instance's context. Hence Arrow func.
-	private _loadFlowNode = (nodeData: Node.Data, index: number, nodeIndex: number, array: Node.Data[], ) => {
-		const thisNodeId = nodeData.id || (this.nodeIdPrefix + nodeIndex);
+	private _loadFlowNode = (nodeData: Node.Data, index: number, nodeIndex: number, array: Node.Data[]) => {
+		const thisNodeId = nodeData.id || this.nodeIdPrefix + nodeIndex;
 		return this.dynamicCompService.appendNodeToFlow({
 			flow: this.nodesRef,
 			component: NodeComponent,
@@ -161,13 +159,13 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck, OnChanges {
 				promoteEvtCbFn: this._emitWheelClick
 			},
 			outputBindings: {
-				nodeAdded: (nodeData) => {
+				nodeAdded: nodeData => {
 					// if (this._firstTime)
 					let prevNodeId;
 					if (array[index - 1]) {
-						prevNodeId = array[index - 1].id || (this.nodeIdPrefix + (nodeData.index - 1))
+						prevNodeId = array[index - 1].id || this.nodeIdPrefix + (nodeData.index - 1);
 					} else {
-						prevNodeId = (this.nodeIdPrefix + (nodeData.index - 1));
+						prevNodeId = this.nodeIdPrefix + (nodeData.index - 1);
 					}
 					if (prevNodeId) {
 						this.drawConnector({
@@ -179,7 +177,7 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck, OnChanges {
 			},
 			__data__: nodeData
 		});
-	}
+	};
 
 	drawConnector({ start = '', end = '', path = 'fluid' }: Partial<Connector.DrawConnectorOptions>) {
 		this.leaderLinesService.drawConnector({

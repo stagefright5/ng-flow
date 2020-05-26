@@ -24,7 +24,7 @@ export class AppComponent {
 			component: DescPanelComponent,
 			width: 250,
 			height: 85,
-			id: "MyOwnFckingId"
+			id: 'MyOwnFckingId'
 		},
 		{
 			wheels: [
@@ -32,7 +32,7 @@ export class AppComponent {
 					icon: 'assets/asterisk.svg'
 					// descriptionPanel: 'ss'
 				}
-			],
+			]
 			// width: 150,
 			// height: 100
 		},
@@ -47,12 +47,12 @@ export class AppComponent {
 					// descriptionPanel: DescPanelComponent
 					// descriptionPanel: 'ss'
 				}
-			],
+			]
 			// width: 150,
 			// height: 220
 		},
 		{
-			component: DescPanelComponent,
+			component: DescPanelComponent
 			// width: 150,
 			// height: 180
 		},
@@ -62,7 +62,7 @@ export class AppComponent {
 					icon: 'assets/asterisk.svg'
 					// descriptionPanel: 'ss'
 				}
-			],
+			]
 			// width: 150,
 			// height: 180
 		},
@@ -77,7 +77,7 @@ export class AppComponent {
 					// descriptionPanel: DescPanelComponent
 					// descriptionPanel: 'ss'
 				}
-			],
+			]
 			// width: 150,
 			// height: 180
 		},
@@ -87,12 +87,12 @@ export class AppComponent {
 					icon: 'assets/asterisk.svg'
 					// descriptionPanel: 'ss'
 				}
-			],
+			]
 			// width: 150,
 			// height: 180
 		},
 		{
-			component: DescPanelComponent,
+			component: DescPanelComponent
 			// width: 150,
 			// height: 180
 		},
@@ -107,7 +107,7 @@ export class AppComponent {
 					// descriptionPanel: DescPanelComponent
 					// descriptionPanel: 'ss'
 				}
-			],
+			]
 			// width: 150,
 			// height: 180
 		}
