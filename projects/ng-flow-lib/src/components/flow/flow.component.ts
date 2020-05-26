@@ -115,7 +115,7 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck, OnChanges {
 		this._setTimeoutTimer = setTimeout(() => {
 			console.log("mchange: ", change);
 			this.position.resetStores();
-			this.dynamicCompService.attachedCompList[directive_selectors.NODE].forEach(this._updateNodePosition);
+			this._updateNodesPositions(this.dynamicCompService.attachedCompList[directive_selectors.NODE]);
 			this._updateContainersLayouts();
 		}, 200);
 	};
@@ -128,23 +128,22 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck, OnChanges {
 		}
 	}
 	// Will be called out of this class instance's context. Hence Arrow func.
-	private _updateNodePosition = (node?: AttachedComponentData) => {
-		this.dynamicCompService.updateComponentBindings(
-			{
+	private _updateNodesPositions(nodes?: AttachedComponentData[]) {
+		const positions = this.position.calculateNodesPositions(nodes.map(n => n.__data__));
+		nodes.forEach((node, i) => {
+			const inputBindings = {
 				inputBindings: {
-					position: this.position.getAddingNodePos(node.__data__)
+					position: positions[i]
 				}
-			},
-			node
-		);
-		(<NodeComponent>node.compRef.instance).updateDOMPosition();
+			};
+			this.dynamicCompService.updateComponentBindings(inputBindings, node);
+			(<NodeComponent>node.compRef.instance).updateDOMPosition();
+		});
 	};
 
 	private _appendNewNodes() {
 		const newNodesToAppend = this.flowData.slice(this._oldFlowData.length, this.flowData.length);
-		newNodesToAppend.forEach((node, i) => {
-			this._updateNodePosition(this._loadFlowNode(node, i + this._oldFlowData.length));
-		});
+		this._updateNodesPositions(newNodesToAppend.map((node, i) => this._loadFlowNode(node, i + this._oldFlowData.length)));
 		this._oldFlowData.push(...newNodesToAppend);
 		this._updateContainersLayouts();
 	}
