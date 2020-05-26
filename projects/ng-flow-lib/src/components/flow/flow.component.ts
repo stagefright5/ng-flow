@@ -125,8 +125,8 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck, OnChanges {
 			(<HTMLElement>this.elmRef.nativeElement).style.height = this.position.NODES_TOTAL_HEIGHT;
 		}
 	}
-	// Will be called out of this class instance's context. Hence Arrow func.
-	private _updateNodesPositions(nodes?: AttachedComponent[]) {
+
+	private _updatePositions(nodes?: AttachedComponent[]) {
 		const positions = this.position.calculateNodesPositions(nodes.map(n => n.__data__));
 		nodes.forEach((node, i) => {
 			const inputBindings = {
@@ -137,44 +137,49 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck, OnChanges {
 			this.dynamicCompService.updateComponentBindings(inputBindings, node);
 			(<NodeComponent>node.compRef.instance).updateDOMPosition();
 		});
+		this._updateContainersLayouts();
 	}
 
 	private _appendNewNodes() {
 		const newNodesToAppend = this.flowData.slice(this._oldFlowData.length, this.flowData.length);
-		this._updateNodesPositions(
-			newNodesToAppend.map((node, i) => this._loadFlowNode(node, i + this._oldFlowData.length))
+		this._updatePositions(
+			newNodesToAppend.map((node, i, thisArr) => this._loadFlowNode(node, i, i + this._oldFlowData.length, thisArr))
 		);
 		this._oldFlowData.push(...newNodesToAppend);
 	}
 
 	// Will be called out of this class instance's context. Hence Arrow func.
-	private _loadFlowNode = (node: Node.Data, i: number) => {
+	private _loadFlowNode = (nodeData: Node.Data, index: number, nodeIndex: number, array: Node.Data[], ) => {
+		const thisNodeId = nodeData.id || (this.nodeIdPrefix + nodeIndex);
 		return this.dynamicCompService.appendNodeToFlow({
 			flow: this.nodesRef,
 			component: NodeComponent,
-			id: this.nodeIdPrefix + i,
+			id: thisNodeId,
 			inputBindings: {
-				nodeData: { ...node, index: i },
-				dimension: {
-					width: node.width,
-					height: node.height
-				},
+				nodeData: { ...nodeData, index: nodeIndex },
+				dimension: this.position.getNodeSize(nodeData),
 				promoteEvtCbFn: this._emitWheelClick
 			},
 			outputBindings: {
-				nodeAdded: () => {
-					if (this._firstTime)
-						if (i > 0) {
-							this.drawConnector({
-								start: this.nodeIdPrefix + (i - 1),
-								end: this.nodeIdPrefix + i
-							});
-						}
+				nodeAdded: (nodeData) => {
+					// if (this._firstTime)
+					let prevNodeId;
+					if (array[index - 1]) {
+						prevNodeId = array[index - 1].id || (this.nodeIdPrefix + (nodeData.index - 1))
+					} else {
+						prevNodeId = (this.nodeIdPrefix + (nodeData.index - 1));
+					}
+					if (prevNodeId) {
+						this.drawConnector({
+							start: prevNodeId,
+							end: thisNodeId
+						});
+					}
 				}
 			},
-			__data__: node
+			__data__: nodeData
 		});
-	};
+	}
 
 	drawConnector({ start = '', end = '', path = 'fluid' }: Partial<Connector.DrawConnectorOptions>) {
 		this.leaderLinesService.drawConnector({
@@ -204,7 +209,7 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck, OnChanges {
 	}
 
 	reRenderFlow() {
-		this._firstTime = false;
+		// this._firstTime = false;
 		this.position.resetStores();
 		// Save all the old connectors' config
 		const oldConnectors = Array.from(this.leaderLinesService.connectors.keys());
