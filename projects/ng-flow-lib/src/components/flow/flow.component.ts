@@ -90,10 +90,13 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck, OnChanges {
 					height: this.nodeHeight
 				};
 				this.position.init(this.elmRef, dimension, this.nodeGap);
-				this.dynamicCompService.attachedCompList[directive_selectors.NODE].forEach(compData =>
-					this.dynamicCompService.updateComponentBindings({ inputBindings: { dimension } }, compData)
-				);
-				console.log("recalcing pos after width changed");
+				this.dynamicCompService.attachedCompList[directive_selectors.NODE].forEach((data) => {
+					const dimension = {
+						width: data.__data__.width,
+						height: data.__data__.height,
+					};
+					this.dynamicCompService.updateComponentBindings({ inputBindings: { dimension } }, data);
+				});
 				this.reCalculateNodePositions();
 			});
 		}

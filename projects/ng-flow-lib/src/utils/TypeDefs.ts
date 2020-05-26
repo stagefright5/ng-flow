@@ -12,6 +12,8 @@ export namespace Node {
 		index?: number;
 		component?: any;
 		id?: string;
+		width?: number;
+		height?: number;
 	}
 
 	export interface Wheel {
