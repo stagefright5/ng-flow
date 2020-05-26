@@ -42,6 +42,7 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck, OnChanges {
 	@Input() nodeWidth = 250;
 	@Input() nodeHeight = 300;
 	@Input() nodeGap = 0;
+	@Input() containerHeight: string | 'auto' = '400px';
 
 	@ViewChild("nodes", { read: ViewContainerRef, static: true }) nodesRef: ViewContainerRef;
 	@ViewChild("nodes_container", { read: ElementRef, static: true }) nodesContanerRef: ElementRef;
@@ -73,6 +74,7 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck, OnChanges {
 			},
 			this.nodeGap
 		);
+		this.elmRef.nativeElement.style.height = this.containerHeight !== 'auto' && this.containerHeight;
 		this.leaderLinesService.init(this.connectorsContainer);
 	}
 
@@ -114,10 +116,17 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck, OnChanges {
 			console.log("mchange: ", change);
 			this.position.resetStores();
 			this.dynamicCompService.attachedCompList[directive_selectors.NODE].forEach(this._updateNodePosition);
-			this.leaderLinesService.positionContainer();
-			this.leaderLinesService.positionConnectors();
+			this._updateContainersLayouts();
 		}, 200);
 	};
+
+	private _updateContainersLayouts() {
+		this.leaderLinesService.positionContainer();
+		this.leaderLinesService.positionConnectors();
+		if (this.containerHeight === 'auto') {
+			(<HTMLElement>this.elmRef.nativeElement).style.height = this.position.NODES_TOTAL_HEIGHT;
+		}
+	}
 	// Will be called out of this class instance's context. Hence Arrow func.
 	private _updateNodePosition = (node?: AttachedComponentData) => {
 		this.dynamicCompService.updateComponentBindings(
@@ -137,8 +146,7 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck, OnChanges {
 			this._updateNodePosition(this._loadFlowNode(node, i + this._oldFlowData.length));
 		});
 		this._oldFlowData.push(...newNodesToAppend);
-		this.leaderLinesService.positionContainer();
-		this.leaderLinesService.positionConnectors();
+		this._updateContainersLayouts();
 	}
 
 	// Will be called out of this class instance's context. Hence Arrow func.

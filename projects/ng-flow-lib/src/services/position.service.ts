@@ -115,6 +115,10 @@ export class PositionService {
 		return this._parentElmRect;
 	}
 
+	get NODES_TOTAL_HEIGHT(): string {
+		return (this.history.get(this.history.length - 1).row + 1) * (this.ONE_NODE_SPACE.height + this._nodeGap) + 'px';
+	}
+
 	clearHistory() {
 		this.history.clear();
 	}
