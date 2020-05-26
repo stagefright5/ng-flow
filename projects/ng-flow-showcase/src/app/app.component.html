@@ -1,10 +1,11 @@
-<div style="display: flex; flex-direction: column; background: orange">
+<div style="display: flex; flex-direction: column; background: orange;">
 	<div>Connector Controls</div>
 	<div fxLayout="column">
 		<div fxLayout="row"><label>From: </label><input type="text" [(ngModel)]="from" /></div>
 		<div fxLayout="row"><label>To: </label><input type="text" [(ngModel)]="to" /></div>
 		<div fxLayout="row">
-			<label>Type: </label><select value="'fluid'" [(ngModel)]="type">
+			<label>Type: </label
+			><select value="'fluid'" [(ngModel)]="type">
 				<option *ngFor="let t of con_types" value="{{ t }}">{{ t }}</option>
 			</select>
 		</div>
@@ -14,7 +15,7 @@
 			</button>
 		</div>
 	</div>
-	<div style="height:2rem"></div>
+	<div style="height: 2rem;"></div>
 	<div>Node Control</div>
 	<div fxLayout="row">
 		<input type="text" [(ngModel)]="no" />
@@ -22,7 +23,7 @@
 			Delete Node
 		</button>
 	</div>
-	<div style="height:2rem"></div>
+	<div style="height: 2rem;"></div>
 	<div>Reset Controls</div>
 	<div fxLayout="column">
 		<button (click)="flow.reCalculateNodePositions()" class="reposition-btn">
@@ -32,16 +33,25 @@
 			Rerender Nodes
 		</button>
 	</div>
-	<div style="height:2rem"></div>
+	<div style="height: 2rem;"></div>
 	<div>Dimension Controls</div>
 	<div id="node_dim" fxLayout="column">
-		<div fxLayout="row"><label>Width: </label><input [(ngModel)]="dim.width" type="number" /></div>
-		<div fxLayout="row"><label>Height: </label><input [(ngModel)]="dim.height" type="number" /></div>
-		<div fxLayout="row"><label>Gap: </label><input [(ngModel)]="dim.gap" type="number" /></div>
+		<div fxLayout="row"><label>Width: </label><input [(ngModel)]="dimension.width" type="number" /></div>
+		<div fxLayout="row"><label>Height: </label><input [(ngModel)]="dimension.height" type="number" /></div>
+		<div fxLayout="row"><label>Gap: </label><input [(ngModel)]="gap" type="number" /></div>
 	</div>
-	<div style="height:2rem"></div>
+	<div style="height: 2rem;"></div>
 	<button (click)="show = !show">Show/Hide</button>
-	<div style="height:2rem"></div>
-	<flow *ngIf="show" [flowData]="nodes" (promote)="onPromoteHandler($event)" #flow [connectorColor]="'blue'"
-		[connectorSize]="2" [nodeWidth]="dim.width" [nodeHeight]="dim.height" [nodeGap]="dim.gap" [containerHeight]="'auto'"></flow>
+	<div style="height: 2rem;"></div>
+	<flow
+		*ngIf="show"
+		[flowData]="nodes"
+		(promote)="onPromoteHandler($event)"
+		#flow
+		[connectorColor]="'blue'"
+		[connectorSize]="2"
+		[nodeWidth]="dimension.width"
+		[nodeHeight]="dimension.height"
+		[nodeGap]="gap"
+	></flow>
 </div>

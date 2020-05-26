@@ -1,10 +1,10 @@
-import { Node } from "../utils/TypeDefs";
-import { ElementRef, Injectable } from "@angular/core";
-import { Directions } from "../utils/constants";
-import { History } from "../utils/history";
+import { Node } from '../utils/TypeDefs';
+import { ElementRef, Injectable } from '@angular/core';
+import { Directions } from '../utils/constants';
+import { History } from '../utils/history';
 
 @Injectable({
-	providedIn: "root"
+	providedIn: 'root'
 })
 export class PositionService {
 	unit: number = 0;
@@ -16,17 +16,17 @@ export class PositionService {
 	private _parentElmRect: DOMRect;
 	private _dirs = Directions;
 
-	constructor() { }
+	constructor() {}
 
 	init(elmRef: ElementRef, initialNodeDimension: Node.Dimension, gap: number) {
 		this._parentElm = elmRef.nativeElement;
 		this._nodeDimension = { width: 0, height: 0 };
-		this.unit = 1 || parseFloat(getComputedStyle(document.querySelector("html")).fontSize);
+		this.unit = 1 || parseFloat(getComputedStyle(document.querySelector('html')).fontSize);
 		/*-- this.unit dependent properties --*/
 		Object.entries(initialNodeDimension).forEach(([k, v]) => {
 			this._nodeDimension[k] = parseFloat(v) * this.unit;
 		});
-		this._nodeGap = parseFloat(gap + "") || this._nodeDimension.width * 0.5;
+		this._nodeGap = parseFloat(gap + '') || this._nodeDimension.width * 0.5;
 	}
 
 	getAddingNodePos(node): Node.Position {
@@ -43,7 +43,8 @@ export class PositionService {
 			// Assuming that this node will be rendered to the right of the previous node.
 			let _leftPosAdditionFactor = this.ONE_NODE_SPACE.width;
 			const prevfromDir = this.history.latest && (<Node.PositionHistoryEntry>this.history.latest).direction;
-			const prevPrevFromDir = this.history.get(l - 1) && (<Node.PositionHistoryEntry>this.history.get(l - 1)).direction;
+			const prevPrevFromDir =
+				this.history.get(l - 1) && (<Node.PositionHistoryEntry>this.history.get(l - 1)).direction;
 			_direction = prevfromDir || _direction;
 
 			if (prevfromDir === this._dirs.FROM_TOP) {
@@ -55,13 +56,13 @@ export class PositionService {
 				 * 	    |     |
 				 * 		|  p  |
 				 * 		|     |
-				 *		------ 
+				 *		------
 				 */
 				// check the history upto 2 and decide the "direction"
 				if (prevPrevFromDir === this._dirs.FROM_LEFT) {
 					/**
 					 * If true, the flow will look something like this:
-					 *	 ------	   		  ------	
+					 *	 ------	   		  ------
 					 *	|     |	  		 |	   |
 					 *	| ppp |--------->|  pp |
 					 *	|     |	   		 |     |
@@ -73,14 +74,14 @@ export class PositionService {
 					 *		   	    	|     |
 					 *	[new_node]<-----|  p  |
 					 *		   	    	|     |
-					 *		  			------ 
+					 *		  			------
 					 */
 					_leftPosAdditionFactor = -this.ONE_NODE_SPACE.width;
 					_direction = this._dirs.FROM_RIGHT;
 				} else if (prevPrevFromDir === this._dirs.FROM_RIGHT) {
 					/**
 					 * If true, the flow will look something like this:
-					 *	 ------	   		  ------	
+					 *	 ------	   		  ------
 					 *	|     |	  		 |	   |
 					 *	| pp  |<---------| ppp |
 					 *	|     |	   		 |     |
@@ -92,42 +93,42 @@ export class PositionService {
 					 * |     |
 					 * |  p  |------->[new_node]
 					 * |     |
-					 * ------ 
+					 * ------
 					 */
 					_leftPosAdditionFactor = this.ONE_NODE_SPACE.width;
 					_direction = this._dirs.FROM_LEFT;
 				} else {
 					/**
-					  * Which means, there was no right or left space for the previous and
-					  * previous to previous nodes. Hence, the new node should be rendered in a
-					  * new row.
-					  * 		  |
-					  * 		  |
-					  * 		  v
-					  * 		 ------
-					  * 	    |     |
-					  * 		| pp  |
-					  * 		|     |
-					  *			------ 
-					  * 		  |
-					  * 		  |
-					  * 		  v
-					  * 		 ------
-					  * 	    |     |
-					  * 		|  p  |
-					  * 		|     |
-					  *			------ 
-					  * 		  |
-					  * 		  |
-					  * 		  v
-					  * 	  [new_node]
-					  */
+					 * Which means, there was no right or left space for the previous and
+					 * previous to previous nodes. Hence, the new node should be rendered in a
+					 * new row.
+					 * 		  |
+					 * 		  |
+					 * 		  v
+					 * 		 ------
+					 * 	    |     |
+					 * 		| pp  |
+					 * 		|     |
+					 *			------
+					 * 		  |
+					 * 		  |
+					 * 		  v
+					 * 		 ------
+					 * 	    |     |
+					 * 		|  p  |
+					 * 		|     |
+					 *			------
+					 * 		  |
+					 * 		  |
+					 * 		  v
+					 * 	  [new_node]
+					 */
 				}
 			} else {
 				if (prevfromDir === this._dirs.FROM_LEFT) {
 					/**
 					 * If true, the flow will look something like this:
-					 *  	  ------	
+					 *  	  ------
 					 * 		 |	   |
 					 * ----->|  pp |------> [new_node]
 					 * 		 |     |
@@ -151,7 +152,7 @@ export class PositionService {
 
 			// Get the node's "left" value by adding to the previous node's left position.
 			let newLeftPosContainer = prevNodeLeftPos + _leftPosAdditionFactor;
-			
+
 			const leftOverflow = newLeftPosContainer < 0;
 			const rightOverflow = newLeftPosContainer + this._nodeDimension.width > this.ENCLOSING_RECT.width;
 			if (rightOverflow || leftOverflow) {
@@ -173,7 +174,7 @@ export class PositionService {
 		this.history.push<Node.PositionHistoryEntry>({
 			...positionObject,
 			row: rowNum,
-			direction: _direction,
+			direction: _direction
 			/**
 			 * // WATCHOUT: May be store the "node" (Data) in the history
 			 * node: node
@@ -198,8 +199,7 @@ export class PositionService {
 	}
 
 	private get latestNodePos() {
-		const leftPos =
-			(this.history.latest && (<Node.PositionHistoryEntry>this.history.latest).left) || 0;
+		const leftPos = (this.history.latest && (<Node.PositionHistoryEntry>this.history.latest).left) || 0;
 		const rightPos = leftPos + this._nodeDimension.width;
 		return {
 			leftPos,
@@ -213,7 +213,10 @@ export class PositionService {
 	}
 
 	get NODES_TOTAL_HEIGHT(): string {
-		return ((<Node.PositionHistoryEntry>this.history.latest).row + 1) * (this.ONE_NODE_SPACE.height + this._nodeGap) + 'px';
+		return (
+			((<Node.PositionHistoryEntry>this.history.latest).row + 1) * (this.ONE_NODE_SPACE.height + this._nodeGap) +
+			'px'
+		);
 	}
 
 	clearHistory() {

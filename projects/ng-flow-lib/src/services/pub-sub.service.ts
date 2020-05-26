@@ -1,10 +1,10 @@
-import { Injectable } from "@angular/core";
-import { Subject, Observable, Subscription } from "rxjs";
+import { Injectable } from '@angular/core';
+import { Subject, Observable, Subscription } from 'rxjs';
 
-const ServiceName: string = "PubSub Service";
+const ServiceName: string = 'PubSub Service';
 
 @Injectable({
-	providedIn: "root",
+	providedIn: 'root'
 })
 export class PubSubService implements IPubSubService {
 	private events = {};
@@ -29,7 +29,7 @@ export class PubSubService implements IPubSubService {
 			this.events[event] = new Subject<any>();
 		}
 
-		if (typeof callback !== "function") {
+		if (typeof callback !== 'function') {
 			return this.events[event].asObservable();
 		} else {
 			return this.events[event].asObservable().subscribe(callback, error, complete);

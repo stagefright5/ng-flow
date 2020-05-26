@@ -2,7 +2,7 @@ const prettierConfig = {
 	"printWidth": 120,
 	"singleQuote": true,
 	"quoteProps": "as-needed",
-	"trailingComma": false,
+	"trailingComma": "none",
 	"useTabs": true,
 	"tabWidth": 4,
 	"semi": true,
@@ -18,6 +18,6 @@ const prettierConfig = {
    		"preserve" - Wrap prose as-is. 
 	 */
 	//  proseWrap: "<always|never|preserve>"
-}
+};
 
 module.exports = prettierConfig;

@@ -10,43 +10,42 @@ import {
 	DoCheck,
 	ElementRef,
 	OnChanges,
-	SimpleChanges,
-	HostListener
-} from "@angular/core";
-import { Flow, Node, AttachedComponentData, Connector } from "../../utils/TypeDefs";
+	SimpleChanges
+} from '@angular/core';
+import { Flow, Node, AttachedComponent, Connector } from '../../utils/TypeDefs';
 
-import { NodeComponent } from "../node/node.component";
-import { LeaderLineService } from "../../services/leader-line.service";
-import { DynamicComponentService } from "../../services/dynamic-component.service";
-import { PositionService } from "../../services/position.service";
-import { Selectors as directive_selectors, NodeIdPrefix, Classes } from "../../utils/constants";
-import { MediaObserver, MediaChange } from "@angular/flex-layout/core";
-import { Subscription } from "rxjs";
-import { distinctUntilChanged, filter } from "rxjs/operators";
-import { _ } from "../../utils/generic-ops";
+import { NodeComponent } from '../node/node.component';
+import { LeaderLineService } from '../../services/leader-line.service';
+import { DynamicComponentService } from '../../services/dynamic-component.service';
+import { PositionService } from '../../services/position.service';
+import { Selectors as directive_selectors, NodeIdPrefix, Classes } from '../../utils/constants';
+import { MediaObserver, MediaChange } from '@angular/flex-layout/core';
+import { Subscription } from 'rxjs';
+import { distinctUntilChanged, filter } from 'rxjs/operators';
+import { _ } from '../../utils/generic-ops';
 
 @Component({
 	selector: directive_selectors.FLOW,
-	templateUrl: "./flow.component.html",
-	styleUrls: ["./flow.component.scss"],
-	exportAs: "ngFlow",
+	templateUrl: './flow.component.html',
+	styleUrls: ['./flow.component.scss'],
+	exportAs: 'ngFlow',
 	host: {
 		class: Classes.FLOW
 	}
 })
 export class FlowComponent implements OnInit, OnDestroy, DoCheck, OnChanges {
-	@Output("promote") promoterNodeClickEvtEmitter = new EventEmitter();
+	@Output('promote') promoterNodeClickEvtEmitter = new EventEmitter();
 	@Input() flowData: Flow.Nodes = [];
-	@Input() connectorColor: string = "#000";
+	@Input() connectorColor: string = '#000';
 	@Input() connectorSize: number = 4;
 	@Input() nodeWidth = 250;
 	@Input() nodeHeight = 300;
 	@Input() nodeGap = 0;
 	@Input() containerHeight: string | 'auto' = 'auto';
 
-	@ViewChild("nodes", { read: ViewContainerRef, static: true }) nodesRef: ViewContainerRef;
-	@ViewChild("nodes_container", { read: ElementRef, static: true }) nodesContanerRef: ElementRef;
-	@ViewChild("connectors_container", { read: ElementRef, static: true }) connectorsContainer: ElementRef;
+	@ViewChild('nodes', { read: ViewContainerRef, static: true }) nodesRef: ViewContainerRef;
+	@ViewChild('nodes_container', { read: ElementRef, static: true }) nodesContanerRef: ElementRef;
+	@ViewChild('connectors_container', { read: ElementRef, static: true }) connectorsContainer: ElementRef;
 	classes = Classes;
 	private nodeIdPrefix = NodeIdPrefix;
 	private _oldFlowData: Flow.Nodes = [];
@@ -90,10 +89,10 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck, OnChanges {
 					height: this.nodeHeight
 				};
 				this.position.init(this.elmRef, dimension, this.nodeGap);
-				this.dynamicCompService.attachedCompList[directive_selectors.NODE].forEach((data) => {
+				this.dynamicCompService.attachedCompList[directive_selectors.NODE].forEach(data => {
 					const dimension = {
 						width: data.__data__.width,
-						height: data.__data__.height,
+						height: data.__data__.height
 					};
 					this.dynamicCompService.updateComponentBindings({ inputBindings: { dimension } }, data);
 				});
@@ -104,7 +103,6 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck, OnChanges {
 
 	ngDoCheck() {
 		if (this._oldFlowData.length < this.flowData.length) {
-			console.log("Did Check!");
 			this._appendNewNodes();
 		}
 	}
@@ -116,7 +114,6 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck, OnChanges {
 	reCalculateNodePositions = (change?: MediaChange) => {
 		clearTimeout(this._setTimeoutTimer);
 		this._setTimeoutTimer = setTimeout(() => {
-			console.log("mchange: ", change);
 			this.position.resetStores();
 			this._updateNodesPositions(this.dynamicCompService.attachedCompList[directive_selectors.NODE]);
 			this._updateContainersLayouts();
@@ -131,7 +128,7 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck, OnChanges {
 		}
 	}
 	// Will be called out of this class instance's context. Hence Arrow func.
-	private _updateNodesPositions(nodes?: AttachedComponentData[]) {
+	private _updateNodesPositions(nodes?: AttachedComponent[]) {
 		const positions = this.position.calculateNodesPositions(nodes.map(n => n.__data__));
 		nodes.forEach((node, i) => {
 			const inputBindings = {
@@ -142,11 +139,13 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck, OnChanges {
 			this.dynamicCompService.updateComponentBindings(inputBindings, node);
 			(<NodeComponent>node.compRef.instance).updateDOMPosition();
 		});
-	};
+	}
 
 	private _appendNewNodes() {
 		const newNodesToAppend = this.flowData.slice(this._oldFlowData.length, this.flowData.length);
-		this._updateNodesPositions(newNodesToAppend.map((node, i) => this._loadFlowNode(node, i + this._oldFlowData.length)));
+		this._updateNodesPositions(
+			newNodesToAppend.map((node, i) => this._loadFlowNode(node, i + this._oldFlowData.length))
+		);
 		this._oldFlowData.push(...newNodesToAppend);
 		this._updateContainersLayouts();
 	}
@@ -160,8 +159,8 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck, OnChanges {
 			inputBindings: {
 				nodeData: { ...node, index: i },
 				dimension: {
-					width: this.nodeWidth,
-					height: this.nodeHeight
+					width: node.width,
+					height: node.height
 				},
 				promoteEvtCbFn: this._emitWheelClick
 			},
@@ -180,10 +179,10 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck, OnChanges {
 		});
 	};
 
-	drawConnector({ start = "", end = "", path = "fluid" }: Partial<Connector.DrawConnectorOptions>) {
+	drawConnector({ start = '', end = '', path = 'fluid' }: Partial<Connector.DrawConnectorOptions>) {
 		this.leaderLinesService.drawConnector({
-			start: typeof start === "string" ? document.getElementById(start) : start,
-			end: typeof end === "string" ? document.getElementById(end) : end,
+			start: typeof start === 'string' ? document.getElementById(start) : start,
+			end: typeof end === 'string' ? document.getElementById(end) : end,
 			color: this.connectorColor,
 			size: this.connectorSize,
 			path: path
@@ -226,8 +225,8 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck, OnChanges {
 	private reDrawConnectors(keys: Array<any>) {
 		keys.map(key => ({
 			...key,
-			start: _.attr(key.start, "id"),
-			end: _.attr(key.end, "id")
+			start: _.attr(key.start, 'id'),
+			end: _.attr(key.end, 'id')
 		})).forEach(k => this.leaderLinesService.drawConnector(k));
 	}
 

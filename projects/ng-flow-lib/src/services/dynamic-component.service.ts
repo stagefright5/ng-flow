@@ -1,7 +1,7 @@
-import { Injectable, ComponentFactoryResolver, ViewContainerRef } from "@angular/core";
-import { Node, AttachedComponent } from "../utils/TypeDefs";
+import { Injectable, ComponentFactoryResolver, ViewContainerRef } from '@angular/core';
+import { Node, AttachedComponent } from '../utils/TypeDefs';
 @Injectable({
-	providedIn: "root",
+	providedIn: 'root'
 })
 export class DynamicComponentService {
 	attachedCompList: { [key: string]: Array<AttachedComponent> } = {};
@@ -27,7 +27,7 @@ export class DynamicComponentService {
 			inputs: compFactory.inputs,
 			outputs: compFactory.outputs,
 			__data__: newNode.__data__,
-			id: newNode.id,
+			id: newNode.id
 		};
 		(this.attachedCompList[compFactory.selector] &&
 			this.attachedCompList[compFactory.selector].push(newCompData)) ||
@@ -46,7 +46,7 @@ export class DynamicComponentService {
 
 	public detachComponent(selector: string, id: string) {
 		let deletedNode = null;
-		this.attachedCompList[selector] = this.attachedCompList[selector].filter((compData) => {
+		this.attachedCompList[selector] = this.attachedCompList[selector].filter(compData => {
 			if ((<any>compData.compRef.instance).id === id) {
 				compData.compRef.destroy();
 				deletedNode = compData.__data__;
@@ -70,7 +70,7 @@ export class DynamicComponentService {
 		if (compData.outputs && compData.outputs.length) {
 			compData.outputs.forEach(({ propName }) => {
 				if (outputBindings[propName]) {
-					compData.compRef.instance[propName].subscribe((res) => {
+					compData.compRef.instance[propName].subscribe(res => {
 						outputBindings[propName](res);
 					});
 				}

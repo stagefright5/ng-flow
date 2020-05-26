@@ -9,18 +9,18 @@ import {
 	ElementRef,
 	Renderer2,
 	HostBinding,
-	OnDestroy,
-} from "@angular/core";
-import { Node } from "../../utils/TypeDefs";
-import { OverlayService } from "../../services/overlay.service";
-import { DynamicComponentService } from "../../services/dynamic-component.service";
-import { Selectors, Events } from "../../utils/constants";
-import { PubSubService } from "../../services/pub-sub.service";
-import { _ } from "../../utils/generic-ops";
+	OnDestroy
+} from '@angular/core';
+import { Node } from '../../utils/TypeDefs';
+import { OverlayService } from '../../services/overlay.service';
+import { DynamicComponentService } from '../../services/dynamic-component.service';
+import { Selectors, Events } from '../../utils/constants';
+import { PubSubService } from '../../services/pub-sub.service';
+import { _ } from '../../utils/generic-ops';
 @Component({
 	selector: Selectors.NODE,
-	templateUrl: "./node.component.html",
-	styleUrls: ["./node.component.scss"],
+	templateUrl: './node.component.html',
+	styleUrls: ['./node.component.scss']
 })
 export class NodeComponent implements AfterViewInit, OnDestroy {
 	@Input() nodeData: Node.Data = {};
@@ -28,9 +28,9 @@ export class NodeComponent implements AfterViewInit, OnDestroy {
 	@Input() dimension: Node.Dimension = { width: 250, height: 300 };
 	@Input() promoteEvtCbFn: (...args) => void;
 	@Output() nodeAdded: EventEmitter<any> = new EventEmitter();
-	@HostBinding("attr.id") id = "";
+	@HostBinding('attr.id') id = '';
 
-	@ViewChild("node_content", { static: false, read: ViewContainerRef })
+	@ViewChild('node_content', { static: false, read: ViewContainerRef })
 	nodeContent: ViewContainerRef;
 	constructor(
 		private _overlayService: OverlayService,
@@ -44,7 +44,7 @@ export class NodeComponent implements AfterViewInit, OnDestroy {
 		setTimeout(() => {
 			if (this.nodeData.component) {
 				this._dynamicCompService.loadComponent(this.nodeContent, {
-					component: this.nodeData.component,
+					component: this.nodeData.component
 				});
 			}
 			this.nodeAdded.emit(this.nodeData);
@@ -54,15 +54,15 @@ export class NodeComponent implements AfterViewInit, OnDestroy {
 	emitPromoterWheelClickEvt(e: MouseEvent, wheel) {
 		const dataObj = {
 			wheelData: wheel,
-			nodeData: this.nodeData,
+			nodeData: this.nodeData
 		};
 		if (wheel.descriptionPanel) {
 			this._overlayService.open(<HTMLElement>event.target, wheel.descriptionPanel, dataObj);
 		} else {
-			if (typeof this.promoteEvtCbFn === "function") {
+			if (typeof this.promoteEvtCbFn === 'function') {
 				this.promoteEvtCbFn({
 					wheelData: wheel,
-					nodeData: this.nodeData,
+					nodeData: this.nodeData
 				});
 			}
 		}
@@ -71,13 +71,13 @@ export class NodeComponent implements AfterViewInit, OnDestroy {
 	updateDOMPosition() {
 		Object.entries(this.position).forEach(([key, value]) => {
 			const el = this.elementRef.nativeElement;
-			this.renderer.setStyle(el, key, value + "px");
+			this.renderer.setStyle(el, key, value + 'px');
 		});
 	}
 
 	ngOnDestroy() {
 		this.pubSub.$pub(Events.NODE_DELETE, {
-			id: _.attr(this.elementRef.nativeElement, "id"),
+			id: _.attr(this.elementRef.nativeElement, 'id')
 		});
 	}
 }

@@ -1,7 +1,7 @@
-import { OverlayRef } from "@angular/cdk/overlay";
-import { filter } from "rxjs/operators";
-import { ESCAPE, hasModifierKey } from "@angular/cdk/keycodes";
-import { ComponentRef } from "@angular/core";
+import { OverlayRef } from '@angular/cdk/overlay';
+import { filter } from 'rxjs/operators';
+import { ESCAPE, hasModifierKey } from '@angular/cdk/keycodes';
+import { ComponentRef } from '@angular/core';
 
 export class DescPanelRef {
 	constructor(private _overlayRef: OverlayRef, private _containerRef: ComponentRef<unknown>, private _config: any) {
@@ -19,11 +19,11 @@ export class DescPanelRef {
 		this._overlayRef
 			.keydownEvents()
 			.pipe(
-				filter((event) => {
+				filter(event => {
 					return event.keyCode === ESCAPE && !this._config.disableClose && !hasModifierKey(event);
 				})
 			)
-			.subscribe((e) => {
+			.subscribe(e => {
 				e.preventDefault();
 				this.close();
 			});

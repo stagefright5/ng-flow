@@ -1,6 +1,6 @@
-import { ViewContainerRef, ComponentRef, ComponentFactory } from "@angular/core";
-import { NodeComponent } from "../components/node/node.component";
-import { Directions } from "./constants";
+import { ViewContainerRef, ComponentRef, ComponentFactory } from '@angular/core';
+import { NodeComponent } from '../components/node/node.component';
+import { Directions } from './constants';
 
 export namespace Node {
 	export type Description = null | Record<string, string>;
@@ -76,14 +76,14 @@ export namespace Connector {
 		end?: HTMLElement | string;
 		color?: string;
 		size?: number;
-		path?: "straight" | "arc" | "fluid" | "magnet" | "grid";
-		startSocket?: "top" | "right" | "bottom" | "left" | "auto";
-		endSocket?: "top" | "right" | "bottom" | "left" | "auto";
+		path?: 'straight' | 'arc' | 'fluid' | 'magnet' | 'grid';
+		startSocket?: 'top' | 'right' | 'bottom' | 'left' | 'auto';
+		endSocket?: 'top' | 'right' | 'bottom' | 'left' | 'auto';
 		startSocketGravity?: number | string | number[] | string[];
 		endSocketGravity?: number | string | number[] | string[];
-		startPlug?: "disc" | "square" | "arrow1" | "arrow2" | "arrow3" | "hand" | "crosshair" | "behind";
-		endPlug?: "disc" | "square" | "arrow1" | "arrow2" | "arrow3" | "hand" | "crosshair" | "behind";
-		startPlugColor?: "auto" | string;
-		endPlugColor?: "auto" | string;
+		startPlug?: 'disc' | 'square' | 'arrow1' | 'arrow2' | 'arrow3' | 'hand' | 'crosshair' | 'behind';
+		endPlug?: 'disc' | 'square' | 'arrow1' | 'arrow2' | 'arrow3' | 'hand' | 'crosshair' | 'behind';
+		startPlugColor?: 'auto' | string;
+		endPlugColor?: 'auto' | string;
 	}
 }

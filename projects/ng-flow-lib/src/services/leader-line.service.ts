@@ -1,11 +1,11 @@
-import { Injectable, NgZone, ElementRef } from "@angular/core";
-import { Connector } from "../utils/TypeDefs";
-import { _ } from "../utils/generic-ops";
-import { PubSubService } from "./pub-sub.service";
-import { Events } from "../utils/constants";
-import { Subscription } from "rxjs";
+import { Injectable, NgZone, ElementRef } from '@angular/core';
+import { Connector } from '../utils/TypeDefs';
+import { _ } from '../utils/generic-ops';
+import { PubSubService } from './pub-sub.service';
+import { Events } from '../utils/constants';
+import { Subscription } from 'rxjs';
 @Injectable({
-	providedIn: "root",
+	providedIn: 'root'
 })
 export class LeaderLineService {
 	private _container: HTMLElement = null;
@@ -18,7 +18,7 @@ export class LeaderLineService {
 	constructor(private zone: NgZone, private pubSub: PubSubService) {
 		this._subscribeForEvts();
 		LeaderLine.positionByWindowResize = false;
-		window["connectors"] = this.connectors;
+		window['connectors'] = this.connectors;
 	}
 
 	init(connCont: ElementRef) {
@@ -26,13 +26,13 @@ export class LeaderLineService {
 		this._container = connCont.nativeElement;
 		this._curTranslate = {
 			x: 0,
-			y: 0,
+			y: 0
 		};
 		this._leaderLineDrawOptions = {
-			path: "fluid",
-			startSocket: "auto",
-			endSocket: "auto",
-			startPlug: "behind",
+			path: 'fluid',
+			startSocket: 'auto',
+			endSocket: 'auto',
+			startPlug: 'behind'
 		};
 		this.positionContainer();
 		this.positionConnectors();
@@ -41,20 +41,20 @@ export class LeaderLineService {
 
 	drawConnector(opts: Connector.DrawConnectorOptions) {
 		if (opts.start && opts.end) {
-			opts.start = typeof opts.start === "string" ? document.getElementById(opts.start) : opts.start;
-			opts.end = typeof opts.end === "string" ? document.getElementById(opts.end) : opts.end;
+			opts.start = typeof opts.start === 'string' ? document.getElementById(opts.start) : opts.start;
+			opts.end = typeof opts.end === 'string' ? document.getElementById(opts.end) : opts.end;
 			if (opts.start && opts.end)
 				this.zone.runOutsideAngular(() =>
 					setTimeout(() => {
 						opts = { ...this._leaderLineDrawOptions, ...(opts && opts) };
 						const line = new LeaderLine(opts);
-						line.svgDOMRef = document.querySelector("body>.leader-line:last-of-type");
+						line.svgDOMRef = document.querySelector('body>.leader-line:last-of-type');
 						this._container.appendChild(line.svgDOMRef);
 						this.connectors.set(opts, line);
 					})
 				);
 		} else {
-			console.log("Could not draw connector between", opts.start, opts.end);
+			console.warn('Could not draw connector between', opts.start, opts.end);
 		}
 	}
 
@@ -79,16 +79,16 @@ export class LeaderLineService {
 	}
 
 	positionConnectors() {
-		this.connectors.forEach((v) => v.position());
+		this.connectors.forEach(v => v.position());
 	}
 
 	private _subscribeForEvts() {
-		this._nodeDestroySub = this.pubSub.$sub(Events.NODE_DELETE, (obj) => {
-			console.log(obj.id + " :: " + Events.NODE_DELETE + "d");
+		this._nodeDestroySub = this.pubSub.$sub(Events.NODE_DELETE, obj => {
+			console.log(obj.id + ' :: ' + Events.NODE_DELETE + 'd');
 			this.connectors.forEach((value, key) => {
 				if (
-					obj.id === _.attr(key.start as HTMLElement, "id") ||
-					obj.id === _.attr(key.end as HTMLElement, "id")
+					obj.id === _.attr(key.start as HTMLElement, 'id') ||
+					obj.id === _.attr(key.end as HTMLElement, 'id')
 				) {
 					this.connectors.delete(key);
 					this.removeConnector(value);
@@ -103,7 +103,7 @@ export class LeaderLineService {
 			// aligns with that of the document.
 			translate = {
 				x: (containerBRect.left + this.pageXOffset) * -1,
-				y: (containerBRect.top + this.pageYOffset) * -1,
+				y: (containerBRect.top + this.pageYOffset) * -1
 			};
 		if (translate.x !== 0 || translate.y !== 0) {
 			// Update position of wrapper by transforming so that it aligns with the co-ordinate system of
@@ -114,7 +114,7 @@ export class LeaderLineService {
 			!onlyContainer && this.positionConnectors();
 		} else if (!onlyContainer && line) {
 			// Update position of target line
-			console.log("Fix target line");
+			console.log('Fix target line');
 			line.position();
 		}
 	}
@@ -122,13 +122,13 @@ export class LeaderLineService {
 	private get pageXOffset() {
 		return window.pageXOffset !== undefined
 			? window.pageXOffset
-			: (document.documentElement || document.body.parentNode || document.body)["scrollLeft"];
+			: (document.documentElement || document.body.parentNode || document.body)['scrollLeft'];
 	}
 
 	private get pageYOffset() {
 		return window.pageYOffset !== undefined
 			? window.pageYOffset
-			: (document.documentElement || document.body.parentNode || document.body)["scrollTop"];
+			: (document.documentElement || document.body.parentNode || document.body)['scrollTop'];
 	}
 
 	cleanup() {
