@@ -29,6 +29,7 @@ export namespace Node {
 	export interface PositionHistoryEntry extends Position {
 		direction: Directions;
 		row: number;
+		hSpace: number;
 		// WATCHOUT: node: any;
 	}
 

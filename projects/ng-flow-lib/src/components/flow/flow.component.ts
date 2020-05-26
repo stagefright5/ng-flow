@@ -67,13 +67,11 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck, OnChanges {
 		// TODO: Use "MutationObserver" DOM API for finer control on when to reposition the nodes
 		this.position.init(
 			this.nodesContanerRef,
-			{
-				width: this.nodeWidth,
-				height: this.nodeHeight
-			},
+			this.nodeHeight,
+			this.nodeWidth,
 			this.nodeGap
 		);
-		this.elmRef.nativeElement.style.height = this.containerHeight !== 'auto' ? '400px' : this.containerHeight;
+		this.elmRef.nativeElement.style.height = this.containerHeight !== 'auto' ? `${this.containerHeight}px` : this.containerHeight;
 		this.leaderLinesService.init(this.connectorsContainer);
 	}
 
@@ -88,11 +86,12 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck, OnChanges {
 					width: this.nodeWidth,
 					height: this.nodeHeight
 				};
-				this.position.init(this.elmRef, dimension, this.nodeGap);
+				this.position.init(this.elmRef, this.nodeHeight, this.nodeWidth, this.nodeGap);
 				this.dynamicCompService.attachedCompList[directive_selectors.NODE].forEach(data => {
+					const size = this.position.getNodeSize(data.__data__)
 					const dimension = {
-						width: data.__data__.width,
-						height: data.__data__.height
+						width: size.width,
+						height: size.height
 					};
 					this.dynamicCompService.updateComponentBindings({ inputBindings: { dimension } }, data);
 				});
@@ -115,8 +114,7 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck, OnChanges {
 		clearTimeout(this._setTimeoutTimer);
 		this._setTimeoutTimer = setTimeout(() => {
 			this.position.resetStores();
-			this._updateNodesPositions(this.dynamicCompService.attachedCompList[directive_selectors.NODE]);
-			this._updateContainersLayouts();
+			this._updatePositions(this.dynamicCompService.attachedCompList[directive_selectors.NODE]);
 		}, 200);
 	};
 
@@ -147,7 +145,6 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck, OnChanges {
 			newNodesToAppend.map((node, i) => this._loadFlowNode(node, i + this._oldFlowData.length))
 		);
 		this._oldFlowData.push(...newNodesToAppend);
-		this._updateContainersLayouts();
 	}
 
 	// Will be called out of this class instance's context. Hence Arrow func.
