@@ -16,7 +16,7 @@ export class PositionService {
 	private _parentElmRect: DOMRect;
 	private _DIRECTIONS = CONST_DIRECTIONS;
 
-	constructor() {}
+	constructor() { }
 
 	init(elmRef: ElementRef, initialNodeDimension: Node.Dimension, gap: number) {
 		this._parentElm = elmRef.nativeElement;
@@ -39,32 +39,90 @@ export class PositionService {
 		let rowNum = (this.history.recent && this.history.recent.row) || 0;
 		if (l > -1) {
 			let prevNodeLeftPos = this.prevNodePos.leftPos;
-			let newLeftPosContainer = prevNodeLeftPos + this.ONE_NODE_SPACE.width;
+			let newLeftPosContainer = prevNodeLeftPos;
 			let _additionFactor = 0;
 			const prevfromDir = this.history.get(l) && this.history.get(l).direction;
 			const prevPrevFromDir = this.history.get(l - 1) && this.history.get(l - 1).direction;
 			_direction = prevfromDir || _direction;
 
 			if (prevfromDir === this._DIRECTIONS.FROM_TOP) {
+				/**
+				 * 		  |
+				 * 		  |
+				 * 		  v
+				 * 		 ------
+				 * 	    |     |
+				 * 		|  p  |
+				 * 		|     |
+				 *		------ 
+				 */
 				// check the history upto 2 and decide the "direction"
 				if (prevPrevFromDir === this._DIRECTIONS.FROM_LEFT) {
+					/**
+					 * If true, the flow will look something like this:
+					 *	 ------	   		  ------	
+					 *	|     |	  		 |	   |
+					 *	| ppp |--------->|  pp |
+					 *	|     |	   		 |     |
+					 *	------           ------
+					 *		   		       |
+					 *		   		       |
+					 *		   		  	   v
+					 *		   			 ------
+					 *		   	    	|     |
+					 *	[new_node]<-----|  p  |
+					 *		   	    	|     |
+					 *		  			------ 
+					 */
 					_additionFactor = -this.ONE_NODE_SPACE.width;
 					_direction = this._DIRECTIONS.FROM_RIGHT;
 				} else if (prevPrevFromDir === this._DIRECTIONS.FROM_RIGHT) {
+					/**
+					 * If true, the flow will look something like this:
+					 *	 ------	   		  ------	
+					 *	|     |	  		 |	   |
+					 *	| pp  |<---------| ppp |
+					 *	|     |	   		 |     |
+					 *	------           ------
+					 * 	  |
+					 * 	  |
+					 * 	  v
+					 *  ------
+					 * |     |
+					 * |  p  |------->[new_node]
+					 * |     |
+					 * ------ 
+					 */
 					_additionFactor = this.ONE_NODE_SPACE.width;
 					_direction = this._DIRECTIONS.FROM_LEFT;
 				}
 			} else {
 				if (prevfromDir === this._DIRECTIONS.FROM_LEFT) {
+					/**
+					 * If true, the flow will look something like this:
+					 *  	  ------	
+					 * 		 |	   |
+					 * ----->|  pp |------> [new_node]
+					 * 		 |     |
+					 * 		 ------
+					 */
 					_additionFactor = this.ONE_NODE_SPACE.width;
 					_direction = prevfromDir;
 				} else if (prevfromDir === this._DIRECTIONS.FROM_RIGHT) {
+					/**
+					 * If true, the flow will look something like this:
+					 * 				   ------
+					 * 				  |	    |
+					 *[new_node]<-----|  pp |<-----
+					 * 				  |     |
+					 * 				  ------
+					 */
 					_additionFactor = -this.ONE_NODE_SPACE.width;
 					_direction = prevfromDir;
 				}
 			}
 			if (_additionFactor) {
-				newLeftPosContainer += _additionFactor - this.ONE_NODE_SPACE.width;
+				newLeftPosContainer += _additionFactor;
 			}
 			const leftOverflow = newLeftPosContainer < 0;
 			const rightOverflow = newLeftPosContainer + this._nodeDimension.width > this.ENCLOSING_RECT.width;
