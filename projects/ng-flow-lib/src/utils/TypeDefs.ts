@@ -1,6 +1,6 @@
 import { ViewContainerRef, ComponentRef, ComponentFactory } from "@angular/core";
 import { NodeComponent } from "../components/node/node.component";
-import { CONST_DIRECTIONS } from "./constants";
+import { Directions } from "./constants";
 
 export namespace Node {
 	export type Description = null | Record<string, string>;
@@ -25,7 +25,7 @@ export namespace Node {
 	}
 
 	export interface PositionHistoryEntry extends Position {
-		direction: CONST_DIRECTIONS;
+		direction: Directions;
 		row: number;
 		node: any;
 	}

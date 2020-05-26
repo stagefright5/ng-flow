@@ -14,11 +14,11 @@ import {
 import { Node } from "../../utils/TypeDefs";
 import { OverlayService } from "../../services/overlay.service";
 import { DynamicComponentService } from "../../services/dynamic-component.service";
-import { CONST_SELECTORS, Events } from "../../utils/constants";
+import { Selectors, Events } from "../../utils/constants";
 import { PubSubService } from "../../services/pub-sub.service";
 import { _ } from "../../utils/generic-ops";
 @Component({
-	selector: CONST_SELECTORS.NODE,
+	selector: Selectors.NODE,
 	templateUrl: "./node.component.html",
 	styleUrls: ["./node.component.scss"]
 })

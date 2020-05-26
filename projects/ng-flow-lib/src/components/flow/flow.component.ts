@@ -19,7 +19,7 @@ import { NodeComponent } from "../node/node.component";
 import { LeaderLineService } from "../../services/leader-line.service";
 import { DynamicComponentService } from "../../services/dynamic-component.service";
 import { PositionService } from "../../services/position.service";
-import { CONST_SELECTORS as directive_selectors, NODE_ID_PREFIX, classes } from "../../utils/constants";
+import { Selectors as directive_selectors, NodeIdPrefix, Classes } from "../../utils/constants";
 import { MediaObserver, MediaChange } from "@angular/flex-layout/core";
 import { Subscription } from "rxjs";
 import { distinctUntilChanged, filter } from "rxjs/operators";
@@ -31,7 +31,7 @@ import { _ } from "../../utils/generic-ops";
 	styleUrls: ["./flow.component.scss"],
 	exportAs: "ngFlow",
 	host: {
-		class: classes.FLOW
+		class: Classes.FLOW
 	}
 })
 export class FlowComponent implements OnInit, OnDestroy, DoCheck, OnChanges {
@@ -47,8 +47,8 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck, OnChanges {
 	@ViewChild("nodes", { read: ViewContainerRef, static: true }) nodesRef: ViewContainerRef;
 	@ViewChild("nodes_container", { read: ElementRef, static: true }) nodesContanerRef: ElementRef;
 	@ViewChild("connectors_container", { read: ElementRef, static: true }) connectorsContainer: ElementRef;
-	classes = classes;
-	private nodeIdPrefix = NODE_ID_PREFIX;
+	classes = Classes;
+	private nodeIdPrefix = NodeIdPrefix;
 	private _oldFlowData: Flow.Nodes = [];
 	private mediaObserverSubs: Subscription;
 	private _setTimeoutTimer = null;
@@ -74,7 +74,7 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck, OnChanges {
 			},
 			this.nodeGap
 		);
-		this.elmRef.nativeElement.style.height = this.containerHeight !== 'auto' && this.containerHeight;
+		this.elmRef.nativeElement.style.height = this.containerHeight !== 'auto' ? '400px' : this.containerHeight;
 		this.leaderLinesService.init(this.connectorsContainer);
 	}
 
