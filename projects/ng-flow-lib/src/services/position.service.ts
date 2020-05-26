@@ -59,20 +59,22 @@ export class PositionService {
 				if (prevPrevFromDir === this._dirs.FROM_LEFT) {
 					/**
 					 * If true, the flow will look something like this:
-					 *	 ------	   		  ------
-					 *	|     |	  		 |	   |
-					 *	| ppp |--------->|  pp |
-					 *	|     |	   		 |     |
-					 *	------           ------
-					 *		   		       |
-					 *		   		       |
-					 *		   		  	   v
-					 *		   			 ------
-					 *		   	    	|     |
-					 *	[new_node]<-----|  p  |
-					 *	^	   	    	|     |
-					 *	|	  			------
-					 *	|
+					 *	------	   		  	  ------
+					 *	|     |	  		 	  |	    |
+					 *	| ppp |-------------->|  pp |
+					 *	|     |	   		 	  |     |
+					 *	------            	  ------
+					 *		   		       		|
+					 *		   		       		|
+					 *		   		  	   		v
+					 *		   			 	------
+					 *		   	    		|     |
+					 *	[new_node]<-----	|  p  |
+					 *	^	   	    		|     |
+					 *	|	  				------
+					 *	|				    |
+					 *	|				    |
+				 	 * 	|<---addnFactor---->|
 					 *  |
 					 * This is the new left
 					 *
@@ -84,7 +86,7 @@ export class PositionService {
 				} else if (prevPrevFromDir === this._dirs.FROM_RIGHT) {
 					/**
 					 * If true, the flow will look something like this:
-					 *	 ------	   		  ------
+					 *	------	   		 ------
 					 *	|     |	  		 |	   |
 					 *	| pp  |<---------| ppp |
 					 *	|     |	   		 |     |
@@ -92,13 +94,15 @@ export class PositionService {
 					 * 	  |
 					 * 	  |
 					 * 	  v
-					 *  ------
+					 * ------
 					 * |     |
 					 * |  p  |------->[new_node]
 					 * |     |				   ^
 					 * ------				   |
-					 * 						   |
-					 * 						   |
+					 * 		 |				   |
+					 * 		 |				   |
+					 *		 |<---addnFactor-->|
+					 * 		 |				   |
 					 * 					This is the new left
 					 *
 					 *
@@ -114,7 +118,7 @@ export class PositionService {
 					 * 		  |
 					 * 		  |
 					 * 		  v
-					 * 		 ------
+					 * 		------
 					 * 	    |     |
 					 * 		| pp  |
 					 * 		|     |
@@ -122,7 +126,7 @@ export class PositionService {
 					 * 		  |
 					 * 		  |
 					 * 		  v
-					 * 		 ------
+					 * 		------
 					 * 	    |     |
 					 * 		|  p  |
 					 * 		|     |
@@ -136,12 +140,14 @@ export class PositionService {
 			} else if (prevfromDir === this._dirs.FROM_RIGHT) {
 				/**
 				 * If true, the flow will look something like this:
-				 * 				   		  ------
+				 * 				   		 ------
 				 * 				  		 |	   |
-				 *       [new_node]<-----| pp  |<-----
-				 *       ^				 |     |
-				 *       |				 ------
-				 *       |
+				 *    [new_node]<--------| pp  |<-----
+				 *    ^				 	 |     |
+				 *    |					 ------
+				 * 	  |					 |
+				 * 	  |<---addnFactor--->|	 
+				 *    |
 				 * This is the new left
 				 *  And, the new node goes "from right" to left
 				 */
@@ -150,13 +156,14 @@ export class PositionService {
 			} else if (prevfromDir === this._dirs.FROM_LEFT) {
 				/**
 				 * If true, the flow will look something like this:
-				 *  	  ------
+				 *  	 ------
 				 * 		 |	   |
 				 * ----->|  pp |------> [new_node]
 				 * 		 |     |				 ^
 				 * 		 ------					 |
-				 * 								 |
-				 * 								 |
+				 * 			   |				 |
+				 * 			   |<---addnFactor-->|
+				 * 			   |				 |
 				 * 						This is the new left
 				 *
 				 * And, the new node goes "from left" to right
