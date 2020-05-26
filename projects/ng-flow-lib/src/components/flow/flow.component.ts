@@ -42,7 +42,7 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck, OnChanges {
 	@Input() nodeWidth = 250;
 	@Input() nodeHeight = 300;
 	@Input() nodeGap = 0;
-	@Input() containerHeight: string | 'auto' = '400px';
+	@Input() containerHeight: string | 'auto' = 'auto';
 
 	@ViewChild("nodes", { read: ViewContainerRef, static: true }) nodesRef: ViewContainerRef;
 	@ViewChild("nodes_container", { read: ElementRef, static: true }) nodesContanerRef: ElementRef;
