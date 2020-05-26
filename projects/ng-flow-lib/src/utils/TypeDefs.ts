@@ -56,7 +56,7 @@ type BindableProperty = {
 	propName: string;
 	templateName: string;
 };
-export interface AttachedComponentData {
+export interface AttachedComponent {
 	compRef: ComponentRef<unknown>;
 	inputs: BindableProperty[];
 	outputs: BindableProperty[];
