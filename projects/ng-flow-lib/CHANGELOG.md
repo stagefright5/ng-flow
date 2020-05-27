@@ -1,14 +1,5 @@
 ## [0.0.3-alpha.15](https://github.com/stagefright5/ng-flow/compare/ac046cc45a2e6c7681df36e67d377cb91ffe09b5...0.0.3-alpha.15) (2020-05-26)
 
-### Features
-
-* **nodes:** Give "id" for each node ([aceeca0](https://github.com/stagefright5/ng-flow/commit/aceeca04212388ce1f59e42b4612f2af899d48ad))
-* **nodes:** Give height/width for individual nodes ([3c564a4](https://github.com/stagefright5/ng-flow/commit/3c564a45f57cc95e212fe4c8956e9ccd930b9b2f))
-
-
-
-## 0.0.3-alpha.14 (2020-05-26)
-
 
 ### Bug Fixes
 
@@ -21,7 +12,10 @@
 ### Features
 
 * **history:** Get the most recent history entry ([1337ca0](https://github.com/stagefright5/ng-flow/commit/1337ca0de29a0ef6fbc1714327e437e4fd1a3971))
+* **node:** [WIP] add indivdual node's height and width option ([ac43c1e](https://github.com/stagefright5/ng-flow/commit/ac43c1e4c20a18b61d70ba1dff82db000ed451c3))
 * **node:** Accept "width", "height" and gap as input param"nodeHeight", "nodeWidth" and "nodeGap" Input properties are exposed in the flow component . These values are of type number, which is assigned as pixel vlues ([c1c955e](https://github.com/stagefright5/ng-flow/commit/c1c955ecc15657d1fafcc9cd0c5cd167e5403144))
 * **nodes:** delete a node ([ac046cc](https://github.com/stagefright5/ng-flow/commit/ac046cc45a2e6c7681df36e67d377cb91ffe09b5))
+* **nodes:** Give "id" for each node ([aceeca0](https://github.com/stagefright5/ng-flow/commit/aceeca04212388ce1f59e42b4612f2af899d48ad))
+* **nodes:** Give height/width for individual nodes ([3c564a4](https://github.com/stagefright5/ng-flow/commit/3c564a45f57cc95e212fe4c8956e9ccd930b9b2f))
 * **nodes:** Rerender all the node of a flow preserving the connectors ([2b861c8](https://github.com/stagefright5/ng-flow/commit/2b861c818bf55eccfe4d1fd0d3089bb1e7c3e6ea))
 * **refactor:** Maintain all the history with the row number and node data ([c190bb1](https://github.com/stagefright5/ng-flow/commit/c190bb195cc988c0fa6a8ab24fc4541f3a6a6a8b))
