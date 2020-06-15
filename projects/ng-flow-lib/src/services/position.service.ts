@@ -232,7 +232,7 @@ export class PositionService {
 		};
 	}
 
-	getNodeSize(node) {
+	getNodeSize(node: Node.Data) {
 		return {
 			width: node.width || this._defaultNodeSize.width,
 			height:
