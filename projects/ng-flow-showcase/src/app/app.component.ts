@@ -24,13 +24,28 @@ export class AppComponent {
 			component: DescPanelComponent,
 			width: 250,
 			height: 85,
-			id: 'MyOwnFckingId'
+			id: 'first',
+			to: [
+				"second",
+				"fourth"
+			]
 		},
 		{
 			wheels: [
 				{
 					icon: 'assets/asterisk.svg'
 					// descriptionPanel: 'ss'
+				}
+			],
+			id: "second",
+			from: [
+				"fourth"
+			],
+			to: [
+				"second",
+				{
+					id: "fourth",
+					path: "grid"
 				}
 			]
 			// width: 150,
@@ -47,12 +62,17 @@ export class AppComponent {
 					// descriptionPanel: DescPanelComponent
 					// descriptionPanel: 'ss'
 				}
-			]
+			],
+			id: "third",
 			// width: 150,
 			// height: 220
 		},
 		{
-			component: DescPanelComponent
+			component: DescPanelComponent,
+			// to: [
+			// 	'first'
+			// ],
+			id: 'fourth'
 			// width: 150,
 			// height: 180
 		},
@@ -62,55 +82,61 @@ export class AppComponent {
 					icon: 'assets/asterisk.svg'
 					// descriptionPanel: 'ss'
 				}
+			],
+			to: [
+				'first'
 			]
 			// width: 150,
 			// height: 180
 		},
-		{
-			wheels: [
-				{
-					descriptionPanel: DescPanelComponent
-				},
-				{
-					icon: 'assets/arrow-right.svg',
-					promoter: true
-					// descriptionPanel: DescPanelComponent
-					// descriptionPanel: 'ss'
-				}
-			]
-			// width: 150,
-			// height: 180
-		},
-		{
-			wheels: [
-				{
-					icon: 'assets/asterisk.svg'
-					// descriptionPanel: 'ss'
-				}
-			]
-			// width: 150,
-			// height: 180
-		},
-		{
-			component: DescPanelComponent
-			// width: 150,
-			// height: 180
-		},
-		{
-			wheels: [
-				{
-					descriptionPanel: DescPanelComponent
-				},
-				{
-					icon: 'assets/arrow-right.svg',
-					promoter: true
-					// descriptionPanel: DescPanelComponent
-					// descriptionPanel: 'ss'
-				}
-			]
-			// width: 150,
-			// height: 180
-		}
+		// {
+		// 	wheels: [
+		// 		{
+		// 			descriptionPanel: DescPanelComponent
+		// 		},
+		// 		{
+		// 			icon: 'assets/arrow-right.svg',
+		// 			promoter: true
+		// 			// descriptionPanel: DescPanelComponent
+		// 			// descriptionPanel: 'ss'
+		// 		}
+		// 	],
+		// 	to: [
+		// 		'first'
+		// 	]
+		// 	// width: 150,
+		// 	// height: 180
+		// },
+		// {
+		// 	wheels: [
+		// 		{
+		// 			icon: 'assets/asterisk.svg'
+		// 			// descriptionPanel: 'ss'
+		// 		}
+		// 	]
+		// 	// width: 150,
+		// 	// height: 180
+		// },
+		// {
+		// 	component: DescPanelComponent
+		// 	// width: 150,
+		// 	// height: 180
+		// },
+		// {
+		// 	wheels: [
+		// 		{
+		// 			descriptionPanel: DescPanelComponent
+		// 		},
+		// 		{
+		// 			icon: 'assets/arrow-right.svg',
+		// 			promoter: true
+		// 			// descriptionPanel: DescPanelComponent
+		// 			// descriptionPanel: 'ss'
+		// 		}
+		// 	]
+		// 	// width: 150,
+		// 	// height: 180
+		// }
 	];
 
 	onPromoteHandler(e) {
