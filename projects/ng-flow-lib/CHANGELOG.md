@@ -1,3 +1,12 @@
+## [0.0.3-alpha.20](https://github.com/stagefright5/ng-flow/compare/0.0.3-alpha.15...0.0.3-alpha.20) (2020-06-15)
+
+
+### Features
+
+* **connectors:** [BREAKING] mandatory `to` or `from` options for a node. ([18d38b8](https://github.com/stagefright5/ng-flow/commit/18d38b81e3df9aa4afc1bdf9b74b0bb1f827c280))
+
+
+
 ## [0.0.3-alpha.15](https://github.com/stagefright5/ng-flow/compare/ac046cc45a2e6c7681df36e67d377cb91ffe09b5...0.0.3-alpha.15) (2020-05-26)
 
 
@@ -19,3 +28,6 @@
 * **nodes:** Give height/width for individual nodes ([3c564a4](https://github.com/stagefright5/ng-flow/commit/3c564a45f57cc95e212fe4c8956e9ccd930b9b2f))
 * **nodes:** Rerender all the node of a flow preserving the connectors ([2b861c8](https://github.com/stagefright5/ng-flow/commit/2b861c818bf55eccfe4d1fd0d3089bb1e7c3e6ea))
 * **refactor:** Maintain all the history with the row number and node data ([c190bb1](https://github.com/stagefright5/ng-flow/commit/c190bb195cc988c0fa6a8ab24fc4541f3a6a6a8b))
+
+
+
