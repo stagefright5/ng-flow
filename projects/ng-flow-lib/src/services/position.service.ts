@@ -74,7 +74,7 @@ export class PositionService {
 					 *	|	  				------
 					 *	|				    |
 					 *	|				    |
-				 	 * 	|<---addnFactor---->|
+					 * 	|<---addnFactor---->|
 					 *  |
 					 * This is the new left
 					 *
@@ -146,7 +146,7 @@ export class PositionService {
 				 *    ^				 	 |     |
 				 *    |					 ------
 				 * 	  |					 |
-				 * 	  |<---addnFactor--->|	 
+				 * 	  |<---addnFactor--->|
 				 *    |
 				 * This is the new left
 				 *  And, the new node goes "from right" to left
