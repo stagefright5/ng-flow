@@ -43,7 +43,7 @@ export class LeaderLineService {
 		if (opts.start && opts.end) {
 			opts.start = typeof opts.start === 'string' ? document.getElementById(opts.start) : opts.start;
 			opts.end = typeof opts.end === 'string' ? document.getElementById(opts.end) : opts.end;
-			if (opts.start && opts.end)
+			if (opts.start && opts.end && opts.start !== opts.end) {
 				this.zone.runOutsideAngular(() =>
 					setTimeout(() => {
 						opts = { ...this._leaderLineDrawOptions, ...(opts && opts) };
@@ -53,6 +53,9 @@ export class LeaderLineService {
 						this.connectors.set(opts, line);
 					})
 				);
+			} else {
+				console.warn('Could not draw connector between', opts.start, opts.end);
+			}
 		} else {
 			console.warn('Could not draw connector between', opts.start, opts.end);
 		}
