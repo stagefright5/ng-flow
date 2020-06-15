@@ -1,3 +1,12 @@
+## [0.0.3-alpha.21](https://github.com/stagefright5/ng-flow/compare/0.0.3-alpha.20...0.0.3-alpha.21) (2020-06-15)
+
+
+### Bug Fixes
+
+* **connectors:** Do not draw if start and end are same ([677e1f6](https://github.com/stagefright5/ng-flow/commit/677e1f684b58dff84e47762507ac537fb8fdfed8))
+
+
+
 ## [0.0.3-alpha.20](https://github.com/stagefright5/ng-flow/compare/0.0.3-alpha.15...0.0.3-alpha.20) (2020-06-15)
 
 
