@@ -138,17 +138,18 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck, OnChanges {
 
 	private _appendNewNodes() {
 		const newNodesToAppend = this.flowData.slice(this._oldFlowData.length, this.flowData.length);
-		this._updatePositions(
-			newNodesToAppend.map((node, i, thisArr) =>
-				this._loadFlowNode(node, i, i + this._oldFlowData.length, thisArr)
-			)
-		);
+		const appendedNodes = newNodesToAppend.map((node, i) => {
+			const nodeIndex = i + this._oldFlowData.length;
+			node.id = node.id || (this.nodeIdPrefix + nodeIndex);
+			return this._loadFlowNode(node, nodeIndex);
+		});
+		this._updatePositions(appendedNodes);
+		this.drawConnectors(appendedNodes.map(d => d.__data__))
 		this._oldFlowData.push(...newNodesToAppend);
 	}
 
-	// Will be called out of this class instance's context. Hence Arrow func.
-	private _loadFlowNode = (nodeData: Node.Data, index: number, nodeIndex: number, array: Node.Data[]) => {
-		const thisNodeId = nodeData.id || this.nodeIdPrefix + nodeIndex;
+	private _loadFlowNode(nodeData: Node.Data, nodeIndex: number) {
+		const thisNodeId = nodeData.id;
 		return this.dynamicCompService.appendNodeToFlow({
 			flow: this.nodesRef,
 			component: NodeComponent,
@@ -158,26 +159,32 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck, OnChanges {
 				dimension: this.position.getNodeSize(nodeData),
 				promoteEvtCbFn: this._emitWheelClick
 			},
-			outputBindings: {
-				nodeAdded: nodeData => {
-					// if (this._firstTime)
-					let prevNodeId;
-					if (array[index - 1]) {
-						prevNodeId = array[index - 1].id || this.nodeIdPrefix + (nodeData.index - 1);
-					} else {
-						prevNodeId = this.nodeIdPrefix + (nodeData.index - 1);
-					}
-					if (prevNodeId) {
-						this.drawConnector({
-							start: prevNodeId,
-							end: thisNodeId
-						});
-					}
-				}
-			},
 			__data__: nodeData
 		});
 	};
+
+	drawConnectors(nodes: Node.Data[]) {
+		for (let i = 0; i <= nodes.length - 1; i++) {
+			if (Array.isArray(nodes[i].from)) {
+				nodes[i].from.forEach(from => {
+					if (typeof from === 'string') {
+						this.drawConnector({ start: from, end: nodes[i].id });
+					} else {
+						this.drawConnector({ start: from.id, end: nodes[i].id, path: from.path });
+					}
+				})
+			}
+			if (Array.isArray(nodes[i].to))
+				nodes[i].to.forEach(to => {
+					if (typeof to === 'string') {
+						this.drawConnector({ start: to, end: nodes[i].id });
+					} else {
+						this.drawConnector({ start: to.id, end: nodes[i].id, path: to.path });
+					}
+				});
+		}
+	}
+
 
 	drawConnector({ start = '', end = '', path = 'fluid' }: Partial<Connector.DrawConnectorOptions>) {
 		this.leaderLinesService.drawConnector({

@@ -14,6 +14,13 @@ export namespace Node {
 		id?: string;
 		width?: number;
 		height?: number;
+		to?: FromToConnector[];
+		from?: FromToConnector[];
+	}
+
+	export type FromToConnector = string | {
+		id: string;
+		path: Connector.Path;
 	}
 
 	export interface Wheel {
@@ -42,13 +49,13 @@ export namespace Node {
 		flow?: ViewContainerRef;
 		component?: typeof NodeComponent;
 		id?: string;
-		inputBindings: {
+		inputBindings?: {
 			nodeData?: Node.Data;
 			position?: Node.Position;
 			dimension?: Node.Dimension;
 			promoteEvtCbFn?: (...args) => void;
 		};
-		outputBindings: {
+		outputBindings?: {
 			nodeAdded?: (...args) => void;
 		};
 		__data__: Node.Data;
@@ -77,14 +84,17 @@ export namespace Connector {
 		end?: HTMLElement | string;
 		color?: string;
 		size?: number;
-		path?: 'straight' | 'arc' | 'fluid' | 'magnet' | 'grid';
-		startSocket?: 'top' | 'right' | 'bottom' | 'left' | 'auto';
-		endSocket?: 'top' | 'right' | 'bottom' | 'left' | 'auto';
+		path?: Path;
+		startSocket?: SocketPosition;
+		endSocket?: SocketPosition;
 		startSocketGravity?: number | string | number[] | string[];
 		endSocketGravity?: number | string | number[] | string[];
-		startPlug?: 'disc' | 'square' | 'arrow1' | 'arrow2' | 'arrow3' | 'hand' | 'crosshair' | 'behind';
-		endPlug?: 'disc' | 'square' | 'arrow1' | 'arrow2' | 'arrow3' | 'hand' | 'crosshair' | 'behind';
+		startPlug?: Plug;
+		endPlug?: Plug;
 		startPlugColor?: 'auto' | string;
 		endPlugColor?: 'auto' | string;
 	}
+	export type Path = 'straight' | 'arc' | 'fluid' | 'magnet' | 'grid';
+	export type SocketPosition = 'top' | 'right' | 'bottom' | 'left' | 'auto';
+	type Plug = 'disc' | 'square' | 'arrow1' | 'arrow2' | 'arrow3' | 'hand' | 'crosshair' | 'behind';
 }
