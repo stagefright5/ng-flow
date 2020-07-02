@@ -1,8 +1,7 @@
-import { Injectable, ComponentRef, Injector } from '@angular/core';
+import { Injectable, ComponentRef, Injector, InjectionToken } from '@angular/core';
 import { Overlay, OverlayRef, ConnectedPosition, OverlayConfig } from '@angular/cdk/overlay';
 import { ComponentPortal, ComponentType, PortalInjector } from '@angular/cdk/portal';
 import { Subscription } from 'rxjs';
-import { DESC_PANEL_DATA } from '../utils/constants';
 import { DescPanelRef } from '../utils/desc-panel-ref';
 
 @Injectable({
@@ -15,10 +14,10 @@ export class OverlayService {
 
 	constructor(private _overlay: Overlay, private injector: Injector) {}
 
-	open(elToAttach: HTMLElement, comp: ComponentType<unknown>, panelConfig?: any) {
+	open({ elToAttach, comp, injectionData = {}, injectionToken }: { elToAttach: HTMLElement; comp: ComponentType<unknown>; injectionData: any; injectionToken: InjectionToken<any>; }) {
 		const _overlayRef = this._createOverlay(elToAttach);
-		const _containerRef = this._attachPanelContainer(_overlayRef, comp, panelConfig);
-		const _panelRef = new DescPanelRef(_overlayRef, _containerRef, panelConfig);
+		const _containerRef = this._attachPanelContainer(_overlayRef, comp, injectionData, injectionToken);
+		const _panelRef = new DescPanelRef(_overlayRef, _containerRef, injectionData);
 		return _panelRef;
 	}
 
@@ -26,16 +25,16 @@ export class OverlayService {
 		return this._overlay.create(this._getOverlayConfig(elToAttach));
 	}
 
-	_attachPanelContainer(_overlayRef: OverlayRef, comp: ComponentType<unknown>, config) {
-		const customInjectors = this._createCustomInjector(config);
+	_attachPanelContainer(_overlayRef: OverlayRef, comp: ComponentType<unknown>, injectionData: any, injectionToken: InjectionToken<any>) {
+		const customInjectors = this._createCustomInjector(injectionData, injectionToken);
 		const panelPortal = new ComponentPortal(comp, null, customInjectors);
 		const containerRef = _overlayRef.attach(panelPortal);
 		return containerRef;
 	}
 
-	_createCustomInjector(config: any) {
+	_createCustomInjector(config = {}, injectionToken: InjectionToken<any>) {
 		const customInjectors = new WeakMap();
-		customInjectors.set(DESC_PANEL_DATA, config);
+		customInjectors.set(injectionToken, config);
 		return new PortalInjector(this.injector, customInjectors);
 	}
 

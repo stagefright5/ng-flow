@@ -11,10 +11,10 @@ import {
 	HostBinding,
 	OnDestroy
 } from '@angular/core';
-import { Node } from '../../utils/TypeDefs';
+import { Node, PromoteEventObject } from '../../utils/TypeDefs';
 import { OverlayService } from '../../services/overlay.service';
 import { DynamicComponentService } from '../../services/dynamic-component.service';
-import { Selectors, Events } from '../../utils/constants';
+import { Selectors, Events, WHEEL_DATA, NODE_DATA } from '../../utils/constants';
 import { PubSubService } from '../../services/pub-sub.service';
 import { _ } from '../../utils/generic-ops';
 @Component({
@@ -44,7 +44,11 @@ export class NodeComponent implements AfterViewInit, OnDestroy {
 		setTimeout(() => {
 			if (this.nodeConfig.component) {
 				this._dynamicCompService.loadComponent(this.nodeContent, {
-					component: this.nodeData.component
+					component: this.nodeConfig.component,
+					injection: {
+						data: this.nodeConfig.data,
+						token: NODE_DATA
+					}
 				});
 			}
 			this.nodeAdded.emit(this.nodeConfig);
@@ -53,7 +57,7 @@ export class NodeComponent implements AfterViewInit, OnDestroy {
 
 	emitPromoterWheelClickEvt(e: MouseEvent, wheel: Node.Wheel) {
 		if (wheel.descriptionPanel) {
-			this._overlayService.open(<HTMLElement>event.target, wheel.descriptionPanel, dataObj);
+			this._overlayService.open({ elToAttach: (<HTMLElement>event.target), comp: wheel.descriptionPanel, injectionData: wheel.data, injectionToken: WHEEL_DATA });
 		} else {
 			if (typeof this.promoteEvtCbFn === 'function') {
 				const dataObj: PromoteEventObject = {

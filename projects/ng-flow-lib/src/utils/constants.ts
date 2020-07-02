@@ -2,6 +2,8 @@ import { InjectionToken } from '@angular/core';
 
 export const WHEEL_DATA = new InjectionToken<any>('DescriptionPanelData');
 
+export const NODE_DATA = new InjectionToken<any>('CustomNodeData');
+
 export enum Directions {
 	FROM_LEFT = 0,
 	FROM_RIGHT,
