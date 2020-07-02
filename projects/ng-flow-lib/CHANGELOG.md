@@ -1,3 +1,12 @@
+## [0.0.4-alpha.22](https://github.com/stagefright5/ng-flow/compare/0.0.4-alpha.21...0.0.4-alpha.22) (2020-07-02)
+
+
+### Bug Fixes
+
+* **connectors:** "to" & "from" have same direction ([b646e7b](https://github.com/stagefright5/ng-flow/commit/b646e7bc192d475b831513ed405701b65ecf6665))
+
+
+
 ## [0.0.4-alpha.21](https://github.com/stagefright5/ng-flow/compare/0.0.3-alpha.21...0.0.4-alpha.21) (2020-07-02)
 
 
