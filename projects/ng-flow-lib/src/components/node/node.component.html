@@ -6,14 +6,14 @@
 >
 	<div
 		class="ng_flow_class_node_content_wrapper"
-		[ngStyle]="{ 'margin-bottom': nodeData?.wheels?.length ? '2rem' : '0' }"
+		[ngStyle]="{ 'margin-bottom': nodeConfig?.wheels?.length ? '2rem' : '0' }"
 		fxLayout="column nowrap"
 	>
 		<ng-template #node_content></ng-template>
 	</div>
 	<div fxLayout="row nowrap" fxLayoutAlign="space-around center" fxLayoutGap="1rem" class="ng_flow_class_wheels">
 		<wheel
-			*ngFor="let wheel of nodeData.wheels || []"
+			*ngFor="let wheel of nodeConfig.wheels || []"
 			[wheelData]="wheel"
 			(click)="emitPromoterWheelClickEvt($event, wheel)"
 		></wheel>

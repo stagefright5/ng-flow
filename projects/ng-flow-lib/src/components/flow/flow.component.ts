@@ -12,7 +12,7 @@ import {
 	OnChanges,
 	SimpleChanges
 } from '@angular/core';
-import { Flow, Node, AttachedComponent, Connector } from '../../utils/TypeDefs';
+import { Flow, Node, AttachedComponent, Connector, PromoteEventObject } from '../../utils/TypeDefs';
 
 import { NodeComponent } from '../node/node.component';
 import { LeaderLineService } from '../../services/leader-line.service';
@@ -102,7 +102,7 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck, OnChanges {
 		}
 	}
 
-	private _emitWheelClick = (event: any) => {
+	private _emitWheelClick = (event: PromoteEventObject) => {
 		this.promoterNodeClickEvtEmitter.emit(event);
 	};
 
@@ -148,22 +148,22 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck, OnChanges {
 		this._oldFlowData.push(...newNodesToAppend);
 	}
 
-	private _loadFlowNode(nodeData: Node.Data, nodeIndex: number) {
-		const thisNodeId = nodeData.id;
+	private _loadFlowNode(nodeConfig: Node.Config, nodeIndex: number) {
+		const thisNodeId = nodeConfig.id;
 		return this.dynamicCompService.appendNodeToFlow({
 			flow: this.nodesRef,
 			component: NodeComponent,
 			id: thisNodeId,
 			inputBindings: {
-				nodeData: { ...nodeData, index: nodeIndex },
-				dimension: this.position.getNodeSize(nodeData),
+				nodeConfig: { ...nodeConfig, index: nodeIndex },
+				dimension: this.position.getNodeSize(nodeConfig),
 				promoteEvtCbFn: this._emitWheelClick
 			},
-			__data__: nodeData
+			__data__: nodeConfig
 		});
 	};
 
-	drawConnectors(nodes: Node.Data[]) {
+	drawConnectors(nodes: Node.Config[]) {
 		for (let i = 0; i <= nodes.length - 1; i++) {
 			if (Array.isArray(nodes[i].from)) {
 				nodes[i].from.forEach(from => {

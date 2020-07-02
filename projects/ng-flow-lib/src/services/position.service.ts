@@ -28,7 +28,7 @@ export class PositionService {
 		this._nodeGap = gap || this._defaultNodeSize.width * 0.5;
 	}
 
-	getAddingNodePos(node: Node.Data): Node.Position {
+	getAddingNodePos(node: Node.Config): Node.Position {
 		const thisNodeCompleteSpace = this.entireSpaceOccupiedByNode(node);
 		let nodeTop = 0;
 		let nodeLeft = 0;
@@ -224,7 +224,7 @@ export class PositionService {
 		};
 	}
 
-	entireSpaceOccupiedByNode(node: Node.Data): Node.Dimension {
+	entireSpaceOccupiedByNode(node: Node.Config): Node.Dimension {
 		const s = this.getNodeSize(node);
 		return {
 			width: this._nodeGap + s.width,
@@ -232,7 +232,7 @@ export class PositionService {
 		};
 	}
 
-	getNodeSize(node: Node.Data) {
+	getNodeSize(node: Node.Config) {
 		return {
 			width: node.width || this._defaultNodeSize.width,
 			height:
@@ -240,10 +240,10 @@ export class PositionService {
 		};
 	}
 
-	calculateNodesPositions(nodes: Array<Node.Data>) {
+	calculateNodesPositions(nodes: Array<Node.Config>) {
 		const positonsArray = [];
-		nodes.forEach(nodeData => {
-			positonsArray.push(this.getAddingNodePos(nodeData));
+		nodes.forEach(nodeConfig => {
+			positonsArray.push(this.getAddingNodePos(nodeConfig));
 		});
 		return positonsArray.map(({ top, left }) => ({ top, left }));
 	}

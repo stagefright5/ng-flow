@@ -1,9 +1,7 @@
 import { InjectionToken } from '@angular/core';
 
-export const DESC_PANEL_DATA = new InjectionToken<any>('DescriptionPanelData', {
-	providedIn: 'root',
-	factory: () => {}
-});
+export const WHEEL_DATA = new InjectionToken<any>('DescriptionPanelData');
+
 export enum Directions {
 	FROM_LEFT = 0,
 	FROM_RIGHT,

@@ -18,7 +18,7 @@ export class DynamicComponentService {
 
 	loadComponent(
 		parent: ViewContainerRef,
-		newNode: { component: any; __data__?: any; id?: string }
+		newComponent: { component: any; injection?: { data: any, token: InjectionToken<any> }; __data__?: any; id?: string }
 	): AttachedComponent {
 		const compFactory = this.componentFactoryResolver.resolveComponentFactory(newNode.component);
 		const compRef = parent.createComponent(compFactory);
@@ -26,8 +26,8 @@ export class DynamicComponentService {
 			compRef,
 			inputs: compFactory.inputs,
 			outputs: compFactory.outputs,
-			__data__: newNode.__data__,
-			id: newNode.id
+			__data__: newComponent.__data__,
+			id: newComponent.id
 		};
 		(this.attachedCompList[compFactory.selector] &&
 			this.attachedCompList[compFactory.selector].push(newCompData)) ||

@@ -23,11 +23,11 @@ import { _ } from '../../utils/generic-ops';
 	styleUrls: ['./node.component.scss']
 })
 export class NodeComponent implements AfterViewInit, OnDestroy {
-	@Input() nodeData: Node.Data = {};
+	@Input('nodeData') nodeConfig: Node.Config = {};
 	@Input() position: Node.Position = { top: 0, left: 0 };
 	@Input() dimension: Node.Dimension = { width: 250, height: 300 };
-	@Input() promoteEvtCbFn: (...args) => void;
-	@Output() nodeAdded: EventEmitter<any> = new EventEmitter();
+	@Input() promoteEvtCbFn: (e: PromoteEventObject) => void;
+	@Output() nodeAdded: EventEmitter<Node.Config> = new EventEmitter();
 	@HostBinding('attr.id') id = '';
 
 	@ViewChild('node_content', { static: false, read: ViewContainerRef })
@@ -38,32 +38,29 @@ export class NodeComponent implements AfterViewInit, OnDestroy {
 		private renderer: Renderer2,
 		private elementRef: ElementRef,
 		private pubSub: PubSubService
-	) {}
+	) { }
 
 	ngAfterViewInit() {
 		setTimeout(() => {
-			if (this.nodeData.component) {
+			if (this.nodeConfig.component) {
 				this._dynamicCompService.loadComponent(this.nodeContent, {
 					component: this.nodeData.component
 				});
 			}
-			this.nodeAdded.emit(this.nodeData);
+			this.nodeAdded.emit(this.nodeConfig);
 		});
 	}
 
-	emitPromoterWheelClickEvt(e: MouseEvent, wheel) {
-		const dataObj = {
-			wheelData: wheel,
-			nodeData: this.nodeData
-		};
+	emitPromoterWheelClickEvt(e: MouseEvent, wheel: Node.Wheel) {
 		if (wheel.descriptionPanel) {
 			this._overlayService.open(<HTMLElement>event.target, wheel.descriptionPanel, dataObj);
 		} else {
 			if (typeof this.promoteEvtCbFn === 'function') {
-				this.promoteEvtCbFn({
-					wheelData: wheel,
-					nodeData: this.nodeData
-				});
+				const dataObj: PromoteEventObject = {
+					wheelConfig: wheel,
+					nodeConfig: this.nodeConfig
+				}
+				this.promoteEvtCbFn(dataObj);
 			}
 		}
 	}

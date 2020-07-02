@@ -1,4 +1,4 @@
-import { ViewContainerRef, ComponentRef, ComponentFactory } from '@angular/core';
+import { ViewContainerRef, ComponentRef, ComponentFactory, InjectionToken } from '@angular/core';
 import { NodeComponent } from '../components/node/node.component';
 import { Directions } from './constants';
 
@@ -6,7 +6,7 @@ export namespace Node {
 	export type Description = null | Record<string, string>;
 	export type Titles = Record<string, string>;
 
-	export interface Data {
+	export interface Config {
 		wheels?: Wheel[];
 		lastNode?: boolean;
 		index?: number;
@@ -16,6 +16,7 @@ export namespace Node {
 		height?: number;
 		to?: FromToConnector[];
 		from?: FromToConnector[];
+		data?: CustomData;
 	}
 
 	export type FromToConnector = string | {
@@ -27,6 +28,7 @@ export namespace Node {
 		icon?: string;
 		descriptionPanel?: any;
 		promoter?: boolean;
+		data?: CustomData;
 	}
 	export interface Dimension {
 		width: number;
@@ -49,16 +51,20 @@ export namespace Node {
 		flow?: ViewContainerRef;
 		component?: typeof NodeComponent;
 		id?: string;
+		injection?: {
+			data: CustomData;
+			token: InjectionToken<any>
+		},
 		inputBindings?: {
-			nodeData?: Node.Data;
+			nodeConfig?: Node.Config;
 			position?: Node.Position;
 			dimension?: Node.Dimension;
-			promoteEvtCbFn?: (...args) => void;
+			promoteEvtCbFn?: (event: PromoteEventObject) => void;
 		};
 		outputBindings?: {
 			nodeAdded?: (...args) => void;
 		};
-		__data__: Node.Data;
+		__data__: Node.Config;
 	}
 }
 
@@ -71,11 +77,11 @@ export interface AttachedComponent {
 	inputs: BindableProperty[];
 	outputs: BindableProperty[];
 	id?: string;
-	__data__?: Node.Data;
+	__data__?: Node.Config;
 }
 
 export namespace Flow {
-	export type Nodes = Node.Data[];
+	export type Nodes = Node.Config[];
 }
 
 export namespace Connector {
@@ -98,3 +104,13 @@ export namespace Connector {
 	export type SocketPosition = 'top' | 'right' | 'bottom' | 'left' | 'auto';
 	type Plug = 'disc' | 'square' | 'arrow1' | 'arrow2' | 'arrow3' | 'hand' | 'crosshair' | 'behind';
 }
+
+export type CustomData = any;
+export interface PanelConfig extends Object {
+	injectionData: CustomData;
+}
+
+export interface PromoteEventObject {
+	nodeConfig: Node.Config,
+	wheelConfig: Node.Wheel
+} 
