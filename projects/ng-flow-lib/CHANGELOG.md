@@ -1,3 +1,14 @@
+## [0.0.4-alpha.21](https://github.com/stagefright5/ng-flow/compare/0.0.3-alpha.21...0.0.4-alpha.21) (2020-07-02)
+
+
+### Features
+
+* **node,wheel:** Provide custom data for respective components ([6c23c24](https://github.com/stagefright5/ng-flow/commit/6c23c245bec63dd73d94f86b1b04fadfaf4282fa)): Now you can provide a custom "data" in each of the node/wheel config object that will be injected to the respective component instance. Injection tokens are:
+  * `NODE_DATA` - for the node.component component
+  * `WHEEL_DATA` - for wheel.descriptionPanel component
+
+
+
 ## [0.0.3-alpha.21](https://github.com/stagefright5/ng-flow/compare/0.0.3-alpha.20...0.0.3-alpha.21) (2020-06-15)
 
 
