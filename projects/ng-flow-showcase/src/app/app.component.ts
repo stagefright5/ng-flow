@@ -1,7 +1,8 @@
 import { Component, ViewChild } from '@angular/core';
 import { DescPanelComponent } from './desc-panel/desc-panel.component';
-import { Flow } from 'ng-flow-lib';
+import { Flow, PromoteEventObject } from 'ng-flow-lib';
 import { FlowComponent } from 'ng-flow-lib';
+import { WheelDescPanelComponent } from './wheel-desc-panel/wheel-desc-panel.component';
 
 @Component({
 	selector: 'app-root',
@@ -28,7 +29,10 @@ export class AppComponent {
 			to: [
 				"second",
 				"fourth"
-			]
+			],
+			data: {
+				"hey": "fuck you"
+			}
 		},
 		{
 			wheels: [
@@ -54,7 +58,10 @@ export class AppComponent {
 		{
 			wheels: [
 				{
-					descriptionPanel: DescPanelComponent
+					descriptionPanel: WheelDescPanelComponent,
+					data: {
+						"hello": "fuck you too"
+					}
 				},
 				{
 					icon: 'assets/arrow-right.svg',
@@ -64,17 +71,11 @@ export class AppComponent {
 				}
 			],
 			id: "third",
+			from: [
+				'second'
+			]
 			// width: 150,
 			// height: 220
-		},
-		{
-			component: DescPanelComponent,
-			// to: [
-			// 	'first'
-			// ],
-			id: 'fourth'
-			// width: 150,
-			// height: 180
 		},
 		{
 			wheels: [
@@ -85,6 +86,32 @@ export class AppComponent {
 			],
 			to: [
 				'first'
+			],
+			from: [
+				'third'
+			]
+			// width: 150,
+			// height: 180
+		},
+		{
+			component: DescPanelComponent,
+			// to: [
+			// 	'first'
+			// ],
+			id: 'fourth',
+			wheels: [
+				{
+					descriptionPanel: WheelDescPanelComponent,
+					data: {
+						"hello": "fuck you too fourth time"
+					}
+				},
+				{
+					icon: 'assets/arrow-right.svg',
+					promoter: true
+					// descriptionPanel: DescPanelComponent
+					// descriptionPanel: 'ss'
+				}
 			]
 			// width: 150,
 			// height: 180
@@ -92,7 +119,7 @@ export class AppComponent {
 		// {
 		// 	wheels: [
 		// 		{
-		// 			descriptionPanel: DescPanelComponent
+		// 			descriptionPanel: WheelDescPanelComponent
 		// 		},
 		// 		{
 		// 			icon: 'assets/arrow-right.svg',
@@ -125,7 +152,7 @@ export class AppComponent {
 		// {
 		// 	wheels: [
 		// 		{
-		// 			descriptionPanel: DescPanelComponent
+		// 			descriptionPanel: WheelDescPanelComponent
 		// 		},
 		// 		{
 		// 			icon: 'assets/arrow-right.svg',
@@ -139,15 +166,22 @@ export class AppComponent {
 		// }
 	];
 
-	onPromoteHandler(e) {
+	onPromoteHandler(e: PromoteEventObject) {
 		console.log('onPromoteHandler::', e);
-		if (e.nodeData.index === this.nodes.length - 1)
+		if (e.nodeConfig.index === this.nodes.length - 1)
 			this.nodes.push(
-				{
+				{	
+					component: DescPanelComponent,
+					data: {
+						"any": "data"
+					},
 					wheels: [
 						{
 							icon: 'assets/asterisk.svg',
-							descriptionPanel: DescPanelComponent
+							descriptionPanel: WheelDescPanelComponent,
+							data: {
+								"oneMore": "Fuck you!" 
+							}
 						},
 						{
 							icon: 'assets/arrow-right.svg',
@@ -159,7 +193,26 @@ export class AppComponent {
 				{
 					wheels: [
 						{
-							descriptionPanel: DescPanelComponent
+							descriptionPanel: WheelDescPanelComponent
+						},
+						{
+							icon: 'assets/arrow-right.svg',
+							promoter: true
+							// descriptionPanel: DescPanelComponent
+							// descriptionPanel: 'ss'
+						}
+					],
+					component: DescPanelComponent,
+					data: "that is after a wheel config in a node"
+
+				},
+				{
+					wheels: [
+						{
+							descriptionPanel: WheelDescPanelComponent,
+							data: {
+								"fuckYou": "For life"
+							}
 						},
 						{
 							icon: 'assets/arrow-right.svg',
@@ -172,20 +225,20 @@ export class AppComponent {
 				{
 					wheels: [
 						{
-							descriptionPanel: DescPanelComponent
-						},
-						{
-							icon: 'assets/arrow-right.svg',
-							promoter: true
-							// descriptionPanel: DescPanelComponent
-							// descriptionPanel: 'ss'
-						}
-					]
-				},
-				{
-					wheels: [
-						{
-							descriptionPanel: DescPanelComponent
+							descriptionPanel: WheelDescPanelComponent,
+							data: {
+								"nonCussWords": [
+									{"greetings": [
+										"hi", "hello", "GM!"
+									]},
+									{
+										"farewells": [
+											"goodbye", "tata"
+										]
+									}
+								],
+								"cussWords": "fuck, shit, motherfucker"
+							}
 						},
 						{
 							icon: 'assets/arrow-right.svg',

@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { DESC_PANEL_DATA } from 'ng-flow-lib';
+import { NODE_DATA } from 'ng-flow-lib';
 
 @Component({
 	selector: 'app-desc-panel',
@@ -7,8 +7,8 @@ import { DESC_PANEL_DATA } from 'ng-flow-lib';
 	styleUrls: ['./desc-panel.component.scss']
 })
 export class DescPanelComponent implements OnInit {
-	constructor(@Inject(DESC_PANEL_DATA) public data: any) {
-		console.log('injectedData::', this.data);
+	constructor(@Inject(NODE_DATA) public data: any) {
+		console.log('node data::', this.data);
 	}
 
 	Array(n: number) {
