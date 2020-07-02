@@ -6,6 +6,7 @@
 * **node,wheel:** Provide custom data for respective components ([6c23c24](https://github.com/stagefright5/ng-flow/commit/6c23c245bec63dd73d94f86b1b04fadfaf4282fa)): Now you can provide a custom "data" in each of the node/wheel config object that will be injected to the respective component instance. Injection tokens are:
   * `NODE_DATA` - for the node.component component
   * `WHEEL_DATA` - for wheel.descriptionPanel component
+* **wheel**: [BREAKING] Remove `DESC_PANEL_DATA` injection token
 
 
 
