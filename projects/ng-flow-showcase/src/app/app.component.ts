@@ -39,11 +39,11 @@ export class AppComponent {
 				}
 			],
 			id: 'second',
-			from: ['fourth'],
+			// from: ['fourth'],
 			to: [
-				'second',
+				'third',
 				{
-					id: 'fourth',
+					id: 'fifth',
 					path: 'grid'
 				}
 			]
@@ -66,7 +66,8 @@ export class AppComponent {
 				}
 			],
 			id: 'third',
-			from: ['second']
+			to: ['fourth'],
+			from: ['fifth']
 			// width: 150,
 			// height: 220
 		},
@@ -77,8 +78,9 @@ export class AppComponent {
 					// descriptionPanel: 'ss'
 				}
 			],
-			to: ['first'],
-			from: ['third']
+			to: ['fifth'],
+			id: 'fourth'
+			// from: ['third']
 			// width: 150,
 			// height: 180
 		},
@@ -87,7 +89,7 @@ export class AppComponent {
 			// to: [
 			// 	'first'
 			// ],
-			id: 'fourth',
+			id: 'fifth',
 			wheels: [
 				{
 					descriptionPanel: WheelDescPanelComponent,
