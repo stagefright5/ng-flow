@@ -177,9 +177,9 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck, OnChanges {
 			if (Array.isArray(nodes[i].to))
 				nodes[i].to.forEach(to => {
 					if (typeof to === 'string') {
-						this.drawConnector({ start: to, end: nodes[i].id });
+						this.drawConnector({ start: nodes[i].id, end: to });
 					} else {
-						this.drawConnector({ start: to.id, end: nodes[i].id, path: to.path });
+						this.drawConnector({ start: nodes[i].id, end: to.id, path: to.path });
 					}
 				});
 		}
