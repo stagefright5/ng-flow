@@ -7,7 +7,7 @@ import { Node, AttachedComponent, CustomData } from '../utils/TypeDefs';
 export class DynamicComponentService {
 	attachedCompList: { [key: string]: Array<AttachedComponent> } = {};
 
-	constructor(private componentFactoryResolver: ComponentFactoryResolver) { }
+	constructor(private componentFactoryResolver: ComponentFactoryResolver) {}
 
 	appendNodeToFlow(newNode: Node.New): AttachedComponent {
 		const { component, __data__, injection, inputBindings, outputBindings, flow, id } = newNode;
@@ -19,7 +19,12 @@ export class DynamicComponentService {
 
 	loadComponent(
 		parent: ViewContainerRef,
-		newComponent: { component: any; injection?: { data: any, token: InjectionToken<any> }; __data__?: any; id?: string }
+		newComponent: {
+			component: any;
+			injection?: { data: any; token: InjectionToken<any> };
+			__data__?: any;
+			id?: string;
+		}
 	): AttachedComponent {
 		const compFactory = this.componentFactoryResolver.resolveComponentFactory(newComponent.component);
 		let compRef;
@@ -27,7 +32,7 @@ export class DynamicComponentService {
 			const injector = this._createInjector(newComponent.injection.data, newComponent.injection.token);
 			compRef = parent.createComponent(compFactory, undefined, injector);
 		} else {
-			compRef = parent.createComponent(compFactory)
+			compRef = parent.createComponent(compFactory);
 		}
 		const newCompData = {
 			compRef,
@@ -91,10 +96,12 @@ export class DynamicComponentService {
 	}
 
 	private _createInjector(data: CustomData = {}, InjectionToken: InjectionToken<any>) {
-		const providers = [{
-			provide: InjectionToken,
-			useValue: data
-		}];
+		const providers = [
+			{
+				provide: InjectionToken,
+				useValue: data
+			}
+		];
 		const injector: Injector = Injector.create(providers);
 		return injector;
 	}

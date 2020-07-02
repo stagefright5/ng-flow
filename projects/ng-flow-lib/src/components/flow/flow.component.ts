@@ -140,11 +140,11 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck, OnChanges {
 		const newNodesToAppend = this.flowData.slice(this._oldFlowData.length, this.flowData.length);
 		const appendedNodes = newNodesToAppend.map((node, i) => {
 			const nodeIndex = i + this._oldFlowData.length;
-			node.id = node.id || (this.nodeIdPrefix + nodeIndex);
+			node.id = node.id || this.nodeIdPrefix + nodeIndex;
 			return this._loadFlowNode(node, nodeIndex);
 		});
 		this._updatePositions(appendedNodes);
-		this.drawConnectors(appendedNodes.map(d => d.__data__))
+		this.drawConnectors(appendedNodes.map(d => d.__data__));
 		this._oldFlowData.push(...newNodesToAppend);
 	}
 
@@ -161,7 +161,7 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck, OnChanges {
 			},
 			__data__: nodeConfig
 		});
-	};
+	}
 
 	drawConnectors(nodes: Node.Config[]) {
 		for (let i = 0; i <= nodes.length - 1; i++) {
@@ -172,7 +172,7 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck, OnChanges {
 					} else {
 						this.drawConnector({ start: from.id, end: nodes[i].id, path: from.path });
 					}
-				})
+				});
 			}
 			if (Array.isArray(nodes[i].to))
 				nodes[i].to.forEach(to => {
@@ -184,7 +184,6 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck, OnChanges {
 				});
 		}
 	}
-
 
 	drawConnector({ start = '', end = '', path = 'fluid' }: Partial<Connector.DrawConnectorOptions>) {
 		this.leaderLinesService.drawConnector({

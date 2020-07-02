@@ -26,12 +26,9 @@ export class AppComponent {
 			width: 250,
 			height: 85,
 			id: 'first',
-			to: [
-				"second",
-				"fourth"
-			],
+			to: ['second', 'fourth'],
 			data: {
-				"hey": "fuck you"
+				hey: 'fuck you'
 			}
 		},
 		{
@@ -41,15 +38,13 @@ export class AppComponent {
 					// descriptionPanel: 'ss'
 				}
 			],
-			id: "second",
-			from: [
-				"fourth"
-			],
+			id: 'second',
+			from: ['fourth'],
 			to: [
-				"second",
+				'second',
 				{
-					id: "fourth",
-					path: "grid"
+					id: 'fourth',
+					path: 'grid'
 				}
 			]
 			// width: 150,
@@ -60,7 +55,7 @@ export class AppComponent {
 				{
 					descriptionPanel: WheelDescPanelComponent,
 					data: {
-						"hello": "fuck you too"
+						hello: 'fuck you too'
 					}
 				},
 				{
@@ -70,10 +65,8 @@ export class AppComponent {
 					// descriptionPanel: 'ss'
 				}
 			],
-			id: "third",
-			from: [
-				'second'
-			]
+			id: 'third',
+			from: ['second']
 			// width: 150,
 			// height: 220
 		},
@@ -84,12 +77,8 @@ export class AppComponent {
 					// descriptionPanel: 'ss'
 				}
 			],
-			to: [
-				'first'
-			],
-			from: [
-				'third'
-			]
+			to: ['first'],
+			from: ['third']
 			// width: 150,
 			// height: 180
 		},
@@ -103,7 +92,7 @@ export class AppComponent {
 				{
 					descriptionPanel: WheelDescPanelComponent,
 					data: {
-						"hello": "fuck you too fourth time"
+						hello: 'fuck you too fourth time'
 					}
 				},
 				{
@@ -115,7 +104,7 @@ export class AppComponent {
 			]
 			// width: 150,
 			// height: 180
-		},
+		}
 		// {
 		// 	wheels: [
 		// 		{
@@ -170,17 +159,17 @@ export class AppComponent {
 		console.log('onPromoteHandler::', e);
 		if (e.nodeConfig.index === this.nodes.length - 1)
 			this.nodes.push(
-				{	
+				{
 					component: DescPanelComponent,
 					data: {
-						"any": "data"
+						any: 'data'
 					},
 					wheels: [
 						{
 							icon: 'assets/asterisk.svg',
 							descriptionPanel: WheelDescPanelComponent,
 							data: {
-								"oneMore": "Fuck you!" 
+								oneMore: 'Fuck you!'
 							}
 						},
 						{
@@ -203,15 +192,14 @@ export class AppComponent {
 						}
 					],
 					component: DescPanelComponent,
-					data: "that is after a wheel config in a node"
-
+					data: 'that is after a wheel config in a node'
 				},
 				{
 					wheels: [
 						{
 							descriptionPanel: WheelDescPanelComponent,
 							data: {
-								"fuckYou": "For life"
+								fuckYou: 'For life'
 							}
 						},
 						{
@@ -227,17 +215,13 @@ export class AppComponent {
 						{
 							descriptionPanel: WheelDescPanelComponent,
 							data: {
-								"nonCussWords": [
-									{"greetings": [
-										"hi", "hello", "GM!"
-									]},
+								nonCussWords: [
+									{ greetings: ['hi', 'hello', 'GM!'] },
 									{
-										"farewells": [
-											"goodbye", "tata"
-										]
+										farewells: ['goodbye', 'tata']
 									}
 								],
-								"cussWords": "fuck, shit, motherfucker"
+								cussWords: 'fuck, shit, motherfucker'
 							}
 						},
 						{

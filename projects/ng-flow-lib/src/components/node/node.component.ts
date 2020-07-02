@@ -38,7 +38,7 @@ export class NodeComponent implements AfterViewInit, OnDestroy {
 		private renderer: Renderer2,
 		private elementRef: ElementRef,
 		private pubSub: PubSubService
-	) { }
+	) {}
 
 	ngAfterViewInit() {
 		setTimeout(() => {
@@ -57,13 +57,18 @@ export class NodeComponent implements AfterViewInit, OnDestroy {
 
 	emitPromoterWheelClickEvt(e: MouseEvent, wheel: Node.Wheel) {
 		if (wheel.descriptionPanel) {
-			this._overlayService.open({ elToAttach: (<HTMLElement>event.target), comp: wheel.descriptionPanel, injectionData: wheel.data, injectionToken: WHEEL_DATA });
+			this._overlayService.open({
+				elToAttach: <HTMLElement>event.target,
+				comp: wheel.descriptionPanel,
+				injectionData: wheel.data,
+				injectionToken: WHEEL_DATA
+			});
 		} else {
 			if (typeof this.promoteEvtCbFn === 'function') {
 				const dataObj: PromoteEventObject = {
 					wheelConfig: wheel,
 					nodeConfig: this.nodeConfig
-				}
+				};
 				this.promoteEvtCbFn(dataObj);
 			}
 		}

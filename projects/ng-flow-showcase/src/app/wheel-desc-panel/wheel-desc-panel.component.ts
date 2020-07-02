@@ -7,12 +7,9 @@ import { WHEEL_DATA } from 'ng-flow-lib';
 	styleUrls: ['./wheel-desc-panel.component.css']
 })
 export class WheelDescPanelComponent implements OnInit {
-
 	constructor(@Inject(WHEEL_DATA) public data: any) {
 		console.log('wheel data::', this.data);
 	}
 
-	ngOnInit() {
-	}
-
+	ngOnInit() {}
 }

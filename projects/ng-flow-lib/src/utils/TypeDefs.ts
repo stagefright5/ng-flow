@@ -19,10 +19,12 @@ export namespace Node {
 		data?: CustomData;
 	}
 
-	export type FromToConnector = string | {
-		id: string;
-		path: Connector.Path;
-	}
+	export type FromToConnector =
+		| string
+		| {
+				id: string;
+				path: Connector.Path;
+		  };
 
 	export interface Wheel {
 		icon?: string;
@@ -53,8 +55,8 @@ export namespace Node {
 		id?: string;
 		injection?: {
 			data: CustomData;
-			token: InjectionToken<any>
-		},
+			token: InjectionToken<any>;
+		};
 		inputBindings?: {
 			nodeConfig?: Node.Config;
 			position?: Node.Position;
@@ -111,6 +113,6 @@ export interface PanelConfig extends Object {
 }
 
 export interface PromoteEventObject {
-	nodeConfig: Node.Config,
-	wheelConfig: Node.Wheel
-} 
+	nodeConfig: Node.Config;
+	wheelConfig: Node.Wheel;
+}

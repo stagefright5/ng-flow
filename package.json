@@ -12,7 +12,8 @@
 		"blib": "ng build ng-flow-lib",
 		"blib-watch": "ng build ng-flow-lib --watch",
 		"bplib": "npm run blib && npm publish ./dist/ng-flow-lib",
-		"prettify": "prettier --write **/*.ts **/*.js **/*.html **/*.scss **/*.json"
+		"prettify": "prettier --write **/*.ts **/*.js **/*.html **/*.scss **/*.json",
+		"prettify-commit": "npm run prettify && git add . && git commit -m 'chore(style): run \"prettify-commit\"'"
 	},
 	"private": true,
 	"dependencies": {
