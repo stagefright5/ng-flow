@@ -1,3 +1,18 @@
+## [0.0.5-alpha.0](https://github.com/stagefright5/ng-flow/compare/0.0.4-alpha.22...0.0.5-alpha.0) (2020-07-08)
+
+
+### Features
+
+* **node!:** Node.Config.`id` is mandatory ([b8cf68a](https://github.com/stagefright5/ng-flow/commit/b8cf68a23fbca20727638c746eadbc34d82ad450))
+* **nodes:** Expose "updateNodes" method on "FlowComponent" instance. ([a0526fc](https://github.com/stagefright5/ng-flow/commit/a0526fca3ea820c333c56ce6c38b574e6371a1fb))
+
+
+### BREAKING CHANGES
+
+* **node!:** the config provided for each node should have `id` property which was previuosly optional
+
+
+
 ## [0.0.4-alpha.22](https://github.com/stagefright5/ng-flow/compare/0.0.4-alpha.21...0.0.4-alpha.22) (2020-07-02)
 
 
@@ -12,10 +27,8 @@
 
 ### Features
 
-* **node,wheel:** Provide custom data for respective components ([6c23c24](https://github.com/stagefright5/ng-flow/commit/6c23c245bec63dd73d94f86b1b04fadfaf4282fa)): Now you can provide a custom "data" in each of the node/wheel config object that will be injected to the respective component instance. Injection tokens are:
-  * `NODE_DATA` - for the node.component component
-  * `WHEEL_DATA` - for wheel.descriptionPanel component
-* **wheel**: [BREAKING] Remove `DESC_PANEL_DATA` injection token
+* **node,wheel:** Provide custom data for respective components ([6c23c24](https://github.com/stagefright5/ng-flow/commit/6c23c245bec63dd73d94f86b1b04fadfaf4282fa))
+
 
 
 ## [0.0.3-alpha.21](https://github.com/stagefright5/ng-flow/compare/0.0.3-alpha.20...0.0.3-alpha.21) (2020-06-15)
