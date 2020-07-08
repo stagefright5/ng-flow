@@ -7,11 +7,11 @@ export namespace Node {
 	export type Titles = Record<string, string>;
 
 	export interface Config {
+		id: string;
 		wheels?: Wheel[];
 		lastNode?: boolean;
 		index?: number;
 		component?: any;
-		id?: string;
 		width?: number;
 		height?: number;
 		to?: FromToConnector[];
@@ -76,6 +76,7 @@ type BindableProperty = {
 };
 export interface AttachedComponent {
 	compRef: ComponentRef<unknown>;
+	selector: string,
 	inputs: BindableProperty[];
 	outputs: BindableProperty[];
 	id?: string;

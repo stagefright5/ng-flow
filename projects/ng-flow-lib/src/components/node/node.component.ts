@@ -23,36 +23,95 @@ import { _ } from '../../utils/generic-ops';
 	styleUrls: ['./node.component.scss']
 })
 export class NodeComponent implements AfterViewInit, OnDestroy {
-	@Input('nodeData') nodeConfig: Node.Config = {};
-	@Input() position: Node.Position = { top: 0, left: 0 };
-	@Input() dimension: Node.Dimension = { width: 250, height: 300 };
-	@Input() promoteEvtCbFn: (e: PromoteEventObject) => void;
-	@Output() nodeAdded: EventEmitter<Node.Config> = new EventEmitter();
+	private _config: Node.Config;
+	private _pos: Node.Position;
+	private _dim: Node.Dimension;
+	private _promEvtCb: (e: PromoteEventObject) => void;
+	// private _nodeAdded: EventEmitter<Node.Config> = new EventEmitter();
+	@Input('nodeData') set nodeConfig(v: Node.Config) {
+		this._config = v;
+		this.onChanges({ nodeConfig: v });
+	};
+	get nodeConfig(): Node.Config {
+		return this._config;
+	}
+	@Input() set position(v: Node.Position) {
+		this._pos = v;
+		this.onChanges({ position: v });
+	}
+	get position(): Node.Position {
+		return this._pos || { top: 0, left: 0 };
+	}
+	@Input() set dimension(v: Node.Dimension) {
+		this._dim = v;
+		this.onChanges({ dimension: v });
+	}
+	get dimension(): Node.Dimension {
+		return this._dim || { width: 250, height: 300 };
+	}
+
+	@Input() set promoteEvtCbFn(v: (e: PromoteEventObject) => void) {
+		this._promEvtCb = v;
+		this.onChanges({ promoteEvtCbFn: v });
+	}
+	get promoteEvtCbFn(): (e: PromoteEventObject) => void {
+		return this._promEvtCb;
+	}
+
+	// @Output() set nodeAdded(v: EventEmitter<Node.Config>) {
+	// 	this._nodeAdded = v;
+	// 	this.onChanges({ nodeAdded: v });
+	// }
+	// get nodeAdded(): EventEmitter<Node.Config> {
+	// 	return this._nodeAdded;
+	// }
+
 	@HostBinding('attr.id') id = '';
 
 	@ViewChild('node_content', { static: false, read: ViewContainerRef })
 	nodeContent: ViewContainerRef;
+	private _currentChildComponentSelector: string;
 	constructor(
 		private _overlayService: OverlayService,
 		private _dynamicCompService: DynamicComponentService,
 		private renderer: Renderer2,
 		private elementRef: ElementRef,
 		private pubSub: PubSubService
-	) {}
+	) { }
 
 	ngAfterViewInit() {
 		setTimeout(() => {
 			if (this.nodeConfig.component) {
-				this._dynamicCompService.loadComponent(this.nodeContent, {
-					component: this.nodeConfig.component,
-					injection: {
-						data: this.nodeConfig.data,
-						token: NODE_DATA
-					}
-				});
+				this._loadChildComponent();
 			}
-			this.nodeAdded.emit(this.nodeConfig);
+			// this.nodeAdded.emit(this.nodeConfig);
 		});
+	}
+
+	onChanges(changes: any) {
+		if (changes.nodeConfig) {
+			if ((<Node.Config>changes.nodeConfig).hasOwnProperty('component') && this.nodeContent) {
+				if (this._currentChildComponentSelector) {
+					console.log('[Node.ngOnChanges] clearing the children');
+					this._dynamicCompService.clearAttachedComps(this.nodeContent, this._currentChildComponentSelector);
+				}
+				if ((<Node.Config>changes.nodeConfig).component) {
+					console.log('[Node.ngOnChanges] Loading child');
+					this._loadChildComponent();
+				}
+			}
+		}
+	}
+
+	private _loadChildComponent() {
+		const attachedComp = this._dynamicCompService.loadComponent(this.nodeContent, {
+			component: this.nodeConfig.component,
+			injection: {
+				data: this.nodeConfig.data,
+				token: NODE_DATA
+			}
+		});
+		this._currentChildComponentSelector = attachedComp.selector;
 	}
 
 	emitPromoterWheelClickEvt(e: MouseEvent, wheel: Node.Wheel) {

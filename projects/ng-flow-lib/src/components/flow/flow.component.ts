@@ -51,7 +51,6 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck, OnChanges {
 	private _oldFlowData: Flow.Nodes = [];
 	private mediaObserverSubs: Subscription;
 	private _setTimeoutTimer = null;
-	private _firstTime = true;
 
 	constructor(
 		private leaderLinesService: LeaderLineService,
@@ -78,18 +77,14 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck, OnChanges {
 			(changes.nodeGap && !changes.nodeGap.firstChange)
 		) {
 			setTimeout(() => {
-				const dimension = {
-					width: this.nodeWidth,
-					height: this.nodeHeight
-				};
 				this.position.init(this.elmRef, this.nodeHeight, this.nodeWidth, this.nodeGap);
-				this.dynamicCompService.attachedCompList[directive_selectors.NODE].forEach(data => {
-					const size = this.position.getNodeSize(data.__data__);
+				this.dynamicCompService.attachedCompList[directive_selectors.NODE].forEach(attachedComp => {
+					const size = this.position.getNodeSize(this.getNodeConfig(attachedComp));
 					const dimension = {
 						width: size.width,
 						height: size.height
 					};
-					this.dynamicCompService.updateComponentBindings({ inputBindings: { dimension } }, data);
+					this.dynamicCompService.updateComponentBindings({ inputBindings: { dimension } }, attachedComp);
 				});
 				this.reCalculateNodePositions();
 			});
@@ -111,7 +106,7 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck, OnChanges {
 		this._setTimeoutTimer = setTimeout(() => {
 			this.position.resetStores();
 			this._updatePositions(this.dynamicCompService.attachedCompList[directive_selectors.NODE]);
-		}, 200);
+		});
 	};
 
 	private _updateContainersLayouts() {
@@ -123,7 +118,7 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck, OnChanges {
 	}
 
 	private _updatePositions(nodes?: AttachedComponent[]) {
-		const positions = this.position.calculateNodesPositions(nodes.map(n => n.__data__));
+		const positions = this.position.calculateNodesPositions(nodes.map(n => this.getNodeConfig(n)));
 		nodes.forEach((node, i) => {
 			const inputBindings = {
 				inputBindings: {
@@ -144,7 +139,9 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck, OnChanges {
 			return this._loadFlowNode(node, nodeIndex);
 		});
 		this._updatePositions(appendedNodes);
-		this.drawConnectors(appendedNodes.map(d => d.__data__));
+		setTimeout(() => {
+			this.drawConnectors(appendedNodes.map(d => this.getNodeConfig(d)));
+		})
 		this._oldFlowData.push(...newNodesToAppend);
 	}
 
@@ -221,7 +218,7 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck, OnChanges {
 		this.leaderLinesService.removeAllConnectors();
 		this._oldFlowData = [];
 		this._appendNewNodes();
-		// KEEP_AN_EYE: Might fail to draw some connectors due to timing issues
+		// WATCHOUT: Might fail to draw some connectors due to timing issues
 		setTimeout(() => {
 			// redraw connectors with the same config
 			this.reDrawConnectors(oldConnectors);
@@ -234,6 +231,38 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck, OnChanges {
 			start: _.attr(key.start, 'id'),
 			end: _.attr(key.end, 'id')
 		})).forEach(k => this.leaderLinesService.drawConnector(k));
+	}
+
+
+	updateNodesData(newConfigs: Array<Partial<Node.Config>>) {
+		const idNodeMap: Record<string, AttachedComponent> = this.dynamicCompService.attachedCompList[directive_selectors.NODE].reduce((a, c) => { a[this.getNodeConfig(c).id] = c; return a; }, {});
+		let reposition = false;
+		newConfigs.forEach((newConfig) => {
+			if (idNodeMap[newConfig.id]) {
+				const config = this.getNodeConfig(idNodeMap[newConfig.id]);
+				if (!reposition &&
+					(config.width !== newConfig.width ||
+					config.height !== newConfig.height)) {
+					reposition = true;
+				}
+				Object.assign(config, newConfig);
+				const inputBindings = {
+					nodeConfig: config,
+					dimension: {
+						width: config.width,
+						height: config.height
+					}
+				};
+				this.dynamicCompService.updateComponentBindings({ inputBindings: inputBindings }, idNodeMap[newConfig.id]);
+			}
+		})
+		if (reposition) {
+			this.reCalculateNodePositions();
+		}
+	}
+
+	private getNodeConfig(nodeComponent): Node.Config {
+		return this.dynamicCompService.getAttachedComponentData(nodeComponent);
 	}
 
 	ngOnDestroy() {
