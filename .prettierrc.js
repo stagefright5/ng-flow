@@ -2,12 +2,12 @@ const prettierConfig = {
 	printWidth: 120,
 	singleQuote: true,
 	quoteProps: 'as-needed',
-	trailingComma: 'none',
+	trailingComma: 'es5',
 	useTabs: true,
 	tabWidth: 4,
 	semi: true,
 	bracketSpacing: true,
-	arrowParens: 'avoid'
+	arrowParens: 'avoid',
 	/**
 		 By default, Prettier will wrap markdown text as-is since some services use a linebreak-sensitive renderer,
 		e.g. GitHub comment and BitBucket. In some cases you may want to rely on editor/viewer soft wrapping instead,

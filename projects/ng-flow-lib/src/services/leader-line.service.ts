@@ -5,7 +5,7 @@ import { PubSubService } from './pub-sub.service';
 import { Events } from '../utils/constants';
 import { Subscription } from 'rxjs';
 @Injectable({
-	providedIn: 'root'
+	providedIn: 'root',
 })
 export class LeaderLineService {
 	private _container: HTMLElement = null;
@@ -26,13 +26,13 @@ export class LeaderLineService {
 		this._container = connCont.nativeElement;
 		this._curTranslate = {
 			x: 0,
-			y: 0
+			y: 0,
 		};
 		this._leaderLineDrawOptions = {
 			path: 'fluid',
 			startSocket: 'auto',
 			endSocket: 'auto',
-			startPlug: 'behind'
+			startPlug: 'behind',
 		};
 		this.positionContainer();
 		this.positionConnectors();
@@ -106,7 +106,7 @@ export class LeaderLineService {
 			// aligns with that of the document.
 			translate = {
 				x: (containerBRect.left + this.pageXOffset) * -1,
-				y: (containerBRect.top + this.pageYOffset) * -1
+				y: (containerBRect.top + this.pageYOffset) * -1,
 			};
 		if (translate.x !== 0 || translate.y !== 0) {
 			// Update position of wrapper by transforming so that it aligns with the co-ordinate system of

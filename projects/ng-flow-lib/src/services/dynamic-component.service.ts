@@ -4,12 +4,12 @@ import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 @Injectable({
-	providedIn: 'root'
+	providedIn: 'root',
 })
 export class DynamicComponentService {
 	attachedCompList: { [key: string]: Array<AttachedComponent> } = {};
 	_destroySubs = new Subject();
-	constructor(private componentFactoryResolver: ComponentFactoryResolver) { }
+	constructor(private componentFactoryResolver: ComponentFactoryResolver) {}
 
 	appendNodeToFlow(appendNodeConfig: Node.New): AttachedComponent {
 		const { component, __data__, injection, inputBindings, outputBindings, flow, id } = appendNodeConfig;
@@ -31,7 +31,10 @@ export class DynamicComponentService {
 		const compFactory = this.componentFactoryResolver.resolveComponentFactory(componentCreationConfig.component);
 		let compRef;
 		if (componentCreationConfig.injection) {
-			const injector = this._createInjector(componentCreationConfig.injection.data, componentCreationConfig.injection.token);
+			const injector = this._createInjector(
+				componentCreationConfig.injection.data,
+				componentCreationConfig.injection.token
+			);
 			compRef = parent.createComponent(compFactory, undefined, injector);
 		} else {
 			compRef = parent.createComponent(compFactory);
@@ -42,7 +45,7 @@ export class DynamicComponentService {
 			inputs: compFactory.inputs,
 			outputs: compFactory.outputs,
 			__data__: componentCreationConfig.__data__,
-			id: componentCreationConfig.id
+			id: componentCreationConfig.id,
 		};
 		(this.attachedCompList[compFactory.selector] &&
 			this.attachedCompList[compFactory.selector].push(newCompData)) ||
@@ -86,11 +89,11 @@ export class DynamicComponentService {
 			// TODO: Listen for when the component gets destroyed and unsubscribe all the output bindings
 			compData.outputs.forEach(({ propName }) => {
 				if (outputBindings[propName]) {
-					(<Observable<any>>compData.compRef.instance[propName]).pipe(
-						takeUntil(this._destroySubs)
-					).subscribe(res => {
-						outputBindings[propName](res);
-					});
+					(<Observable<any>>compData.compRef.instance[propName])
+						.pipe(takeUntil(this._destroySubs))
+						.subscribe(res => {
+							outputBindings[propName](res);
+						});
 				}
 			});
 		}
@@ -105,8 +108,8 @@ export class DynamicComponentService {
 		const providers = [
 			{
 				provide: InjectionToken,
-				useValue: data
-			}
+				useValue: data,
+			},
 		];
 		const injector: Injector = Injector.create(providers);
 		return injector;

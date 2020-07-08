@@ -13,7 +13,7 @@
 		"blib-watch": "ng build ng-flow-lib --watch",
 		"bplib": "npm run blib && npm publish ./dist/ng-flow-lib",
 		"prettify": "prettier --write **/*.ts **/*.js **/*.html **/*.scss **/*.json",
-		"changelog": "cd ./projects/ng-flow-lib && conventional-changelog -p angular -i CHANGELOG.md -s -r 0 && cd /" 
+		"changelog": "cd ./projects/ng-flow-lib && conventional-changelog -p angular -i CHANGELOG.md -s -r 0 && cd /"
 	},
 	"private": true,
 	"dependencies": {

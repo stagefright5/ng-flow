@@ -10,7 +10,7 @@ import {
 	DoCheck,
 	ElementRef,
 	OnChanges,
-	SimpleChanges
+	SimpleChanges,
 } from '@angular/core';
 import { Flow, Node, AttachedComponent, Connector, PromoteEventObject } from '../../utils/typings';
 
@@ -30,8 +30,8 @@ import { _ } from '../../utils/generic-ops';
 	styleUrls: ['./flow.component.scss'],
 	exportAs: 'ngFlow',
 	host: {
-		class: Classes.FLOW
-	}
+		class: Classes.FLOW,
+	},
 })
 export class FlowComponent implements OnInit, OnDestroy, DoCheck, OnChanges {
 	@Output('promote') promoterNodeClickEvtEmitter = new EventEmitter();
@@ -82,7 +82,7 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck, OnChanges {
 					const size = this.position.getNodeSize(this.getNodeConfig(attachedComp));
 					const dimension = {
 						width: size.width,
-						height: size.height
+						height: size.height,
 					};
 					this.dynamicCompService.updateComponentBindings({ inputBindings: { dimension } }, attachedComp);
 				});
@@ -122,8 +122,8 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck, OnChanges {
 		nodes.forEach((node, i) => {
 			const inputBindings = {
 				inputBindings: {
-					position: positions[i]
-				}
+					position: positions[i],
+				},
 			};
 			this.dynamicCompService.updateComponentBindings(inputBindings, node);
 			(<NodeComponent>node.compRef.instance).updateDOMPosition();
@@ -141,7 +141,7 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck, OnChanges {
 		this._updatePositions(appendedNodes);
 		setTimeout(() => {
 			this.drawConnectors(appendedNodes.map(d => this.getNodeConfig(d)));
-		})
+		});
 		this._oldFlowData.push(...newNodesToAppend);
 	}
 
@@ -154,9 +154,9 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck, OnChanges {
 			inputBindings: {
 				nodeConfig: { ...nodeConfig, index: nodeIndex },
 				dimension: this.position.getNodeSize(nodeConfig),
-				promoteEvtCbFn: this._emitWheelClick
+				promoteEvtCbFn: this._emitWheelClick,
 			},
-			__data__: nodeConfig
+			__data__: nodeConfig,
 		});
 	}
 
@@ -188,7 +188,7 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck, OnChanges {
 			end: typeof end === 'string' ? document.getElementById(end) : end,
 			color: this.connectorColor,
 			size: this.connectorSize,
-			path: path
+			path: path,
 		});
 	}
 
@@ -229,19 +229,22 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck, OnChanges {
 		keys.map(key => ({
 			...key,
 			start: _.attr(key.start, 'id'),
-			end: _.attr(key.end, 'id')
+			end: _.attr(key.end, 'id'),
 		})).forEach(k => this.leaderLinesService.drawConnector(k));
 	}
 
 	updateNodesData(newConfigs: Array<Partial<Node.Config>>) {
-		const idNodeMap: Record<string, AttachedComponent> = this.dynamicCompService.attachedCompList[directive_selectors.NODE].reduce((a, c) => { a[this.getNodeConfig(c).id] = c; return a; }, {});
+		const idNodeMap: Record<string, AttachedComponent> = this.dynamicCompService.attachedCompList[
+			directive_selectors.NODE
+		].reduce((a, c) => {
+			a[this.getNodeConfig(c).id] = c;
+			return a;
+		}, {});
 		let reposition = false;
-		newConfigs.forEach((newConfig) => {
+		newConfigs.forEach(newConfig => {
 			if (idNodeMap[newConfig.id]) {
 				const config = this.getNodeConfig(idNodeMap[newConfig.id]);
-				if (!reposition &&
-					(config.width !== newConfig.width ||
-					config.height !== newConfig.height)) {
+				if (!reposition && (config.width !== newConfig.width || config.height !== newConfig.height)) {
 					reposition = true;
 				}
 				Object.assign(config, newConfig);
@@ -249,12 +252,15 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck, OnChanges {
 					nodeConfig: config,
 					dimension: {
 						width: config.width,
-						height: config.height
-					}
+						height: config.height,
+					},
 				};
-				this.dynamicCompService.updateComponentBindings({ inputBindings: inputBindings }, idNodeMap[newConfig.id]);
+				this.dynamicCompService.updateComponentBindings(
+					{ inputBindings: inputBindings },
+					idNodeMap[newConfig.id]
+				);
 			}
-		})
+		});
 		if (reposition) {
 			this.reCalculateNodePositions();
 		}

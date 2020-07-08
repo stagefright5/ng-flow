@@ -4,7 +4,7 @@ import { NODE_DATA } from 'ng-flow-lib';
 @Component({
 	selector: 'app-desc-panel',
 	templateUrl: './desc-panel.component.html',
-	styleUrls: ['./desc-panel.component.scss']
+	styleUrls: ['./desc-panel.component.scss'],
 })
 export class DescPanelComponent implements OnInit {
 	constructor(@Inject(NODE_DATA) public data: any) {

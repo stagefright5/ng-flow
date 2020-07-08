@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs';
 import { DescPanelRef } from '../utils/desc-panel-ref';
 
 @Injectable({
-	providedIn: 'root'
+	providedIn: 'root',
 })
 export class OverlayService {
 	_panelRef: DescPanelRef;
@@ -18,7 +18,7 @@ export class OverlayService {
 		elToAttach,
 		comp,
 		injectionData = {},
-		injectionToken
+		injectionToken,
 	}: {
 		elToAttach: HTMLElement;
 		comp: ComponentType<unknown>;
@@ -59,26 +59,26 @@ export class OverlayService {
 				originX: 'center',
 				originY: 'bottom',
 				overlayX: 'end',
-				overlayY: 'top'
+				overlayY: 'top',
 			},
 			{
 				originX: 'start',
 				originY: 'top',
 				overlayX: 'start',
-				overlayY: 'bottom'
+				overlayY: 'bottom',
 			},
 			{
 				originX: 'start',
 				originY: 'top',
 				overlayX: 'end',
-				overlayY: 'bottom'
+				overlayY: 'bottom',
 			},
 			{
 				originX: 'start',
 				originY: 'bottom',
 				overlayX: 'start',
-				overlayY: 'top'
-			}
+				overlayY: 'top',
+			},
 		];
 		const positionStrategy = this._overlay.position().flexibleConnectedTo(el).withPositions(positions);
 		const overlayConfig: OverlayConfig = {
@@ -89,7 +89,7 @@ export class OverlayService {
 			maxWidth: '20rem',
 			backdropClass: 'desc-panel-backdrop',
 			panelClass: 'desc-panel',
-			scrollStrategy: this._overlay.scrollStrategies.block()
+			scrollStrategy: this._overlay.scrollStrategies.block(),
 		};
 		return overlayConfig;
 	}

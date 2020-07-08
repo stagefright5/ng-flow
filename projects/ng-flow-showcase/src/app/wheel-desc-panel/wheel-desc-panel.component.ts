@@ -4,7 +4,7 @@ import { WHEEL_DATA } from 'ng-flow-lib';
 @Component({
 	selector: 'lib-wheel-desc-panel',
 	templateUrl: './wheel-desc-panel.component.html',
-	styleUrls: ['./wheel-desc-panel.component.css']
+	styleUrls: ['./wheel-desc-panel.component.css'],
 })
 export class WheelDescPanelComponent implements OnInit {
 	constructor(@Inject(WHEEL_DATA) public data: any) {

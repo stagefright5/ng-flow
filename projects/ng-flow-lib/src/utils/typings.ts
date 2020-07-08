@@ -76,7 +76,7 @@ type BindableProperty = {
 };
 export interface AttachedComponent {
 	compRef: ComponentRef<unknown>;
-	selector: string,
+	selector: string;
 	inputs: BindableProperty[];
 	outputs: BindableProperty[];
 	id?: string;

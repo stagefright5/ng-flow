@@ -10,6 +10,6 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 	imports: [OverlayModule, CommonModule, FlexLayoutModule],
 	exports: [FlowComponent, NodeComponent, WheelComponent],
 	entryComponents: [NodeComponent],
-	providers: []
+	providers: [],
 })
 export class FlowModule {}

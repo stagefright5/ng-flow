@@ -9,7 +9,7 @@ import {
 	ElementRef,
 	Renderer2,
 	HostBinding,
-	OnDestroy
+	OnDestroy,
 } from '@angular/core';
 import { Node, PromoteEventObject } from '../../utils/typings';
 import { OverlayService } from '../../services/overlay.service';
@@ -20,7 +20,7 @@ import { _ } from '../../utils/generic-ops';
 @Component({
 	selector: Selectors.NODE,
 	templateUrl: './node.component.html',
-	styleUrls: ['./node.component.scss']
+	styleUrls: ['./node.component.scss'],
 })
 export class NodeComponent implements AfterViewInit, OnDestroy {
 	private _config: Node.Config;
@@ -31,7 +31,7 @@ export class NodeComponent implements AfterViewInit, OnDestroy {
 	@Input('nodeData') set nodeConfig(v: Node.Config) {
 		this._config = v;
 		this.onChanges({ nodeConfig: v });
-	};
+	}
 	get nodeConfig(): Node.Config {
 		return this._config;
 	}
@@ -77,7 +77,7 @@ export class NodeComponent implements AfterViewInit, OnDestroy {
 		private renderer: Renderer2,
 		private elementRef: ElementRef,
 		private pubSub: PubSubService
-	) { }
+	) {}
 
 	ngAfterViewInit() {
 		setTimeout(() => {
@@ -108,8 +108,8 @@ export class NodeComponent implements AfterViewInit, OnDestroy {
 			component: this.nodeConfig.component,
 			injection: {
 				data: this.nodeConfig.data,
-				token: NODE_DATA
-			}
+				token: NODE_DATA,
+			},
 		});
 		this._currentChildComponentSelector = attachedComp.selector;
 	}
@@ -120,13 +120,13 @@ export class NodeComponent implements AfterViewInit, OnDestroy {
 				elToAttach: <HTMLElement>event.target,
 				comp: wheel.descriptionPanel,
 				injectionData: wheel.data,
-				injectionToken: WHEEL_DATA
+				injectionToken: WHEEL_DATA,
 			});
 		} else {
 			if (typeof this.promoteEvtCbFn === 'function') {
 				const dataObj: PromoteEventObject = {
 					wheelConfig: wheel,
-					nodeConfig: this.nodeConfig
+					nodeConfig: this.nodeConfig,
 				};
 				this.promoteEvtCbFn(dataObj);
 			}
@@ -142,7 +142,7 @@ export class NodeComponent implements AfterViewInit, OnDestroy {
 
 	ngOnDestroy() {
 		this.pubSub.$pub(Events.NODE_DELETE, {
-			id: _.attr(this.elementRef.nativeElement, 'id')
+			id: _.attr(this.elementRef.nativeElement, 'id'),
 		});
 	}
 }

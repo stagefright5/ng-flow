@@ -12,6 +12,6 @@ import { WheelDescPanelComponent } from './wheel-desc-panel/wheel-desc-panel.com
 	imports: [BrowserModule, CommonModule, AppRoutingModule, FlowModule, FormsModule],
 	providers: [],
 	bootstrap: [AppComponent],
-	entryComponents: [DescPanelComponent, WheelDescPanelComponent]
+	entryComponents: [DescPanelComponent, WheelDescPanelComponent],
 })
 export class AppModule {}

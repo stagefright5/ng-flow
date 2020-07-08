@@ -4,7 +4,7 @@ import { Directions } from '../utils/constants';
 import { History } from '../utils/history';
 
 @Injectable({
-	providedIn: 'root'
+	providedIn: 'root',
 })
 export class PositionService {
 	unit: number = 0;
@@ -212,7 +212,7 @@ export class PositionService {
 			top: nodeTop,
 			hSpace: thisNodeCompleteSpace.width,
 			row: rowNum,
-			direction: _direction
+			direction: _direction,
 			/**
 			 * // WATCHOUT: May be store the "node" (Data) in the history
 			 * node: node
@@ -220,7 +220,7 @@ export class PositionService {
 		});
 		return {
 			top: nodeTop,
-			left: nodeLeft
+			left: nodeLeft,
 		};
 	}
 
@@ -228,7 +228,7 @@ export class PositionService {
 		const s = this.getNodeSize(node);
 		return {
 			width: this._nodeGap + s.width,
-			height: this._nodeGap + s.height
+			height: this._nodeGap + s.height,
 		};
 	}
 
@@ -236,7 +236,9 @@ export class PositionService {
 		return {
 			width: node.width || this._defaultNodeSize.width,
 			height:
-				!node.height || node.height >= this._defaultNodeSize.height ? this._defaultNodeSize.height : node.height
+				!node.height || node.height >= this._defaultNodeSize.height
+					? this._defaultNodeSize.height
+					: node.height,
 		};
 	}
 

@@ -6,7 +6,7 @@ import { WheelDescPanelComponent } from './wheel-desc-panel/wheel-desc-panel.com
 @Component({
 	selector: 'app-root',
 	templateUrl: './app.component.html',
-	styleUrls: ['./app.component.scss']
+	styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
 	@ViewChild(FlowComponent, { static: false }) flow: FlowComponent;
@@ -25,18 +25,18 @@ export class AppComponent {
 			width: 250,
 			height: 85,
 			id: 'first',
-			to: ['second', /* 'fourth' */],
+			to: ['second' /* 'fourth' */],
 			data: {
-				hey: 'fuck you'
-			}
+				hey: 'fuck you',
+			},
 		},
 		{
 			component: DescPanelComponent,
 			wheels: [
 				{
-					icon: 'assets/asterisk.svg'
+					icon: 'assets/asterisk.svg',
 					// descriptionPanel: 'ss'
-				}
+				},
 			],
 			id: 'second',
 			// from: ['fourth'],
@@ -46,7 +46,7 @@ export class AppComponent {
 				// 	id: 'fifth',
 				// 	path: 'grid'
 				// }
-			]
+			],
 			// width: 150,
 			// height: 100
 		},
@@ -55,15 +55,15 @@ export class AppComponent {
 				{
 					descriptionPanel: WheelDescPanelComponent,
 					data: {
-						hello: 'fuck you too'
-					}
+						hello: 'fuck you too',
+					},
 				},
 				{
 					icon: 'assets/arrow-right.svg',
-					promoter: true
+					promoter: true,
 					// descriptionPanel: DescPanelComponent
 					// descriptionPanel: 'ss'
-				}
+				},
 			],
 			id: 'third',
 			to: ['fourth'],
@@ -74,12 +74,12 @@ export class AppComponent {
 		{
 			wheels: [
 				{
-					icon: 'assets/asterisk.svg'
+					icon: 'assets/asterisk.svg',
 					// descriptionPanel: 'ss'
-				}
+				},
 			],
 			to: ['fifth'],
-			id: 'fourth'
+			id: 'fourth',
 			// from: ['third']
 			// width: 150,
 			// height: 180
@@ -94,19 +94,19 @@ export class AppComponent {
 				{
 					descriptionPanel: WheelDescPanelComponent,
 					data: {
-						hello: 'fuck you too fourth time'
-					}
+						hello: 'fuck you too fourth time',
+					},
 				},
 				{
 					icon: 'assets/arrow-right.svg',
-					promoter: true
+					promoter: true,
 					// descriptionPanel: DescPanelComponent
 					// descriptionPanel: 'ss'
-				}
-			]
+				},
+			],
 			// width: 150,
 			// height: 180
-		}
+		},
 		// {
 		// 	wheels: [
 		// 		{
@@ -165,38 +165,38 @@ export class AppComponent {
 					id: Math.random() + '',
 					component: DescPanelComponent,
 					data: {
-						any: 'data'
+						any: 'data',
 					},
 					wheels: [
 						{
 							icon: 'assets/asterisk.svg',
 							descriptionPanel: WheelDescPanelComponent,
 							data: {
-								oneMore: 'Fuck you!'
-							}
+								oneMore: 'Fuck you!',
+							},
 						},
 						{
 							icon: 'assets/arrow-right.svg',
-							promoter: true
-						}
+							promoter: true,
+						},
 					],
-					lastNode: true
+					lastNode: true,
 				},
 				{
 					id: Math.random() + '',
 					wheels: [
 						{
-							descriptionPanel: WheelDescPanelComponent
+							descriptionPanel: WheelDescPanelComponent,
 						},
 						{
 							icon: 'assets/arrow-right.svg',
-							promoter: true
+							promoter: true,
 							// descriptionPanel: DescPanelComponent
 							// descriptionPanel: 'ss'
-						}
+						},
 					],
 					component: DescPanelComponent,
-					data: 'that is after a wheel config in a node'
+					data: 'that is after a wheel config in a node',
 				},
 				{
 					id: Math.random() + '',
@@ -204,16 +204,16 @@ export class AppComponent {
 						{
 							descriptionPanel: WheelDescPanelComponent,
 							data: {
-								fuckYou: 'For life'
-							}
+								fuckYou: 'For life',
+							},
 						},
 						{
 							icon: 'assets/arrow-right.svg',
-							promoter: true
+							promoter: true,
 							// descriptionPanel: DescPanelComponent
 							// descriptionPanel: 'ss'
-						}
-					]
+						},
+					],
 				},
 				{
 					id: Math.random() + '',
@@ -224,19 +224,19 @@ export class AppComponent {
 								nonCussWords: [
 									{ greetings: ['hi', 'hello', 'GM!'] },
 									{
-										farewells: ['goodbye', 'tata']
-									}
+										farewells: ['goodbye', 'tata'],
+									},
 								],
-								cussWords: 'fuck, shit, motherfucker'
-							}
+								cussWords: 'fuck, shit, motherfucker',
+							},
 						},
 						{
 							icon: 'assets/arrow-right.svg',
-							promoter: true
+							promoter: true,
 							// descriptionPanel: DescPanelComponent
 							// descriptionPanel: 'ss'
-						}
-					]
+						},
+					],
 				}
 			);
 	}
@@ -249,20 +249,20 @@ export class AppComponent {
 				height: 85,
 				// component: undefined,
 				data: {
-					any: 'data'
+					any: 'data',
 				},
 				wheels: [
 					{
 						icon: 'assets/asterisk.svg',
 						descriptionPanel: WheelDescPanelComponent,
 						data: {
-							oneMore: 'Fuck you!'
-						}
+							oneMore: 'Fuck you!',
+						},
 					},
 					{
 						icon: 'assets/arrow-right.svg',
-						promoter: true
-					}
+						promoter: true,
+					},
 				],
 			},
 			{
@@ -270,11 +270,11 @@ export class AppComponent {
 				width: 250,
 				height: 300,
 				id: 'first',
-				to: ['second', /* 'fourth' */],
+				to: ['second' /* 'fourth' */],
 				data: {
-					hey: 'fuck you'
-				}
-			}
+					hey: 'fuck you',
+				},
+			},
 		]);
 	}
 
@@ -286,7 +286,7 @@ export class AppComponent {
 		this.flow.drawConnector({
 			start: `node_no_${this.from}`,
 			end: `node_no_${this.to}`,
-			path: this.type
+			path: this.type,
 		});
 	}
 }
