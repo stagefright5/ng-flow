@@ -11,7 +11,7 @@ import {
 	HostBinding,
 	OnDestroy
 } from '@angular/core';
-import { Node, PromoteEventObject } from '../../utils/TypeDefs';
+import { Node, PromoteEventObject } from '../../utils/typings';
 import { OverlayService } from '../../services/overlay.service';
 import { DynamicComponentService } from '../../services/dynamic-component.service';
 import { Selectors, Events, WHEEL_DATA, NODE_DATA } from '../../utils/constants';

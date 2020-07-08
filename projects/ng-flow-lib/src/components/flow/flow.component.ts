@@ -12,7 +12,7 @@ import {
 	OnChanges,
 	SimpleChanges
 } from '@angular/core';
-import { Flow, Node, AttachedComponent, Connector, PromoteEventObject } from '../../utils/TypeDefs';
+import { Flow, Node, AttachedComponent, Connector, PromoteEventObject } from '../../utils/typings';
 
 import { NodeComponent } from '../node/node.component';
 import { LeaderLineService } from '../../services/leader-line.service';

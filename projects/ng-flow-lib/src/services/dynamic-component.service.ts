@@ -1,5 +1,5 @@
 import { Injectable, ComponentFactoryResolver, ViewContainerRef, Injector, InjectionToken } from '@angular/core';
-import { Node, AttachedComponent, CustomData } from '../utils/TypeDefs';
+import { Node, AttachedComponent, CustomData } from '../utils/typings';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 

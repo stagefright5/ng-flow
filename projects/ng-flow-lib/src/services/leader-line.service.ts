@@ -1,5 +1,5 @@
 import { Injectable, NgZone, ElementRef } from '@angular/core';
-import { Connector } from '../utils/TypeDefs';
+import { Connector } from '../utils/typings';
 import { _ } from '../utils/generic-ops';
 import { PubSubService } from './pub-sub.service';
 import { Events } from '../utils/constants';

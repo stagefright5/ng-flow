@@ -18,7 +18,6 @@
 * **wheel**: [BREAKING] Remove `DESC_PANEL_DATA` injection token
 
 
-
 ## [0.0.3-alpha.21](https://github.com/stagefright5/ng-flow/compare/0.0.3-alpha.20...0.0.3-alpha.21) (2020-06-15)
 
 

@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Node } from '../../utils/TypeDefs';
+import { Node } from '../../utils/typings';
 import { Selectors } from '../../utils/constants';
 
 @Component({

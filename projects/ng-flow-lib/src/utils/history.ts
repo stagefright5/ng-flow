@@ -1,5 +1,3 @@
-import { Node } from './TypeDefs';
-
 export class History {
 	entries: any[] = [];
 	maxLength: number = null;
