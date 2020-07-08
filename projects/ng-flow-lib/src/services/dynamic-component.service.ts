@@ -83,9 +83,12 @@ export class DynamicComponentService {
 	}
 	private _updateOutputBindings(outputBindings, compData: AttachedComponent) {
 		if (compData.outputs && compData.outputs.length) {
+			// TODO: Listen for when the component gets destroyed and unsubscribe all the output bindings
 			compData.outputs.forEach(({ propName }) => {
 				if (outputBindings[propName]) {
-					compData.compRef.instance[propName].subscribe(res => {
+					(<Observable<any>>compData.compRef.instance[propName]).pipe(
+						takeUntil(this._destroySubs)
+					).subscribe(res => {
 						outputBindings[propName](res);
 					});
 				}
@@ -120,5 +123,7 @@ export class DynamicComponentService {
 
 	cleanup(containerRef: ViewContainerRef, selector: string) {
 		this.clearAttachedComps(containerRef, selector);
+		this._destroySubs.next(true);
+		this._destroySubs.complete();
 	}
 }
