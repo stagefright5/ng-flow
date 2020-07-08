@@ -233,6 +233,34 @@ export class FlowComponent implements OnInit, OnDestroy, DoCheck, OnChanges {
 		})).forEach(k => this.leaderLinesService.drawConnector(k));
 	}
 
+	// updateNodesData(configs: Node.Config[]) {
+	// 	const configIds = configs.map(c => c.id);
+	// 	const configIdMap = configs.reduce((a, c) => { a[c.id] = c; return a; }, {});
+	// 	const nodeComponents = this.dynamicCompService.attachedCompList[directive_selectors.NODE].filter(n => configIds.includes(n.id));
+	// 	let reposition = false;
+	// 	nodeComponents.forEach((nodeComponent) => {
+	// 		const newConfig = configIdMap[nodeComponent.id];
+	// 		const config = this.getNodeConfig(nodeComponent);
+	// 		if (!reposition &&
+	// 			(newConfig.width !== config.width) ||
+	// 			(newConfig.height !== config.height)) {
+	// 			reposition = true;
+	// 		}
+	// 		Object.assign(config, newConfig);
+	// 		const inputBindings = {
+	// 			nodeConfig: config,
+	// 			dimension: {
+	// 				width: config.width,
+	// 				height: config.height
+	// 			}
+	// 		};
+	// 		this.dynamicCompService.updateComponentBindings({ inputBindings: inputBindings }, nodeComponent);
+	// 	})
+	// 	if (reposition) {
+	// 		this.reCalculateNodePositions();
+	// 	}
+
+	// }
 
 	updateNodesData(newConfigs: Array<Partial<Node.Config>>) {
 		const idNodeMap: Record<string, AttachedComponent> = this.dynamicCompService.attachedCompList[directive_selectors.NODE].reduce((a, c) => { a[this.getNodeConfig(c).id] = c; return a; }, {});
