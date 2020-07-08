@@ -1,7 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { DescPanelComponent } from './desc-panel/desc-panel.component';
-import { Flow, PromoteEventObject } from 'ng-flow-lib';
-import { FlowComponent } from 'ng-flow-lib';
+import { Flow, FlowComponent, PromoteEventObject } from 'ng-flow-lib';
 import { WheelDescPanelComponent } from './wheel-desc-panel/wheel-desc-panel.component';
 
 @Component({
@@ -26,12 +25,13 @@ export class AppComponent {
 			width: 250,
 			height: 85,
 			id: 'first',
-			to: ['second', 'fourth'],
+			to: ['second', /* 'fourth' */],
 			data: {
 				hey: 'fuck you'
 			}
 		},
 		{
+			component: DescPanelComponent,
 			wheels: [
 				{
 					icon: 'assets/asterisk.svg'
@@ -42,10 +42,10 @@ export class AppComponent {
 			// from: ['fourth'],
 			to: [
 				'third',
-				{
-					id: 'fifth',
-					path: 'grid'
-				}
+				// {
+				// 	id: 'fifth',
+				// 	path: 'grid'
+				// }
 			]
 			// width: 150,
 			// height: 100
@@ -67,7 +67,7 @@ export class AppComponent {
 			],
 			id: 'third',
 			to: ['fourth'],
-			from: ['fifth']
+			// from: ['fifth']
 			// width: 150,
 			// height: 220
 		},
@@ -162,6 +162,7 @@ export class AppComponent {
 		if (e.nodeConfig.index === this.nodes.length - 1)
 			this.nodes.push(
 				{
+					id: Math.random() + '',
 					component: DescPanelComponent,
 					data: {
 						any: 'data'
@@ -182,6 +183,7 @@ export class AppComponent {
 					lastNode: true
 				},
 				{
+					id: Math.random() + '',
 					wheels: [
 						{
 							descriptionPanel: WheelDescPanelComponent
@@ -197,6 +199,7 @@ export class AppComponent {
 					data: 'that is after a wheel config in a node'
 				},
 				{
+					id: Math.random() + '',
 					wheels: [
 						{
 							descriptionPanel: WheelDescPanelComponent,
@@ -213,6 +216,7 @@ export class AppComponent {
 					]
 				},
 				{
+					id: Math.random() + '',
 					wheels: [
 						{
 							descriptionPanel: WheelDescPanelComponent,
@@ -235,6 +239,43 @@ export class AppComponent {
 					]
 				}
 			);
+	}
+
+	updateNodeData(flow: FlowComponent) {
+		flow.updateNodesData([
+			{
+				id: 'second',
+				width: 250,
+				height: 85,
+				// component: undefined,
+				data: {
+					any: 'data'
+				},
+				wheels: [
+					{
+						icon: 'assets/asterisk.svg',
+						descriptionPanel: WheelDescPanelComponent,
+						data: {
+							oneMore: 'Fuck you!'
+						}
+					},
+					{
+						icon: 'assets/arrow-right.svg',
+						promoter: true
+					}
+				],
+			},
+			{
+				// component: DescPanelComponent,
+				width: 250,
+				height: 300,
+				id: 'first',
+				to: ['second', /* 'fourth' */],
+				data: {
+					hey: 'fuck you'
+				}
+			}
+		]);
 	}
 
 	deleteNode() {
