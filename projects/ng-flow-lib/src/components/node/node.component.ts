@@ -1,8 +1,6 @@
 import {
 	Component,
 	Input,
-	Output,
-	EventEmitter,
 	AfterViewInit,
 	ViewChild,
 	ViewContainerRef,
@@ -14,8 +12,7 @@ import {
 import { Node, PromoteEventObject } from '../../utils/typings';
 import { OverlayService } from '../../services/overlay.service';
 import { DynamicComponentService } from '../../services/dynamic-component.service';
-import { Selectors, Events, WHEEL_DATA, NODE_DATA } from '../../utils/constants';
-import { PubSubService } from '../../services/pub-sub.service';
+import { Selectors, WHEEL_DATA, NODE_DATA } from '../../utils/constants';
 import { _ } from '../../utils/generic-ops';
 @Component({
 	selector: Selectors.NODE,
@@ -75,8 +72,7 @@ export class NodeComponent implements AfterViewInit, OnDestroy {
 		private _overlayService: OverlayService,
 		private _dynamicCompService: DynamicComponentService,
 		private renderer: Renderer2,
-		private elementRef: ElementRef,
-		private pubSub: PubSubService
+		private elementRef: ElementRef
 	) {}
 
 	ngAfterViewInit() {
@@ -141,8 +137,8 @@ export class NodeComponent implements AfterViewInit, OnDestroy {
 	}
 
 	ngOnDestroy() {
-		this.pubSub.$pub(Events.NODE_DELETE, {
-			id: _.attr(this.elementRef.nativeElement, 'id'),
-		});
+		// this.pubSub.$pub(Events.NODE_DELETE, {
+		// 	id: _.attr(this.elementRef.nativeElement, 'id'),
+		// });
 	}
 }

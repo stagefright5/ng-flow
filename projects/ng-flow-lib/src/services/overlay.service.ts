@@ -8,7 +8,6 @@ import { DescPanelRef } from '../utils/desc-panel-ref';
 	providedIn: 'root',
 })
 export class OverlayService {
-	_panelRef: DescPanelRef;
 	_backDropClickSub: Subscription;
 	_containerRef: ComponentRef<unknown>;
 
@@ -84,9 +83,9 @@ export class OverlayService {
 		const overlayConfig: OverlayConfig = {
 			positionStrategy,
 			hasBackdrop: true,
-			disposeOnNavigation: true,
-			maxHeight: '30rem',
-			maxWidth: '20rem',
+			// disposeOnNavigation: true,
+			// maxHeight: '30rem',
+			// maxWidth: '20rem',
 			backdropClass: 'desc-panel-backdrop',
 			panelClass: 'desc-panel',
 			scrollStrategy: this._overlay.scrollStrategies.block(),

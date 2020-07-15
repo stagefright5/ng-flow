@@ -1,5 +1,4 @@
 @import './scss.vars.scss';
-@import './from-cdk-overlay.scss';
 
 .ng_flow_class_rounded-rectangle {
 	background-color: $node-paint;
@@ -10,5 +9,3 @@
 .desc-panel-backdrop {
 	background-color: darken($color: #0000002f, $amount: 0);
 }
-
-@include cdk-overlay();

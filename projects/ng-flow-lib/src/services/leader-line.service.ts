@@ -15,8 +15,7 @@ export class LeaderLineService {
 
 	connectors: Map<Connector.DrawConnectorOptions, any> = null;
 
-	constructor(private zone: NgZone, private pubSub: PubSubService) {
-		this._subscribeForEvts();
+	constructor(private zone: NgZone) {
 		LeaderLine.positionByWindowResize = false;
 		window['connectors'] = this.connectors;
 	}
@@ -83,21 +82,6 @@ export class LeaderLineService {
 
 	positionConnectors() {
 		this.connectors.forEach(v => v.position());
-	}
-
-	private _subscribeForEvts() {
-		this._nodeDestroySub = this.pubSub.$sub(Events.NODE_DELETE, obj => {
-			console.log(obj.id + ' :: ' + Events.NODE_DELETE + 'd');
-			this.connectors.forEach((value, key) => {
-				if (
-					obj.id === _.attr(key.start as HTMLElement, 'id') ||
-					obj.id === _.attr(key.end as HTMLElement, 'id')
-				) {
-					this.connectors.delete(key);
-					this.removeConnector(value);
-				}
-			});
-		});
 	}
 
 	private _fixPosition(line?: any, onlyContainer = false) {
