@@ -1,3 +1,12 @@
+## [0.0.5-alpha.16](https://github.com/stagefright5/ng-flow/compare/0.0.5-alpha.0...0.0.5-alpha.16) (2020-07-15)
+
+
+### Bug Fixes
+
+* opening a "wheel" desc panel fucks up other component overlays ([70c10ec](https://github.com/stagefright5/ng-flow/commit/70c10ec23230a500e8f9da71f221d216db655bd6))
+
+
+
 ## [0.0.5-alpha.0](https://github.com/stagefright5/ng-flow/compare/0.0.4-alpha.22...0.0.5-alpha.0) (2020-07-08)
 
 
