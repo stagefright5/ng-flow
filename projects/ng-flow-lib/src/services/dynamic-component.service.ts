@@ -3,9 +3,7 @@ import { Node, AttachedComponent, CustomData } from '../utils/typings';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-@Injectable({
-	providedIn: 'root',
-})
+@Injectable()
 export class DynamicComponentService {
 	attachedCompList: { [key: string]: Array<AttachedComponent> } = {};
 	_destroySubs = new Subject();

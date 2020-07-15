@@ -3,9 +3,7 @@ import { ElementRef, Injectable } from '@angular/core';
 import { Directions } from '../utils/constants';
 import { History } from '../utils/history';
 
-@Injectable({
-	providedIn: 'root',
-})
+@Injectable()
 export class PositionService {
 	unit: number = 0;
 	history = new History(Infinity);

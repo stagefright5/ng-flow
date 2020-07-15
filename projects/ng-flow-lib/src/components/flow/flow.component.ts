@@ -1,34 +1,35 @@
 import {
 	Component,
-	OnInit,
-	Input,
-	Output,
-	EventEmitter,
-	OnDestroy,
-	ViewChild,
-	ViewContainerRef,
 	DoCheck,
 	ElementRef,
+	EventEmitter,
+	Input,
 	OnChanges,
+	OnDestroy,
+	OnInit,
+	Output,
 	SimpleChanges,
+	ViewChild,
+	ViewContainerRef,
 } from '@angular/core';
-import { Flow, Node, AttachedComponent, Connector, PromoteEventObject } from '../../utils/typings';
-
-import { NodeComponent } from '../node/node.component';
-import { LeaderLineService } from '../../services/leader-line.service';
-import { DynamicComponentService } from '../../services/dynamic-component.service';
-import { PositionService } from '../../services/position.service';
-import { Selectors as directive_selectors, NodeIdPrefix, Classes } from '../../utils/constants';
-import { MediaObserver, MediaChange } from '@angular/flex-layout/core';
+import { MediaChange, MediaObserver } from '@angular/flex-layout/core';
 import { Subscription } from 'rxjs';
 import { distinctUntilChanged, filter } from 'rxjs/operators';
+import { DynamicComponentService } from '../../services/dynamic-component.service';
+import { LeaderLineService } from '../../services/leader-line.service';
+import { OverlayService } from '../../services/overlay.service';
+import { PositionService } from '../../services/position.service';
+import { Classes, NodeIdPrefix, Selectors as directive_selectors } from '../../utils/constants';
 import { _ } from '../../utils/generic-ops';
+import { AttachedComponent, Connector, Flow, Node, PromoteEventObject } from '../../utils/typings';
+import { NodeComponent } from '../node/node.component';
 
 @Component({
 	selector: directive_selectors.FLOW,
 	templateUrl: './flow.component.html',
 	styleUrls: ['./flow.component.scss'],
 	exportAs: 'ngFlow',
+	providers: [DynamicComponentService, PositionService, LeaderLineService, OverlayService],
 	host: {
 		class: Classes.FLOW,
 	},

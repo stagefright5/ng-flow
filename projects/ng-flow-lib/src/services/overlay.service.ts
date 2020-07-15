@@ -3,10 +3,10 @@ import { Overlay, OverlayRef, ConnectedPosition, OverlayConfig } from '@angular/
 import { ComponentPortal, ComponentType, PortalInjector } from '@angular/cdk/portal';
 import { Subscription } from 'rxjs';
 import { DescPanelRef } from '../utils/desc-panel-ref';
+import { filter } from 'rxjs/internal/operators/filter';
+import { ESCAPE, hasModifierKey } from '@angular/cdk/keycodes';
 
-@Injectable({
-	providedIn: 'root',
-})
+@Injectable()
 export class OverlayService {
 	_backDropClickSub: Subscription;
 	_containerRef: ComponentRef<unknown>;
@@ -24,10 +24,19 @@ export class OverlayService {
 		injectionData: any;
 		injectionToken: InjectionToken<any>;
 	}) {
-		const _overlayRef = this._createOverlay(elToAttach);
-		const _containerRef = this._attachPanelContainer(_overlayRef, comp, injectionData, injectionToken);
-		const _panelRef = new DescPanelRef(_overlayRef, _containerRef, injectionData);
-		return _panelRef;
+		const overlayRef = this._createOverlay(elToAttach);
+		const panelRef = new DescPanelRef(overlayRef, injectionData);
+		const customInjectors = this._createCustomInjector(injectionData, injectionToken, panelRef);
+		const containerRef = this._attachPanelContainer(overlayRef, comp, customInjectors);
+		this._subscribeForCloseActions(overlayRef, panelRef);
+		return panelRef;
+	}
+
+	private _subscribeForCloseActions(_overlayRef: OverlayRef, panelRef: DescPanelRef) {
+		_overlayRef.backdropClick().subscribe(_ => panelRef.close());
+		_overlayRef.keydownEvents().pipe(
+			filter((e: KeyboardEvent) => e.keyCode === ESCAPE && !hasModifierKey(e))
+		).subscribe(_ => panelRef.close());
 	}
 
 	_createOverlay(elToAttach: HTMLElement) {
@@ -37,17 +46,16 @@ export class OverlayService {
 	_attachPanelContainer(
 		_overlayRef: OverlayRef,
 		comp: ComponentType<unknown>,
-		injectionData: any,
-		injectionToken: InjectionToken<any>
+		customInjectors
 	) {
-		const customInjectors = this._createCustomInjector(injectionData, injectionToken);
 		const panelPortal = new ComponentPortal(comp, null, customInjectors);
 		const containerRef = _overlayRef.attach(panelPortal);
 		return containerRef;
 	}
 
-	_createCustomInjector(config = {}, injectionToken: InjectionToken<any>) {
+	_createCustomInjector(config = {}, injectionToken: InjectionToken<any>, panelRef: DescPanelRef) {
 		const customInjectors = new WeakMap();
+		customInjectors.set(DescPanelRef, panelRef);
 		customInjectors.set(injectionToken, config);
 		return new PortalInjector(this.injector, customInjectors);
 	}

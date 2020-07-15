@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Subject, Observable, Subscription } from 'rxjs';
+import { FlowModule } from '../flow.module';
 
 const ServiceName: string = 'PubSub Service';
 
 @Injectable({
-	providedIn: 'root',
+	providedIn: FlowModule,
 })
 export class PubSubService implements IPubSubService {
 	private events = {};
