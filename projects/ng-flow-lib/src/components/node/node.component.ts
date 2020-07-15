@@ -1,19 +1,18 @@
 import {
-	Component,
-	Input,
 	AfterViewInit,
+	Component,
+	ElementRef,
+	HostBinding,
+	Input,
+	OnDestroy,
+	Renderer2,
 	ViewChild,
 	ViewContainerRef,
-	ElementRef,
-	Renderer2,
-	HostBinding,
-	OnDestroy,
 } from '@angular/core';
-import { Node, PromoteEventObject } from '../../utils/typings';
-import { OverlayService } from '../../services/overlay.service';
 import { DynamicComponentService } from '../../services/dynamic-component.service';
-import { Selectors, WHEEL_DATA, NODE_DATA } from '../../utils/constants';
-import { _ } from '../../utils/generic-ops';
+import { OverlayService } from '../../services/overlay.service';
+import { NODE_DATA, Selectors, WHEEL_DATA } from '../../utils/constants';
+import { Node, PromoteEventObject } from '../../utils/typings';
 @Component({
 	selector: Selectors.NODE,
 	templateUrl: './node.component.html',

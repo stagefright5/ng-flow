@@ -1,4 +1,4 @@
-import { ViewContainerRef, ComponentRef, ComponentFactory, InjectionToken } from '@angular/core';
+import { ComponentRef, InjectionToken, ViewContainerRef } from '@angular/core';
 import { NodeComponent } from '../components/node/node.component';
 import { Directions } from './constants';
 

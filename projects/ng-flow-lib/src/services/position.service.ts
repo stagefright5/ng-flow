@@ -1,7 +1,7 @@
-import { Node } from '../utils/typings';
 import { ElementRef, Injectable } from '@angular/core';
 import { Directions } from '../utils/constants';
 import { History } from '../utils/history';
+import { Node } from '../utils/typings';
 
 @Injectable()
 export class PositionService {

@@ -1,7 +1,7 @@
-import { Injectable, ComponentFactoryResolver, ViewContainerRef, Injector, InjectionToken } from '@angular/core';
-import { Node, AttachedComponent, CustomData } from '../utils/typings';
+import { ComponentFactoryResolver, Injectable, InjectionToken, Injector, ViewContainerRef } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { AttachedComponent, CustomData, Node } from '../utils/typings';
 
 @Injectable()
 export class DynamicComponentService {

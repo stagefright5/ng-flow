@@ -1,10 +1,10 @@
-import { Injectable, ComponentRef, Injector, InjectionToken } from '@angular/core';
-import { Overlay, OverlayRef, ConnectedPosition, OverlayConfig } from '@angular/cdk/overlay';
-import { ComponentPortal, ComponentType, PortalInjector } from '@angular/cdk/portal';
-import { Subscription } from 'rxjs';
-import { DescPanelRef } from '../utils/desc-panel-ref';
-import { filter } from 'rxjs/internal/operators/filter';
 import { ESCAPE, hasModifierKey } from '@angular/cdk/keycodes';
+import { ConnectedPosition, Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
+import { ComponentPortal, ComponentType, PortalInjector } from '@angular/cdk/portal';
+import { ComponentRef, Injectable, InjectionToken, Injector } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { filter } from 'rxjs/internal/operators/filter';
+import { DescPanelRef } from '../utils/desc-panel-ref';
 
 @Injectable()
 export class OverlayService {
@@ -34,20 +34,17 @@ export class OverlayService {
 
 	private _subscribeForCloseActions(_overlayRef: OverlayRef, panelRef: DescPanelRef) {
 		_overlayRef.backdropClick().subscribe(_ => panelRef.close());
-		_overlayRef.keydownEvents().pipe(
-			filter((e: KeyboardEvent) => e.keyCode === ESCAPE && !hasModifierKey(e))
-		).subscribe(_ => panelRef.close());
+		_overlayRef
+			.keydownEvents()
+			.pipe(filter((e: KeyboardEvent) => e.keyCode === ESCAPE && !hasModifierKey(e)))
+			.subscribe(_ => panelRef.close());
 	}
 
 	_createOverlay(elToAttach: HTMLElement) {
 		return this._overlay.create(this._getOverlayConfig(elToAttach));
 	}
 
-	_attachPanelContainer(
-		_overlayRef: OverlayRef,
-		comp: ComponentType<unknown>,
-		customInjectors
-	) {
+	_attachPanelContainer(_overlayRef: OverlayRef, comp: ComponentType<unknown>, customInjectors) {
 		const panelPortal = new ComponentPortal(comp, null, customInjectors);
 		const containerRef = _overlayRef.attach(panelPortal);
 		return containerRef;

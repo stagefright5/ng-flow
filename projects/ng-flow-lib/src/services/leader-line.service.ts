@@ -1,7 +1,6 @@
-import { Injectable, NgZone, ElementRef } from '@angular/core';
-import { Connector } from '../utils/typings';
-import { _ } from '../utils/generic-ops';
+import { ElementRef, Injectable, NgZone } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { Connector } from '../utils/typings';
 @Injectable()
 export class LeaderLineService {
 	private _container: HTMLElement = null;

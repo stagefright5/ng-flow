@@ -1,6 +1,6 @@
+import { ESCAPE, hasModifierKey } from '@angular/cdk/keycodes';
 import { OverlayRef } from '@angular/cdk/overlay';
 import { filter } from 'rxjs/operators';
-import { ESCAPE, hasModifierKey } from '@angular/cdk/keycodes';
 
 export class DescPanelRef {
 	constructor(private _overlayRef: OverlayRef, private _config: any) {
